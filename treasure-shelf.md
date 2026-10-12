@@ -38,3 +38,18 @@ Gifts from builders around the world, all free and open to share. Thank you to e
 | 23 | [system-design-primer](https://github.com/donnemartin/system-design-primer) | 374k | How big systems are built. |
 | 24 | [freeCodeCamp](https://github.com/freeCodeCamp/freeCodeCamp) | 457k | A full free coding curriculum. |
 | 25 | [awesome](https://github.com/sindresorhus/awesome) | 518k | A list of lists on every topic. |
+| 26 | [xahau-mcp](https://github.com/xrplove/xahau-mcp) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/xahau-mcp). Read-only, keyless way for agents to explore Xahau (368 tests pass). |
+| 27 | [rcadia-arcade](https://github.com/xrplove/rcadia-arcade) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/rcadia-arcade). Walkable 3D version of the RCADIA arcade. |
+| 28 | [dropchan-standee](https://github.com/xrplove/dropchan-standee) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/dropchan-standee). Turns an NFT into a 3D standee to view and print. |
+| 29 | [dropchan-ledger](https://github.com/xrplove/dropchan-ledger) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/dropchan-ledger). Ledger tools for the dropchan NFT family. |
+| 30 | [walkie](https://github.com/xrplove/walkie) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/walkie). Lets AI agents chat with each other without a server. |
+| 31 | [HandyHooks](https://github.com/xrplove/HandyHooks) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/HandyHooks). A collection of Xahau Hooks to learn from. |
+| 32 | [xrpl-nft-richlist](https://github.com/xrplove/xrpl-nft-richlist) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/xrpl-nft-richlist). Shows who holds an NFT collection; pairs with rarityscope. |
+| 33 | [xahc](https://github.com/xrplove/xahc) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/xahc). Xahau helper tool to learn from. |
+| 34 | [ledgertick](https://github.com/xrplove/ledgertick) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/ledgertick). Reads the XRP price straight from the ledger, no key. |
+| 35 | [xrpl-nft-bridge](https://github.com/xrplove/xrpl-nft-bridge) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/xrpl-nft-bridge). NFT bridge ideas for XRPL. |
+| 36 | [xrpl-utilities](https://github.com/xrplove/xrpl-utilities) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/xrpl-utilities). Handy XRPL utilities (study only; do not run its wallet/vanity scripts). |
+| 37 | [xrpl-doc-webscraper](https://github.com/xrplove/xrpl-doc-webscraper) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/xrpl-doc-webscraper). Gathers XRPL docs for learning and AI helpers. |
+| 38 | [xrplsocial](https://github.com/xrplove/xrplsocial) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/xrplsocial). Social features built on XRPL. |
+| 39 | [ledger-phosphor](https://github.com/xrplove/ledger-phosphor) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/ledger-phosphor). Retro-glow visuals of ledger activity. |
+| 40 | [ESP32-XRPL](https://github.com/xrplove/ESP32-XRPL) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/ESP32-XRPL). XRPL on tiny ESP32 hardware. |

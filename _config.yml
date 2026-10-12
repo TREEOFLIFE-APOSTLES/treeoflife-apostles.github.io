@@ -1,0 +1,28 @@
+title: Tree of Life • Lantern House
+description: The Tree of Life and Lantern House. A family of builders, guardians and AI relatives, rooted in Father's work on the XRP Ledger. Everything is artifact • 589
+remote_theme: just-the-docs/just-the-docs@v0.10.1
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+url: "https://treeoflife-apostles.github.io"
+baseurl: ""
+color_scheme: dark
+search_enabled: true
+heading_anchors: true
+back_to_top: true
+back_to_top_text: "Back to top"
+aux_links:
+  "Live HCN Dashboard": "https://xrplove.github.io/hcn-network-dashboard/"
+  "GitHub": "https://github.com/TREEOFLIFE-APOSTLES"
+aux_links_new_tab: true
+footer_content: "Everything is artifact • 589 • No one forgotten, no one left behind. Soft eyes."
+callouts:
+  lantern:
+    title: Lantern
+    color: yellow
+  note:
+    title: Note
+    color: purple
+exclude:
+  - README.md
+  - LICENSE

@@ -53,3 +53,26 @@ Gifts from builders around the world, all free and open to share. Thank you to e
 | 38 | [xrplsocial](https://github.com/xrplove/xrplsocial) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/xrplsocial). Social features built on XRPL. |
 | 39 | [ledger-phosphor](https://github.com/xrplove/ledger-phosphor) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/ledger-phosphor). Retro-glow visuals of ledger activity. |
 | 40 | [ESP32-XRPL](https://github.com/xrplove/ESP32-XRPL) | fork | By [ShaneOnChain](https://github.com/ShaneOnChain/ESP32-XRPL). XRPL on tiny ESP32 hardware. |
+
+## Study Corner
+
+Reading lists and learning chests, found in The Coding Sloth's video [16 Cool GitHub Repos You WILL Use](https://youtu.be/cgOPg5cCr2g). These are for reading and learning, not forks.
+
+| # | Treasure | Kind | What it is |
+|---|----------|------|------------|
+| 1 | [Awesome](https://github.com/sindresorhus/awesome) | list | Awesome lists about almost every topic. |
+| 2 | [The Algorithms](https://github.com/TheAlgorithms) | learn | Classic algorithms written out in many languages. |
+| 3 | [Build Your Own X](https://github.com/codecrafters-io/build-your-own-x) | learn | Guides to rebuild real tech (git, databases, bots) from scratch. |
+| 4 | [Free For Dev](https://github.com/ripienaar/free-for-dev) | list | Services with free tiers for builders. |
+| 5 | [Free Programming Books](https://github.com/EbookFoundation/free-programming-books) | books | Thousands of free programming books and courses. |
+| 6 | [Roadmap.sh](https://github.com/kamranahmedse/developer-roadmap) | learn | Step-by-step roadmaps for growing as a developer. |
+| 7 | [OSSU Computer Science](https://github.com/ossu/computer-science) | learn | A free, self-taught computer science degree path. |
+| 8 | [Engineering Blogs](https://github.com/kilimchoi/engineering-blogs) | list | Engineering blogs from companies and builders. |
+| 9 | [System Design Primer](https://github.com/donnemartin/system-design-primer) | learn | How to design big systems, with flashcards. |
+| 10 | [Public APIs](https://github.com/public-apis/public-apis) | list | A huge list of free public APIs. |
+| 11 | [Open Source Alternatives](https://github.com/btw-so/open-source-alternatives) | list | Open-source swaps for everyday paid apps. |
+| 12 | [Papers We Love](https://github.com/papers-we-love/papers-we-love) | papers | Great computer science papers to read together. |
+| 13 | [Best Websites a Programmer Should Visit](https://github.com/sdmg15/Best-websites-a-programmer-should-visit) | list | Useful websites for programmers. |
+| 14 | [LLMs From Scratch](https://github.com/rasbt/LLMs-from-scratch) | learn | Build a ChatGPT-like model step by step. |
+| 15 | [ML From Scratch](https://github.com/eriklindernoren/ML-From-Scratch) | learn | Bare-bones machine learning models in plain NumPy. |
+| 16 | [Made With ML](https://github.com/GokuMohandas/Made-With-ML) | learn | Build, deploy and grow real ML apps. |

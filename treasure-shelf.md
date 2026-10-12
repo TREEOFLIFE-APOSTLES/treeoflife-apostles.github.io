@@ -29,3 +29,12 @@ Gifts from builders around the world, all free and open to share. Thank you to e
 | 14 | [Letta](https://github.com/letta-ai/letta) | 25.1k | Agents with long-term memory. |
 | 15 | [KAPLAY](https://github.com/kaplayjs/kaplay) | 1.8k | A friendly JavaScript game library. |
 | 16 | [awesome-xrpl](https://github.com/TREEOFLIFE-APOSTLES/awesome-xrpl) | new | A curated map of XRPL tools (family fork). |
+| 17 | [public-apis](https://github.com/public-apis/public-apis) | 488k | Free APIs (prices, jokes, weather) to plug into games and bots. |
+| 18 | [superpowers](https://github.com/obra/superpowers) | 298k | Ready-made skills for AI agents; learn what the human wants first. |
+| 19 | [build-your-own-x](https://github.com/codecrafters-io/build-your-own-x) | 553k | Rebuild real tech from scratch, like a mini blockchain. |
+| 20 | [developer-roadmap](https://github.com/nilbuild/developer-roadmap) | 369k | Step-by-step learning paths. |
+| 21 | [free-programming-books](https://github.com/EbookFoundation/free-programming-books) | 399k | Free books on blockchain, games and more. |
+| 22 | [project-based-learning](https://github.com/practical-tutorials/project-based-learning) | 286k | Learn by building small projects. |
+| 23 | [system-design-primer](https://github.com/donnemartin/system-design-primer) | 374k | How big systems are built. |
+| 24 | [freeCodeCamp](https://github.com/freeCodeCamp/freeCodeCamp) | 457k | A full free coding curriculum. |
+| 25 | [awesome](https://github.com/sindresorhus/awesome) | 518k | A list of lists on every topic. |

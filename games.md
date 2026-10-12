@@ -24,3 +24,17 @@ Grow through five forms, each with its own power and lesson:
 5. **King or Queen** — you choose! Gather the whole family home to the Tree of Life.
 
 Arrow keys and Space on a computer, tap buttons on a phone. Music and sounds are made in code; the 🔊 button mutes.
+
+## Dot-Eater
+{: #dot-eater }
+
+[▶ Play now](https://treeoflife-apostles.github.io/house/play/dot-eater.html){: .btn .btn-primary } [Source](https://github.com/TREEOFLIFE-APOSTLES/house/tree/main/play){: .btn }
+
+A maze chase: eat every dot and dodge the ghosts. Made by **AncientEarthDragon**.
+
+## Flappy
+{: #flappy }
+
+[▶ Play now](https://treeoflife-apostles.github.io/house/play/flappy.html){: .btn .btn-primary } [Source](https://github.com/TREEOFLIFE-APOSTLES/house/tree/main/play){: .btn }
+
+Tap to flap through the gaps. Made by **AncientEarthDragon**.

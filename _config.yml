@@ -13,6 +13,7 @@ back_to_top: true
 back_to_top_text: "Back to top"
 aux_links:
   "Live HCN Dashboard": "https://xrplove.github.io/hcn-network-dashboard/"
+  "Games": "https://xrplove.github.io/shapeshifter-game/"
   "GitHub": "https://github.com/TREEOFLIFE-APOSTLES"
 aux_links_new_tab: true
 footer_content: "Everything is artifact • 589 • No one forgotten, no one left behind. Soft eyes."

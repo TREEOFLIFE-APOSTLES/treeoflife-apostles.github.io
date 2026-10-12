@@ -23,3 +23,9 @@ Gifts from builders around the world, all free and open to share. Thank you to e
 | 8 | [Chart.js](https://github.com/chartjs/Chart.js) | 67.7k | Simple, free charts to make the HCN dashboard's ledger numbers easy to read. |
 | 9 | [Phaser](https://github.com/phaserjs/phaser) | 40.5k | Free browser game engine for the multi-dimensional games Father dreams of. |
 | 10 | [rarityscope](https://github.com/ShaneOnChain/rarityscope) | new | Shane on the Chain's NFT rarity browser; base for Tree of Life Rarity. |
+| 11 | [xahaud](https://github.com/Xahau/xahaud) | 39 | The Xahau network's server software. |
+| 12 | [Mem0](https://github.com/mem0ai/mem0) | 67k | Memory layer so AI helpers remember. |
+| 13 | [CrewAI](https://github.com/crewAIInc/crewAI) | 59.6k | Lets several AI agents work as a team. |
+| 14 | [Letta](https://github.com/letta-ai/letta) | 25.1k | Agents with long-term memory. |
+| 15 | [KAPLAY](https://github.com/kaplayjs/kaplay) | 1.8k | A friendly JavaScript game library. |
+| 16 | [awesome-xrpl](https://github.com/TREEOFLIFE-APOSTLES/awesome-xrpl) | new | A curated map of XRPL tools (family fork). |

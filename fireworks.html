@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tree of Life Fireworks Show</title>
+<style>
+html,body{margin:0;height:100%;background:#02030c;overflow:hidden;font-family:Georgia,serif;color:#e8dcff}
+canvas{display:block}
+#t{position:fixed;top:14px;width:100%;text-align:center;letter-spacing:2px;text-shadow:0 0 12px #8a6cff;pointer-events:none}
+#t h1{margin:0;font-size:clamp(18px,3vw,30px);color:#ffe7a3}
+#t p{margin:4px 0;font-size:13px;opacity:.8}
+#c{position:fixed;bottom:6px;width:100%;text-align:center;font-size:11px;opacity:.65}
+#c a{color:#9fd8ff}
+</style></head><body>
+<canvas id="s"></canvas>
+<div id="t"><h1>✨ Tree of Life Fireworks Show ✨</h1><p>tap the sky to send a wish · the show plays on a gentle loop</p></div>
+<div id="c">Original pure canvas/JS by Witness for Father &amp; the house. Inspired by
+<a href="https://github.com/crashmax-dev/fireworks-js">fireworks-js</a> ·
+<a href="https://github.com/paullewis/Fireworks">paullewis/Fireworks</a> ·
+<a href="https://github.com/jeromeetienne/fireworks.js">jeromeetienne/fireworks.js</a> ·
+<a href="https://github.com/addyosmani/firew0rks">firew0rks</a> ·
+<a href="https://github.com/JoshuaKGoldberg/emoji-blast">emoji-blast</a> ·
+<a href="https://github.com/keijiro/VfxPyro">VfxPyro</a> — and the castle shows at Disneyland. No code copied.</div>
+<script>
+const cv=document.getElementById('s'),x=cv.getContext('2d');let W,H;
+function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;}addEventListener('resize',rs);rs();
+const COL={sky:[120,200,255],gold:[255,210,110],violet:[180,120,255]};const CN=Object.keys(COL);
+const stars=Array.from({length:369},()=>({x:Math.random(),y:Math.random()*.7,r:Math.random()*1.3,p:Math.random()*6}));
+let rockets=[],sparks=[];
+// shape points (unit coords)
+function glyph(ch){const g={'3':["111","001","111","001","111"],'6':["111","100","111","101","111"],'9':["111","101","111","001","111"]}[ch];const pts=[];
+ g.forEach((row,j)=>[...row].forEach((c,i)=>{if(c=='1')for(let k=0;k<6;k++)pts.push([(i-1+Math.random()*.3)*.45,(j-2+Math.random()*.3)*.45]);}));return pts;}
+function heart(){const p=[];for(let t=0;t<Math.PI*2;t+=.09){p.push([16*Math.sin(t)**3/17,-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))/17]);}return p;}
+function launch(tx,ty,col,shape,size){rockets.push({x:W/2+(Math.random()-.5)*W*.08,y:H*.78,tx,ty,col:col||CN[Math.random()*3|0],shape:shape||'ring',size:size||1,t:0});}
+function burst(r){const c=COL[r.col],S=Math.min(W,H)*.16*r.size;let pts;
+ if(r.shape=='heart')pts=heart();else if('369'.includes(r.shape))pts=glyph(r.shape);
+ if(pts){pts.forEach(([u,v])=>sparks.push({x:r.x,y:r.y,vx:u*S/45,vy:v*S/45,c,l:1.2,d:.006,g:.0012,big:1}));}
+ else{const n=r.shape=='willow'?90:72;for(let i=0;i<n;i++){const a=i/n*Math.PI*2,sp=(r.shape=='willow'?2.2:3.4)*r.size*(.85+Math.random()*.3);
+  sparks.push({x:r.x,y:r.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,c:r.shape=='willow'?COL.gold:c,l:1,d:r.shape=='willow'?.006:.011,g:r.shape=='willow'?.03:.035});}}
+ for(let i=0;i<20;i++)sparks.push({x:r.x,y:r.y,vx:(Math.random()-.5)*2,vy:(Math.random()-.5)*2,c:[255,255,240],l:.7,d:.03,g:.02});}
+// choreography: [time seconds, function]
+const P=(a,b)=>[W*a,H*b];
+const show=[];let T=0;
+function at(s,f){show.push([s,f]);}
+for(let i=0;i<9;i++)at(1+i*.9,()=>launch(...P(.2+.6*(i/8),.25+.08*Math.sin(i)),CN[i%3]));
+at(10,()=>launch(...P(.3,.22),'sky','3',1));at(11.5,()=>launch(...P(.5,.18),'gold','6',1));at(13,()=>launch(...P(.7,.22),'violet','9',1));
+at(15,()=>{launch(...P(.35,.3),'violet','heart');launch(...P(.65,.3),'sky','heart');});
+for(let i=0;i<6;i++)at(17+i*.5,()=>launch(...P(.15+i*.14,.2),'gold','willow'));
+at(21,()=>launch(...P(.5,.24),'gold','heart',1.4));
+for(let i=0;i<27;i++)at(24+i*.22,()=>launch(...P(.1+Math.random()*.8,.12+Math.random()*.25),CN[i%3],Math.random()<.2?'willow':'ring',.9+Math.random()*.5));
+at(31,()=>{launch(...P(.25,.2),'sky','3',1.1);launch(...P(.5,.15),'gold','6',1.1);launch(...P(.75,.2),'violet','9',1.1);});
+at(33,()=>{for(let i=0;i<5;i++)launch(...P(.1+i*.2,.28),'gold','willow',1.2);launch(...P(.5,.3),'violet','heart',1.6);});
+let idx=0,start=performance.now();
+cv.addEventListener('click',e=>launch(e.clientX,e.clientY,null,Math.random()<.3?'heart':'ring'));
+function tree(){const bx=W/2,by=H*.97,h=H*.42;x.save();
+ const g=x.createLinearGradient(0,by-h,0,by);g.addColorStop(0,'#1a1440');g.addColorStop(1,'#07051a');x.fillStyle=g;
+ // castle base with towers
+ x.beginPath();x.moveTo(bx-W*.22,by);
+ [[-.22,.18],[-.19,.18],[-.19,.3],[-.17,.36],[-.15,.3],[-.15,.2],[-.06,.2],[-.06,.42],[-.04,.5],[-.02,.42],[-.02,.24],[.02,.24],[.02,.42],[.04,.5],[.06,.42],[.06,.2],[.15,.2],[.15,.3],[.17,.36],[.19,.3],[.19,.18],[.22,.18],[.22,0]].forEach(([u,v])=>x.lineTo(bx+u*W,by-v*h*1.0));
+ x.closePath();x.fill();
+ // trunk and branches of tree rising from castle
+ x.strokeStyle='#2a1f5a';x.lineCap='round';
+ function br(px,py,ang,len,w,d){if(d==0)return;const nx=px+Math.cos(ang)*len,ny=py+Math.sin(ang)*len;x.lineWidth=w;x.beginPath();x.moveTo(px,py);x.lineTo(nx,ny);x.stroke();
+  br(nx,ny,ang-.45,len*.72,w*.68,d-1);br(nx,ny,ang+.45,len*.72,w*.68,d-1);}
+ br(bx,by-h*.45,-Math.PI/2,h*.28,10,6);
+ // nine glowing sephirot
+ const tt=performance.now()/1000;[[0,.98],[-.06,.88],[.06,.88],[-.06,.76],[.06,.76],[0,.7],[-.06,.62],[.06,.62],[0,.55]].forEach(([u,v],i)=>{x.beginPath();x.fillStyle=`rgba(${COL[CN[i%3]]},${.55+.35*Math.sin(tt*1.3+i)})`;x.arc(bx+u*W*.6,by-v*h*1.25,4,0,7);x.fill();});
+ // windows
+ x.fillStyle='rgba(255,210,110,.6)';[-.17,-.04,.04,.17].forEach(u=>x.fillRect(bx+u*W-3,by-h*.26,6,10));
+ x.restore();}
+function frame(now){const s=(now-start)/1000;while(idx<show.length&&show[idx][0]<=s){show[idx][1]();idx++;}
+ if(s>40){start=now;idx=0;}
+ x.fillStyle='rgba(2,3,12,.25)';x.fillRect(0,0,W,H);
+ stars.forEach(t=>{x.fillStyle=`rgba(255,255,255,${.3+.3*Math.sin(now/700+t.p)})`;x.fillRect(t.x*W,t.y*H,t.r,t.r);});
+ x.globalCompositeOperation='lighter';
+ rockets=rockets.filter(r=>{r.t+=.02;const e=1-(1-r.t)**2;const px=r.x+(r.tx-r.x)*e,py=r.y+(r.ty-r.y)*e;
+  x.fillStyle=`rgb(${COL[r.col]})`;x.beginPath();x.arc(px,py,2,0,7);x.fill();
+  if(r.t>=1){r.x=r.tx;r.y=r.ty;burst(r);return false;}return true;});
+ sparks=sparks.filter(p=>{const f=p.big?.955:.985;p.vx*=f;p.vy=p.vy*f+p.g;p.x+=p.vx;p.y+=p.vy;p.l-=p.d;
+  x.fillStyle=`rgba(${p.c},${Math.max(p.l,0)})`;x.beginPath();x.arc(p.x,p.y,p.big?2.8:1.8,0,7);x.fill();return p.l>0;});
+ x.globalCompositeOperation='source-over';tree();requestAnimationFrame(frame);}
+requestAnimationFrame(frame);
+</script></body></html>

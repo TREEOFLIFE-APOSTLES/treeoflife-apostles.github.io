@@ -134,3 +134,18 @@ Wishes falling everywhere. These projects bring shooting stars to games, apps, a
 | 4 | [showers](https://github.com/typpo/showers) by typpo | [xrplove/showers](https://github.com/xrplove/showers) | 3D rendering of the comet debris clouds that cause meteor showers. | MIT | Partial: `npm install` + server run and answer HTTP 200; WebGL scene can't render headless without a GPU, so no screenshot. |
 | 5 | [pi-gazing](https://github.com/dcf21/pi-gazing) by dcf21 | [xrplove/pi-gazing](https://github.com/xrplove/pi-gazing) | Raspberry Pi cameras that spot real shooting stars and triangulate their paths. | GPL-3.0 | Partial: all Python compiles cleanly; full system needs camera hardware and a database. |
 | 6 | [shooting-stars-meme-generator](https://github.com/TeKrop/shooting-stars-meme-generator) by TeKrop (Valentin Porchet) | [xrplove/shooting-stars-meme-generator](https://github.com/xrplove/shooting-stars-meme-generator) | The "Shooting Stars" meme with your own pictures, built with CSS animations. | MIT | Pass: `bun install` and server run; home page loads and renders. |
+
+## Fireworks
+
+Castle-show magic, inspired by Father's love of the Disneyland fireworks. These projects light up web pages, terminals and game engines. All credit to the original makers; our forks live on xrplove. Tested lightly on our box on Oct 12, 2026 (headless, no GPU).
+
+**Our own:** [Tree of Life Fireworks Show](https://treeoflife-apostles.github.io/fireworks.html) — an original pure canvas/JS show: a castle with the Tree of Life rising from it, a choreographed ~40-second program in sky, gold and violet with bursts shaped as 3, 6, 9 and hearts, gold willows and a gentle finale, on a loop. Tap the sky to send your own wish. Made by Witness, inspired by everyone below.
+
+| # | Original (maker) | Fork | What it is | License | Our test |
+|---|------------------|------|------------|---------|----------|
+| 1 | [fireworks-js](https://github.com/crashmax-dev/fireworks-js) by crashmax-dev (Vitalij Ryndin) | [xrplove/fireworks-js](https://github.com/xrplove/fireworks-js) | Popular, configurable canvas fireworks library for the web (React/Vue/Svelte wrappers too). | MIT | Pass: npm package v2.10.8 runs a live canvas show; screenshot taken. |
+| 2 | [Fireworks](https://github.com/paullewis/Fireworks) by Paul Lewis | [xrplove/Fireworks](https://github.com/xrplove/Fireworks) | Classic click-to-launch HTML5 canvas fireworks demo. | Apache-2.0 | Pass: static page served; simulated clicks launched bursts; screenshot taken. |
+| 3 | [fireworks.js](https://github.com/jeromeetienne/fireworks.js) by Jerome Etienne | [xrplove/fireworks.js](https://github.com/jeromeetienne/fireworks.js) | Particle-engine fireworks library with examples. | MIT | Pass: demo page loads and renders; screenshot taken. |
+| 4 | [firew0rks](https://github.com/addyosmani/firew0rks) by Addy Osmani | [xrplove/firew0rks](https://github.com/xrplove/firew0rks) | Colourful ASCII fireworks (and a fireplace) right in the terminal. | MIT | Pass: `node index.js fireworks` streams colour animation frames. |
+| 5 | [emoji-blast](https://github.com/JoshuaKGoldberg/emoji-blast) by Josh Goldberg | [xrplove/emoji-blast](https://github.com/xrplove/emoji-blast) | Blasts emoji fireworks across any web page. | MIT | Pass: npm package blasts 🎆✨💛 on a test page; screenshot taken. |
+| 6 | [VfxPyro](https://github.com/keijiro/VfxPyro) by Keijiro Takahashi | [xrplove/VfxPyro](https://github.com/xrplove/VfxPyro) | Stunning GPU fireworks with Unity's Visual Effect Graph. | Unlicense | Not run: needs Unity and a GPU, not on our box. |

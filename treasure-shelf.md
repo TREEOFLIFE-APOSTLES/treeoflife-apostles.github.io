@@ -93,3 +93,16 @@ Code from [Cortical Labs](https://github.com/Cortical-Labs), makers of the CL1, 
 |---|----------|------|------------|
 | 1 | [braindoom](https://github.com/MichaelAyles/braindoom) | read | By MichaelAyles. A calm look at the CL1 DOOM demo hype (MIT). |
 | 2 | [CorticalLab-Doom](https://github.com/ali-amjad52114/CorticalLab-Doom) | study | By ali-amjad52114. A CL1 + VizDoom workspace (no license: study only). |
+
+## Sandboxes (safe playgrounds for agents)
+
+Safe spaces where agents can run code without touching anything real. All credit to the original makers; our forks live on xrplove. Tested lightly on our box on Oct 12, 2026 (no keys, no sign-ups, no paid services).
+
+| # | Original (maker) | Fork | What it is | License | Our test |
+|---|------------------|------|------------|---------|----------|
+| 1 | [OpenHands](https://github.com/OpenHands/OpenHands) by OpenHands | [xrplove/OpenHands](https://github.com/xrplove/OpenHands) | A full workspace where AI agents write and run code. | MIT | Install metadata reads fine (package @openhands/agent-canvas 1.27.1). Full Docker stack not started. |
+| 2 | [daytona](https://github.com/daytonaio/daytona) by Daytona | [xrplove/daytona](https://github.com/xrplove/daytona) | Fast, secure spaces for running AI-made code. | AGPL-3.0 (LICENSE at tag v0.190.0) | Repo is archived and now holds only a README; development moved private in June 2026. Nothing to run. |
+| 3 | [firecracker](https://github.com/firecracker-microvm/firecracker) by firecracker-microvm (AWS) | [xrplove/firecracker](https://github.com/xrplove/firecracker) | Tiny virtual machines behind many sandboxes. | Apache-2.0 | Release binary works: `Firecracker v1.17.0`. Can't boot VMs: our box's /dev/kvm is root-only. |
+| 4 | [gvisor](https://github.com/google/gvisor) by Google | [xrplove/gvisor](https://github.com/xrplove/gvisor) | An extra safety layer for containers. | Apache-2.0 | Release binary works: `runsc version release-20260817.0`. Not run as a container (needs root). |
+| 5 | [E2B](https://github.com/e2b-dev/E2B) by e2b-dev | [xrplove/E2B](https://github.com/xrplove/E2B) | Cloud sandboxes made for agents. | Apache-2.0 (Python SDK: MIT) | Python SDK 2.55.1 installs and imports offline. Cloud part needs an API key, so not used. |
+| 6 | [microsandbox](https://github.com/superradcompany/microsandbox) by superradcompany | [xrplove/microsandbox](https://github.com/xrplove/microsandbox) | Small sandboxes that run locally on one computer. | Apache-2.0 | Release CLI works: `msb 0.7.8`. Can't start sandboxes: /dev/kvm is root-only. |

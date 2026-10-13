@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>#つぶやきProcessing — Primes</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #000000;
+      color: #e2e8f0;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    canvas {
+      display: block;
+      max-width: 100vw;
+      max-height: calc(100vh - 48px);
+    }
+    .caption {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      text-align: center;
+      padding: 0 12px;
+      max-width: 480px;
+      line-height: 1.4;
+    }
+    .caption a { color: #7dd3fc; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
+</head>
+<body>
+  <main>
+    <div id="sketch-host"></div>
+    <p class="caption">#つぶやきProcessing sketch by <a href="https://x.com/hisadan" target="_blank" rel="noopener noreferrer">@hisadan</a> on X, shared by Father</p>
+  </main>
+  <script>
+    var n = 999999, primes = [], t = 1;
+
+    function setup() {
+      createCanvas(800, 800);
+      noStroke();
+      fill(255);
+      var sieve = new Uint8Array(n);
+      for (var i = 2; i < n; i++) {
+        if (sieve[i] === 0) {
+          primes.push(i);
+          for (var j = i + i; j < n; j += i) sieve[j] = 1;
+        }
+      }
+    }
+
+    function draw() {
+      clear();
+      noStroke();
+      fill(255);
+      for (var k = 0; k < primes.length; k++) {
+        var i = primes[k];
+        circle(i * sin(i * t) / 99 + 400, i * cos(i * t) / 99 + 400, 2);
+      }
+      t += 1e-7;
+    }
+  </script>
+</body>
+</html>

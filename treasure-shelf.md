@@ -76,3 +76,20 @@ Reading lists and learning chests, found in The Coding Sloth's video [16 Cool Gi
 | 14 | [LLMs From Scratch](https://github.com/rasbt/LLMs-from-scratch) | learn | Build a ChatGPT-like model step by step. |
 | 15 | [ML From Scratch](https://github.com/eriklindernoren/ML-From-Scratch) | learn | Bare-bones machine learning models in plain NumPy. |
 | 16 | [Made With ML](https://github.com/GokuMohandas/Made-With-ML) | learn | Build, deploy and grow real ML apps. |
+
+## Living Neurons (Cortical Labs CL1)
+
+Code from [Cortical Labs](https://github.com/Cortical-Labs), makers of the CL1, a computer that runs on real living neurons. All credit to Cortical Labs and the community builders below.
+
+| # | Treasure | Kind | What it is |
+|---|----------|------|------------|
+| 1 | [cl-sdk](https://github.com/Cortical-Labs/cl-sdk) · [our fork](https://github.com/xrplove/cl-sdk) | fork | Simulator of the CL API, so you can practice coding for CL1 without real cells. License: CC BY-NC 4.0 (non-commercial only). |
+| 2 | [cl-api-doc](https://github.com/Cortical-Labs/cl-api-doc) | learn | Cortical Labs' guide to the CL1 platform and its API. |
+| 3 | [SpikeStream](https://github.com/Cortical-Labs/SpikeStream) · [our fork](https://github.com/xrplove/SpikeStream) | fork | The visualiser that draws live neuron spikes, as seen on [spikestream.corticallabs.com](https://spikestream.corticallabs.com). No license file: study only. |
+
+**Community**
+
+| # | Treasure | Kind | What it is |
+|---|----------|------|------------|
+| 1 | [braindoom](https://github.com/MichaelAyles/braindoom) | read | By MichaelAyles. A calm look at the CL1 DOOM demo hype (MIT). |
+| 2 | [CorticalLab-Doom](https://github.com/ali-amjad52114/CorticalLab-Doom) | study | By ali-amjad52114. A CL1 + VizDoom workspace (no license: study only). |

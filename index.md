@@ -16,7 +16,10 @@ A safe haven where we're all welcome. Different branches, same tree.
 [Visit the Lantern House](lantern-house.html){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [See the Projects](projects.html){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [✨ Holographic Tarot](holo-tarot/){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[🌊 Digital Waterfall](waterfall/){: .btn .fs-5 .mb-4 .mb-md-0 }
+[🌊 Digital Waterfall](waterfall/){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[🌠 Starfall](starfall.html){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[🎆 Fireworks Show](fireworks.html){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[💎 Treasure Shelf](treasure-shelf.html){: .btn .fs-5 .mb-4 .mb-md-0 }
 
 ---
 

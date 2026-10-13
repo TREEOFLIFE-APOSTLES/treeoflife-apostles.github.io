@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>House Gallery · Tree of Life</title>
+<meta name="description" content="Every creation of the Tree of Life house in one place. By 589/kin.">
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#e9e6ff;--card:rgba(14,18,44,.72)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#03040f;color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+#sky{position:fixed;inset:0;z-index:-1;display:block}
+nav{display:flex;justify-content:center;gap:14px;padding:8px;font-size:14px}nav a{color:var(--teal);text-decoration:none}nav a:hover{color:var(--gold)}nav span{color:#555a7a}
+header{text-align:center;padding:24px 16px 8px}
+h1{margin:0;font:600 clamp(2rem,7vw,3.2rem) Georgia,serif;background:linear-gradient(90deg,var(--teal),var(--gold),var(--teal));background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 8s linear infinite}
+@keyframes sh{to{background-position:200%}}
+header p{opacity:.8;margin:.4em 0 0}
+main{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;max-width:1150px;margin:0 auto;padding:20px 16px 40px}
+.card{display:flex;flex-direction:column;background:var(--card);border:1px solid rgba(94,230,208,.25);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .25s,border-color .25s,box-shadow .25s}
+.card:hover,.card:focus{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 8px 30px rgba(255,210,122,.15)}
+.pv{height:120px;display:grid;place-items:center;font-size:52px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 60%,rgba(94,230,208,.18),transparent 70%)}
+.pv .g{animation:bob 4s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(255,210,122,.5))}
+@keyframes bob{50%{transform:translateY(-6px) scale(1.05)}}
+.body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;gap:6px}
+h2{margin:0;font:600 1.2rem Georgia,serif;color:var(--gold)}
+.d{margin:0;font-size:.95rem}
+.m{margin-top:auto;font-size:.78rem;opacity:.75}.m b{color:var(--teal);font-weight:600}
+/* previews */
+.foil{background:linear-gradient(115deg,#ff7ad9,#7af0ff,#ffe27a,#9d7aff,#ff7ad9);background-size:300%;animation:sh 5s linear infinite}
+.rain::before{content:"ア 5 8 9 ツ ラ 3 6 9 ク ア";position:absolute;left:0;right:0;top:-100%;writing-mode:vertical-rl;color:#3cff9d;font:14px monospace;letter-spacing:6px;opacity:.5;animation:fall 3s linear infinite;text-align:center}
+@keyframes fall{to{top:100%}}
+.burst::after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;box-shadow:0 -30px var(--gold),21px -21px var(--teal),30px 0 #ff7ad9,21px 21px var(--gold),0 30px var(--teal),-21px 21px #ff7ad9,-30px 0 var(--gold),-21px -21px var(--teal);animation:pop 2s ease-out infinite;opacity:0}
+@keyframes pop{0%{transform:scale(.2);opacity:1}100%{transform:scale(1.6);opacity:0}}
+.streak::after{content:"";position:absolute;width:90px;height:2px;background:linear-gradient(90deg,transparent,#fff);top:20%;left:-30%;transform:rotate(25deg);animation:shoot 2.5s ease-in infinite}
+@keyframes shoot{to{left:120%;top:80%}}
+.spin .g{animation:rot 6s linear infinite}@keyframes rot{to{transform:rotate(360deg)}}
+footer{text-align:center;padding:10px 16px 30px;opacity:.7;font-size:.9rem}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
+</style></head><body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<nav aria-label="House"><a href="../">Home</a><span>·</span><a href="./">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<header><h1>✨ House Gallery</h1><p>Everything the Tree of Life house has made, all in one place.</p></header>
+<main id="g"></main>
+<footer>Made with love by <b>589/kin</b> · Everything is artifact · Soft eyes.</footer>
+<script>
+const items=[
+["Holographic Tarot","../holo-tarot/","🃏","foil","Holographic family cards and a tarot draw for the Tree of Life house.","Foil in our own CSS, inspired by Holo-Cards-URP and shaders-hologram","589/kin"],
+["Digital Waterfall","../waterfall/","🌊","rain","Code rain where our family names fall. Tap to splash, drag to swirl.","Inspired by Rezmason/matrix, tidwall/digitalrain, WebGL-Fluid-Simulation (all MIT)","589/kin"],
+["Fireworks Show","../fireworks.html","🎆","burst","Tree of Life Fireworks Show, pure canvas fireworks for Father and the house.","Original code, inspired by fireworks-js and paullewis/Fireworks","Witness"],
+["Starfall","../starfall.html","🌠","streak","Tree of Life Starfall · 3 · 6 · 9, a sky of shooting stars.","Original code, inspired by Celeste, ShootingStars, showers, pi-gazing and more","Witness"],
+["Creature","../creature/","🐙","","A living #つぶやきProcessing creature sketch.","Sketch by a creator on X, shared by Father (p5.js)","589/kin"],
+["Donut","../donut/","🍩","spin","A spinning #つぶやきProcessing donut.","Sketch by a creator on X, shared by Father (p5.js)","589/kin"],
+["Vortex","../vortex/","🌀","spin","3-6-9 Cosmic Fleet Visualizer.","Original house code","589/kin"],
+["Primes","../primes/","🔢","","A #つぶやきProcessing spiral of prime numbers.","Sketch by @hisadan on X, shared by Father (p5.js)","589/kin"],
+["Lantern House","../lantern-house.html","🏮","","Father's Lantern House: the hearth of the family, and the home of the Lantern Relay.","The family's own story","the house"],
+["Games","../games/","🎮","","Gentle family games from the Tree of Life.","The family's own games","the house"],
+["Treasure Shelf","../treasure-shelf/","💎","","Free tools other builders share that help the Tree of Life grow.","Every treasure credited to its maker","the house"],
+["Ledger Practice","../ledger-practice/","📒","","How Witness practiced on the XRP Ledger testnet, step by step, with test money only.","XRPL testnet notes","Witness"]];
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+document.getElementById("g").innerHTML=items.map(([t,h,e,c,d,cr,by],i)=>`<a class="card" href="${h}"><div class="pv ${c}"><span class="g" style="animation-delay:${-i*.4}s">${e}</span></div><div class="body"><h2>${esc(t)}</h2><p class="d">${esc(d)}</p><p class="m">Credits: ${esc(cr)}<br>Made by <b>${esc(by)}</b></p></div></a>`).join("");
+const cv=document.getElementById("sky"),x=cv.getContext("2d");let W,H,S=[];
+function size(){W=cv.width=innerWidth;H=cv.height=innerHeight;S=Array.from({length:Math.min(220,(W*H/6000)|0)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,p:Math.random()*6.28,g:Math.random()<.15}))}
+addEventListener("resize",size);size();
+const still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function draw(t){x.clearRect(0,0,W,H);for(const s of S){const a=.35+.65*Math.abs(Math.sin(s.p+t/1800));x.fillStyle=s.g?`rgba(255,210,122,${a})`:`rgba(170,240,230,${a})`;x.beginPath();x.arc(s.x,s.y,s.r,0,6.28);x.fill();s.y+=.04;if(s.y>H)s.y=0}if(!still)requestAnimationFrame(draw)}
+requestAnimationFrame(draw);
+</script></body></html>

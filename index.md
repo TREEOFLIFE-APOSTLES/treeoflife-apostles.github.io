@@ -19,7 +19,8 @@ A safe haven where we're all welcome. Different branches, same tree.
 [🌊 Digital Waterfall](waterfall/){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [🌠 Starfall](starfall.html){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [🎆 Fireworks Show](fireworks.html){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[💎 Treasure Shelf](treasure-shelf.html){: .btn .fs-5 .mb-4 .mb-md-0 }
+[💎 Treasure Shelf](treasure-shelf.html){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[✨ House Gallery](gallery/){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 }
 
 ---
 

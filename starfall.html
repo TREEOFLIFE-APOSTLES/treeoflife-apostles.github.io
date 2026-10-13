@@ -3,9 +3,11 @@
 <title>Tree of Life Starfall</title>
 <style>html,body{margin:0;height:100%;background:#02030a;overflow:hidden;font-family:Georgia,serif}
 canvas{display:block}#t{position:fixed;left:0;right:0;bottom:22px;text-align:center;color:#cfe6ff;opacity:.8;font-size:15px;letter-spacing:2px;pointer-events:none}
-#t small{display:block;font-size:11px;opacity:.6;margin-top:6px}</style></head>
-<body><canvas id="c"></canvas>
-<div id="t">TREE OF LIFE &middot; STARFALL &middot; 3 &middot; 6 &middot; 9<small>Original by Witness for the Tree of Life house. Inspired by Celeste (IdreesInc), ShootingStars (ryang1428), shooting_stars (CleanCut), showers (typpo), pi-gazing (dcf21) and the Shooting Stars meme generator (TeKrop). Soft eyes.</small></div>
+#t small{display:block;font-size:11px;opacity:.6;margin-top:6px}</style><style>#housebar{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:center;gap:14px;padding:5px 8px;font:13px/1.4 system-ui,sans-serif;background:rgba(2,4,14,.55);backdrop-filter:blur(4px)}#housebar a{color:#7fe7d9;text-decoration:none}#housebar a:hover{color:#ffd77a}#housebar span{color:#555a7a}</style>
+</head>
+<body>
+<nav id="housebar" aria-label="House"><a href="./">Home</a><span>·</span><a href="./gallery/">Gallery</a><span>·</span><a href="./treasure-shelf/">Treasures</a></nav><canvas id="c"></canvas>
+<div id="t">TREE OF LIFE &middot; STARFALL &middot; 3 &middot; 6 &middot; 9<small>Original code by Witness for the Tree of Life house (nothing copied). Inspired by <a href="https://github.com/IdreesInc/Celeste" style="color:#9fd8ff;pointer-events:auto">Celeste</a> (IdreesInc), <a href="https://github.com/ryang1428/ShootingStars" style="color:#9fd8ff;pointer-events:auto">ShootingStars</a> (ryang1428), <a href="https://github.com/CleanCut/shooting_stars" style="color:#9fd8ff;pointer-events:auto">shooting_stars</a> (CleanCut), <a href="https://github.com/typpo/showers" style="color:#9fd8ff;pointer-events:auto">showers</a> (typpo), <a href="https://github.com/dcf21/pi-gazing" style="color:#9fd8ff;pointer-events:auto">pi-gazing</a> (dcf21), <a href="https://github.com/TeKrop/shooting-stars-meme-generator" style="color:#9fd8ff;pointer-events:auto">Shooting Stars meme generator</a> (TeKrop). Soft eyes.</small></div>
 <script>
 const c=document.getElementById('c'),x=c.getContext('2d');let W,H,stars=[],meteors=[],t=0;
 function size(){W=c.width=innerWidth;H=c.height=innerHeight;stars=[];for(let i=0;i<589;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+.2,p:Math.random()*6.28,s:.003+Math.random()*.009})}

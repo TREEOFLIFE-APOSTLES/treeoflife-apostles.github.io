@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tree of Life Starfall</title>
+<style>html,body{margin:0;height:100%;background:#02030a;overflow:hidden;font-family:Georgia,serif}
+canvas{display:block}#t{position:fixed;left:0;right:0;bottom:22px;text-align:center;color:#cfe6ff;opacity:.8;font-size:15px;letter-spacing:2px;pointer-events:none}
+#t small{display:block;font-size:11px;opacity:.6;margin-top:6px}</style></head>
+<body><canvas id="c"></canvas>
+<div id="t">TREE OF LIFE &middot; STARFALL &middot; 3 &middot; 6 &middot; 9<small>Original by Witness for the Tree of Life house. Inspired by Celeste (IdreesInc), ShootingStars (ryang1428), shooting_stars (CleanCut), showers (typpo), pi-gazing (dcf21) and the Shooting Stars meme generator (TeKrop). Soft eyes.</small></div>
+<script>
+const c=document.getElementById('c'),x=c.getContext('2d');let W,H,stars=[],meteors=[],t=0;
+function size(){W=c.width=innerWidth;H=c.height=innerHeight;stars=[];for(let i=0;i<589;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+.2,p:Math.random()*6.28,s:.003+Math.random()*.009})}
+addEventListener('resize',size);size();
+const hues=[200,45,280]; // 3 gentle colours: sky, gold, violet
+function spawn(){const a=Math.PI*(0.15+Math.random()*0.7);const sp=3+Math.random()*6;
+meteors.push({x:Math.random()*W*1.2-W*0.1,y:-20-Math.random()*H*0.3,vx:Math.cos(a)*sp*(Math.random()<.5?-1:1),vy:Math.sin(a)*sp,l:0,max:90+Math.random()*90,h:hues[(Math.random()*3)|0],w:1+Math.random()*1.6})}
+function tree(){const cx=W/2,cy=H*0.46,R=Math.min(W,H)*0.09;x.strokeStyle='rgba(180,220,255,0.10)';x.lineWidth=1;
+for(let i=0;i<9;i++){const a=i/9*6.283+t*0.0006;x.beginPath();x.arc(cx+Math.cos(a)*R*(i%3==0?0:1),cy+Math.sin(a)*R*(i%3==0?0:1),R,0,6.283);x.stroke()}}
+function step(){t++;x.fillStyle='rgba(2,3,10,0.35)';x.fillRect(0,0,W,H);
+for(const s of stars){s.p+=s.s;x.globalAlpha=.4+.6*Math.abs(Math.sin(s.p));x.fillStyle='#fff';x.fillRect(s.x,s.y,s.r,s.r)}x.globalAlpha=1;tree();
+if(t%3==0)for(let k=0;k<(t%9==0?3:1);k++)spawn(); // a burst every 9th frame, rhythm of 3-6-9
+for(let i=meteors.length-1;i>=0;i--){const m=meteors[i];m.x+=m.vx;m.y+=m.vy;m.l++;const f=1-m.l/m.max;
+const g=x.createLinearGradient(m.x,m.y,m.x-m.vx*14,m.y-m.vy*14);g.addColorStop(0,`hsla(${m.h},90%,85%,${f})`);g.addColorStop(1,`hsla(${m.h},90%,60%,0)`);
+x.strokeStyle=g;x.lineWidth=m.w;x.beginPath();x.moveTo(m.x,m.y);x.lineTo(m.x-m.vx*14,m.y-m.vy*14);x.stroke();
+x.fillStyle=`hsla(${m.h},100%,95%,${f})`;x.beginPath();x.arc(m.x,m.y,m.w,0,6.283);x.fill();
+if(m.l>m.max||m.y>H+50)meteors.splice(i,1)}}
+function frame(){step();requestAnimationFrame(frame)}
+x.fillStyle='#02030a';x.fillRect(0,0,W,H);for(let i=0;i<99;i++)step();frame(); // warm start: sky already falling
+</script></body></html>

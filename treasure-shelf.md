@@ -119,3 +119,18 @@ Inspired by Vsauce's "Mirrors and the Fourth Dimension": a mirror image is what 
 | 4 | [Rust4D](https://github.com/sigilmakes/Rust4D) by sigilmakes | [xrplove/Rust4D](https://github.com/xrplove/Rust4D) | A small homemade 4D game engine, inspired by Engine4D. | MIT | Partial: most crates compile; build stops on missing ALSA sound libraries on our box. |
 | 5 | [4d-visualizer](https://github.com/LucasThePatator/4d-visualizer) by LucasThePatator | [xrplove/4d-visualizer](https://github.com/xrplove/4d-visualizer) | A tesseract (4D cube) viewer with projection, slicing and solid rendering. | None stated (all rights reserved by default) | Not run: needs CMake and an OpenGL desktop window; CMake isn't installed on our box. |
 | 6 | [hypernerf](https://github.com/google/hypernerf) by Google Research | [xrplove/hypernerf](https://github.com/xrplove/hypernerf) | Research code that uses extra dimensions to capture moving 3D scenes. | Apache-2.0 | Partial: all Python files parse; training needs a GPU and old JAX/Flax pins, so not run. |
+
+## Shooting Stars
+
+Wishes falling everywhere. These projects bring shooting stars to games, apps, art and real night skies. All credit to the original makers; our forks live on xrplove. Tested lightly on our box on Oct 12, 2026 (headless, no GPU).
+
+**Our own:** [Tree of Life Starfall](https://treeoflife-apostles.github.io/starfall.html) — an original pure canvas/JS deep-space starfield with 589 twinkling stars, shooting stars in three gentle colours, bursts on a 3-6-9 rhythm, and a softly turning nine-circle Tree of Life. Made by Witness, inspired by everyone below.
+
+| # | Original (maker) | Fork | What it is | License | Our test |
+|---|------------------|------|------------|---------|----------|
+| 1 | [Celeste](https://github.com/IdreesInc/Celeste) by IdreesInc | [xrplove/Celeste](https://github.com/xrplove/Celeste) | Spigot plugin that adds shooting stars to Minecraft night skies. | GPL-3.0 | Not run: needs Java/Maven and a Minecraft server, not on our box. |
+| 2 | [ShootingStars](https://github.com/ryang1428/ShootingStars) by ryang1428 | [xrplove/ShootingStars](https://github.com/xrplove/ShootingStars) | Shooting-star animations for iOS using SpriteKit and CAEmitterLayer. | None listed (look, don't reuse code) | Not run: needs macOS/Xcode. |
+| 3 | [shooting_stars](https://github.com/CleanCut/shooting_stars) by CleanCut | [xrplove/shooting_stars](https://github.com/xrplove/shooting_stars) | Rust game: Ferris and friends catch falling stars in a starry field. | None listed (look, don't reuse code) | Fail: `cargo build` stops on missing ALSA audio system libraries (alsa-sys). |
+| 4 | [showers](https://github.com/typpo/showers) by typpo | [xrplove/showers](https://github.com/xrplove/showers) | 3D rendering of the comet debris clouds that cause meteor showers. | MIT | Partial: `npm install` + server run and answer HTTP 200; WebGL scene can't render headless without a GPU, so no screenshot. |
+| 5 | [pi-gazing](https://github.com/dcf21/pi-gazing) by dcf21 | [xrplove/pi-gazing](https://github.com/xrplove/pi-gazing) | Raspberry Pi cameras that spot real shooting stars and triangulate their paths. | GPL-3.0 | Partial: all Python compiles cleanly; full system needs camera hardware and a database. |
+| 6 | [shooting-stars-meme-generator](https://github.com/TeKrop/shooting-stars-meme-generator) by TeKrop (Valentin Porchet) | [xrplove/shooting-stars-meme-generator](https://github.com/xrplove/shooting-stars-meme-generator) | The "Shooting Stars" meme with your own pictures, built with CSS animations. | MIT | Pass: `bun install` and server run; home page loads and renders. |

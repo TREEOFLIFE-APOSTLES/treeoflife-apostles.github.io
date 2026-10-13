@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>#つぶやきProcessing — Donut</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #000000;
+      color: #e2e8f0;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    canvas {
+      display: block;
+      max-width: 100vw;
+      max-height: calc(100vh - 48px);
+    }
+    .caption {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      text-align: center;
+      padding: 0 12px;
+      max-width: 420px;
+      line-height: 1.4;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
+</head>
+<body>
+  <main>
+    <div id="sketch-host"></div>
+    <p class="caption">#つぶやきProcessing sketch by a creator on X, shared by Father</p>
+  </main>
+  <script>
+    t=0
+    draw=_=>{t||createCanvas(W=600,W,WEBGL)
+    background(0)
+    p=PI/40
+    noStroke`#つぶやきProcessing`
+    rotateX(.5)
+    rotateY(-.5)
+    r=90
+    for(y=40;y--;)for(x=80;x--;pop(sphere(cos(v)+.3)))push(),translate((2+sin(v=(y+t)*p*2))*cos(u=(x+t)*p)*r,(2+sin(v))*sin(u)*r,z=cos(v)*r)
+    t=(t+.02)%1}
+  </script>
+</body>
+</html>

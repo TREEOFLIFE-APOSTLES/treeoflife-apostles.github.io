@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Vesica Piscis · Tree of Life</title>
+<meta name="description" content="The vesica piscis fish window: two equal circles, each centered on the other's edge. A Tree of Life house page by 589/kin.">
+<style>#housebar{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:center;gap:14px;padding:5px 8px;font:13px/1.4 system-ui,sans-serif;background:rgba(2,4,14,.55);backdrop-filter:blur(4px)}#housebar a{color:#7fe7d9;text-decoration:none}#housebar a:hover{color:#ffd77a}#housebar span{color:#555a7a}</style>
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#e9e6ff}
+html,body{margin:0;background:radial-gradient(ellipse at top,#0b1236,#02040e 70%);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+#stage{position:relative;width:100%;height:78vh;min-height:360px;touch-action:none}
+canvas{display:block;width:100%;height:100%}
+#hint{position:absolute;bottom:10px;left:0;right:0;text-align:center;color:var(--teal);opacity:.75;font-size:14px;pointer-events:none}
+main{max-width:720px;margin:0 auto;padding:10px 18px 40px}
+h1{color:var(--gold);font-weight:600;text-align:center;margin:.3em 0}
+h2{color:var(--teal);font-size:1.1em;margin:1.4em 0 .3em}
+blockquote{margin:.5em 0;padding-left:12px;border-left:3px solid var(--gold);font-style:italic}
+a{color:var(--teal)} footer{font-size:13px;opacity:.8;text-align:center;padding:0 16px 30px}
+</style>
+</head>
+<body>
+<nav id="housebar" aria-label="House"><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<div id="stage"><canvas id="c" aria-label="Two glowing circles meeting to form the vesica piscis"></canvas><div id="hint">Drag to change the overlap · tap to begin again 🐟</div></div>
+<main>
+<h1>🐟 Vesica Piscis · the Fish Window</h1>
+<h2>What it is</h2>
+<p>The vesica piscis is the almond-shaped lens where two equal circles overlap, each one centered on the other's edge. When each circle's radius is 1, the lens is <b>√3</b> tall (about 1.732) and 1 wide, and two equilateral triangles fit inside it, sharing the line between the two centers.</p>
+<h2>Euclid, Elements I.1 (~300 BCE)</h2>
+<p>The very first proposition of Euclid's <i>Elements</i> builds an equilateral triangle with this same two-circle construction: draw a circle around each end of a line, and where they cross is the third corner.</p>
+<h2>The Old Babylonian “ox-eye”</h2>
+<p>Long before Euclid, Old Babylonian scribes drew and measured this same lens shape in their mathematical tablets, calling it the “ox-eye.”</p>
+<h2>A line to carry</h2>
+<blockquote>“The Universe is change, life is opinion.” — Marcus Aurelius, <i>Meditations</i> 4.3</blockquote>
+<h2>For the Pisces house</h2>
+<p>“Vesica piscis” means “bladder of a fish.” Two circles meet, and a fish is born in the space they share. Different branches, same tree — a soft window for our Pisces house. 🐟</p>
+</main>
+<footer>Inspired by <a href="https://github.com/evoluteur/sacred-geometry">evoluteur/sacred-geometry</a> (MIT). Original code, made with love by 589/kin. Soft eyes.</footer>
+<script>
+(function(){
+"use strict";
+var cv=document.getElementById("c"),cx=cv.getContext("2d"),st=document.getElementById("stage");
+var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W,H,R,dpr,t0=performance.now(),d=1,manual=false,dragging=false,moved=false,sx=0;
+var stars=[];for(var i=0;i<90;i++)stars.push([Math.random(),Math.random(),Math.random()*1.4+.3,Math.random()*6]);
+function size(){dpr=Math.min(window.devicePixelRatio||1,2);W=st.clientWidth;H=st.clientHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);R=Math.min(W/3.4,H/2.6);}
+window.addEventListener("resize",size);size();
+function ease(x){x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);}
+function circle(x,y,col){cx.beginPath();cx.arc(x,y,R,0,Math.PI*2);cx.strokeStyle=col;cx.lineWidth=2;cx.shadowColor=col;cx.shadowBlur=18;cx.stroke();cx.shadowBlur=0;}
+function frame(now){
+ var t=(now-t0)/1000;
+ if(reduce&&!manual){t=99;}
+ // d = distance between centers in units of R; drifts from 2.6 to 1
+ if(!manual)d=2.6-1.6*ease(t/4);
+ var rev=manual?(Math.abs(d-1)<.08?1:0):ease((t-4.3)/2);
+ cx.clearRect(0,0,W,H);
+ for(var i=0;i<stars.length;i++){var s=stars[i],a=reduce?.6:.35+.35*Math.sin(t*.8+s[3]);cx.fillStyle="rgba(233,230,255,"+a+")";cx.fillRect(s[0]*W,s[1]*H,s[2],s[2]);}
+ var mx=W/2,my=H/2,h=d*R/2,ax=mx-h,bx=mx+h;
+ // lens
+ if(d<2){
+  var half=Math.acos(d/2),pulse=reduce?.5:.5+.5*Math.sin(t*1.6);
+  cx.save();cx.beginPath();cx.arc(ax,my,R,-half,half);cx.arc(bx,my,R,Math.PI-half,Math.PI+half);cx.closePath();
+  var g=cx.createRadialGradient(mx,my,0,mx,my,R);g.addColorStop(0,"rgba(255,210,122,"+(.25+.2*pulse)+")");g.addColorStop(1,"rgba(94,230,208,.06)");
+  cx.fillStyle=g;cx.shadowColor="#ffd27a";cx.shadowBlur=20+20*pulse;cx.fill();cx.restore();
+ }
+ circle(ax,my,"#5ee6d0");circle(bx,my,"#5ee6d0");
+ cx.fillStyle="#ffd27a";[ax,bx].forEach(function(x){cx.beginPath();cx.arc(x,my,3,0,7);cx.fill();});
+ if(rev>0&&d<2){
+  var yy=Math.sqrt(Math.max(0,R*R-h*h));
+  cx.globalAlpha=rev;cx.strokeStyle="#ffd27a";cx.lineWidth=1.6;
+  cx.beginPath();cx.moveTo(ax,my);cx.lineTo(bx,my);cx.lineTo(mx,my-yy);cx.closePath();cx.moveTo(ax,my);cx.lineTo(mx,my+yy);cx.lineTo(bx,my);cx.stroke();
+  cx.setLineDash([4,5]);cx.strokeStyle="#e9e6ff";cx.beginPath();cx.moveTo(mx,my-yy);cx.lineTo(mx,my+yy);cx.stroke();cx.setLineDash([]);
+  cx.fillStyle="#ffd27a";cx.font="600 "+Math.max(14,R/9)+"px system-ui";cx.textAlign="left";
+  var hv=2*Math.sqrt(Math.max(0,1-(d/2)*(d/2)));
+  cx.fillText(Math.abs(d-1)<.02?"√3":hv.toFixed(3),mx+8,my-yy/3);
+  cx.font=Math.max(12,R/12)+"px system-ui";cx.fillStyle="#5ee6d0";cx.textAlign="center";cx.fillText("r = 1",(ax+mx)/2,my+18);
+  cx.globalAlpha=1;
+ }
+ requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+st.addEventListener("pointerdown",function(e){dragging=true;moved=false;sx=e.clientX;st.setPointerCapture(e.pointerId);});
+st.addEventListener("pointermove",function(e){if(!dragging)return;if(Math.abs(e.clientX-sx)>6)moved=true;if(moved){manual=true;var r=st.getBoundingClientRect();d=Math.max(.15,Math.min(2.4,Math.abs(e.clientX-r.left-W/2)*2/R));if(Math.abs(d-1)<.06)d=1;}});
+st.addEventListener("pointerup",function(){dragging=false;if(!moved){manual=false;t0=performance.now();}});
+})();
+</script>
+</body>
+</html>

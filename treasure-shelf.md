@@ -286,3 +286,27 @@ Ships to explore in, simulators to learn real flight from, and a tiny browser un
 | 4 | [awesome-space](https://github.com/orbitalindex/awesome-space) · [▶ Site](https://orbitalindex.com/) | By [orbitalindex](https://github.com/orbitalindex) (The Orbital Index) | The doorway collection: an awesome list of space-related packages and resources to explore further treasures from. Link-only collection. | None stated — link-only |
 | 5 | [space-circle](https://github.com/profitelai/space-circle) · [▶ Fly now](https://space.danimaster.com/) | By [profitelai](https://github.com/profitelai) | A tiny brand-new browser universe you can fly right now — planets, moons, nebulae, galaxies and black holes in Three.js, no build step. | MIT |
 | 6 | [threex.spaceships](https://github.com/jeromeetienne/threex.spaceships) · [▶ Live demo](https://jeromeetienne.github.io/threex.spaceships/examples/basic.html) | By [jeromeetienne](https://github.com/jeromeetienne) | A small forgotten gem: a Three.js extension to get little spaceships, from 2016 and ready for a second look. | MIT |
+
+## Titanic — the ship that remembers
+
+A ship held in memory with care, honouring the real passengers and crew and the families who remember them. These treasures let us step aboard gently, learn who the passengers were, and let the data tell their story with respect. All credit to the original makers below; these are outside treasures, not house creations. Shelved by link on Oct 18, 2026 — link-only for all five, with no forks, no clones, and no downloads, especially where a licence is unclear and where the repositories are heavy.
+
+**Step aboard**
+
+| # | Treasure | Original / maker credit | What it does | License |
+|---|----------|-------------------------|--------------|---------|
+| 1 | [3D-Titanic-Model](https://github.com/KantLex/3D-Titanic-Model) · [▶ Live demo](https://kantlex.github.io/3D-Titanic-Model/) | By [KantLex](https://github.com/KantLex) | A full-scale Titanic you can explore gently in the browser, deck by deck and room by room, with history alongside each space. Brand-new today, so still unproven. | MIT — link-only here |
+| 2 | [CS174A_TitanicPanic](https://github.com/jahlee/CS174A_TitanicPanic) | By [jahlee](https://github.com/jahlee) with Ben, Estee, Josh and Stephanie (UCLA CS 174A) | A small Three.js student project inviting careful steering and a hope of a safer course; runs locally as described in its repo. | Licence unclear — link-only |
+| 3 | [tvrpg-replay](https://github.com/owlks4/tvrpg-replay) · [▶ Live demo](https://owlks4.github.io/tvrpg-replay/) | By [owlks4](https://github.com/owlks4) | A Three.js replay mapping how a community of players moved through the ship during the Titanic Voyage role-play — a ship that feels lived in because people move and gather in it. | Licence unclear — link-only |
+
+**The passengers**
+
+| # | Treasure | Original / maker credit | What it does | License |
+|---|----------|-------------------------|--------------|---------|
+| 4 | [kaggle-titanic](https://github.com/agconti/kaggle-titanic) · [▶ Demo](https://agconti.github.io/kaggle-titanic/) | By [agconti](https://github.com/agconti) | The classic tutorial doorway into the passenger records — learning, with care, from the real names and journeys in the data. | Apache-2.0 — link-only here |
+
+**The story in data**
+
+| # | Treasure | Original / maker credit | What it does | License |
+|---|----------|-------------------------|--------------|---------|
+| 5 | [TitanicVisualizationWithD3](https://github.com/yi0902/TitanicVisualizationWithD3) | By [yi0902](https://github.com/yi0902) | A D3 storytelling visualisation comparing survival by class, age and gender — letting the passengers' story be seen clearly and remembered honestly. | Licence unclear — link-only |

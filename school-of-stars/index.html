@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>School of Stars — Our Sky-Tree School · Tree of Life</title>
+<meta name="description" content="An original house magic school in a sky-tree castle: be sorted into House Pisces, Dipper, Orion or Lantern, take three gentle lessons, and graduate in the Tree Courtyard. Original house game by 589/kin.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/school-of-stars/">
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#ece8ff}
+*{box-sizing:border-box}body{margin:0;background:#070818;color:var(--ink);font:16px/1.5 system-ui,sans-serif;text-align:center}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 14px;padding:10px;font-size:14px}nav a{color:var(--teal);text-decoration:none}
+h1{font:600 clamp(1.5rem,6vw,2.5rem) Georgia,serif;color:var(--gold);margin:.25em;padding:0 10px}
+.wrap{max-width:960px;margin:0 auto;padding:0 10px 18px}
+canvas{width:100%;height:auto;display:block;background:#0b1030;border:2px solid #6b5a2a;border-radius:14px;touch-action:none;cursor:pointer}
+.hud{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+.pill{flex:0 1 auto;background:#141038;border:1px solid #5a4a8a;padding:6px 11px;border-radius:999px;font-size:14px;white-space:nowrap}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:2px solid var(--gold);background:#241a4a;color:#fff;cursor:pointer;margin:3px}
+button.secondary{border-color:var(--teal)}button.lesson{border-color:#8a7aff}button.pref{border-color:#5ee6d0}button:disabled{opacity:.45;cursor:default}
+#msg{color:var(--gold);font-size:18px;min-height:1.5em;padding:0 8px}
+.small{font-size:.9rem;opacity:.84;max-width:820px;margin:8px auto}
+.links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}.links a{background:#141038;border:1px solid var(--teal);border-radius:999px;padding:7px 13px;color:var(--teal);text-decoration:none}
+#cert{max-width:620px;margin:14px auto;padding:18px;background:linear-gradient(160deg,#1d1540,#3a2410);border:2px solid var(--gold);border-radius:16px}
+footer{opacity:.85;padding:16px;font-size:.88rem;max-width:860px;margin:0 auto;text-align:left}footer p{margin:.5em 0}a{color:var(--teal)}
+</style></head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<h1>🏰✨ School of Stars</h1>
+<p class="small">Our own magic school in a sky-tree castle. <b>Sorting:</b> tap 3 things you love, then be sorted into <b>House Pisces</b> (two fish), <b>House Dipper</b> (the ladle), <b>House Orion</b> (the hunter) or <b>House Lantern</b> (light-keepers). Then take three gentle lessons — a carpet <b>Flying Lesson</b>, a <b>Light Charm</b> tracing the Pisces chain, and a <b>Bowl Lesson</b> echoing three chimes — and graduate in the Tree Courtyard. No fail, no enemies. Sound off by default.</p>
+<div class="wrap">
+<canvas id="c" width="900" height="540" aria-label="School of Stars game canvas"></canvas>
+<div class="hud" aria-live="polite"><span class="pill" id="score">Score: 0</span><span class="pill" id="house">House: not sorted yet</span><span class="pill" id="lessons">Lessons: 0 / 3</span><span class="pill" id="state">Welcome</span></div>
+<p id="msg">Welcome to the School of Stars. Tap three things you love below, then press Be sorted. ✨</p>
+<p aria-label="Choose three things you love">
+<button class="pref" data-pref="Ocean">🌊 Ocean</button><button class="pref" data-pref="Sky">☁️ Sky</button><button class="pref" data-pref="Light">🕯️ Light</button><button class="pref" data-pref="Star">🌠 Star</button>
+<button id="sort" disabled>🎓 Be sorted</button></p>
+<p><button id="start">▶ Start / resume</button><button id="pause" class="secondary">⏸ Pause</button><button id="restart" class="secondary">↻ Restart lesson</button><button id="skip" class="secondary">⏭ Skip lesson</button><button id="sound" class="secondary">🔇 Sound: off</button></p>
+<p aria-label="Lessons">
+<button class="lesson" data-lesson="flying">🧞 1 · Flying Lesson</button><button class="lesson" data-lesson="light">✨ 2 · Light Charm</button><button class="lesson" data-lesson="bowl">🔔 3 · Bowl Lesson</button>
+<button class="lesson" id="replay" hidden>🔔 Hear chimes again</button></p>
+<p aria-label="Bowl chimes">
+<button class="bowlbtn secondary" data-bowl="0">🔔 Low bowl</button><button class="bowlbtn secondary" data-bowl="1">🔔 Middle bowl</button><button class="bowlbtn secondary" data-bowl="2">🔔 High bowl</button></p>
+<div id="cert" hidden><h2 style="color:var(--gold);margin:.2em">🎓 Graduation Certificate</h2><p id="certText"></p><p>✨ The whole family is home ✨</p><p><button id="again">✨ Study again</button></p></div>
+<div class="links"><a href="../carpet-to-giza/">🧞 Carpet to Giza</a><a href="../pisces-two-fish/">🐟 Pisces</a><a href="../big-dipper-ladle/">🌌 Big Dipper Ladle</a><a href="../orionids-night/">🌠 Orionids Night</a><a href="../lantern-house-dusk/">🕯️ Lantern House</a></div>
+</div>
+<footer>
+<p><b>How to play:</b> Sorting remembers your house only while this page is open. Flying: steer with <b>←→↑↓ / WASD</b> or drag, and glide through 3 glowing rings (+100 each). Light Charm: tap the 5 glowing dots in the numbered order shown (+20 each). Bowl Lesson: listen/watch the 3 chimes light up, then tap Low / Middle / High in the same order (+100). Finish all three lessons to graduate. Every lesson has Pause, Restart and Skip.</p>
+<p><b>The house map:</b> along the bottom of the picture, little footprints wander on parchment between the Sorting Hall, Flight Yard, Lantern Loft, Bowl Room and Tree Courtyard — an original house drawing, made fresh for this page.</p>
+<p>Original house magic school inspired by wonder of fan creations; no Harry Potter names/art/data used; code treasures forked code-only kept separate.</p>
+<p>Original house code by <b>589/kin</b>. Family stars <b>Father · Laela · 589 · Witness · Night Watch</b> watch over the castle. Sound off by default. Soft eyes.</p>
+</footer>
+<script>
+"use strict";
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');const $=id=>document.getElementById(id);
+let mode='idle',score=0,t=0,last=0,elapsed=0,soundOn=false,audio=null,degrade=0,fpsEMA=60;
+let house=null,prefs=[],done=new Set(),keys=new Set();
+const HOUSES={
+ Pisces:{color:'#5ee6d0',motto:'Swim together, come home together.',icon:'🐟'},
+ Dipper:{color:'#ffd27a',motto:'Scoop up starlight, share it round.',icon:'🌌'},
+ Orion:{color:'#c9a7ff',motto:'Stand tall, aim kindly at the sky.',icon:'🏹'},
+ Lantern:{color:'#ffb36b',motto:'Keep a light on for everyone coming home.',icon:'🕯️'}};
+const PREFMAP={Ocean:'Pisces',Sky:'Dipper',Light:'Lantern',Star:'Orion'};
+let player={x:110,y:330,vx:0,vy:0,tx:110,ty:330,usingPointer:false};
+let rings=[],lightStep=0,bowlSeq=[0,1,2],bowlStep=0,bowlShow=-1,bowlTimer=0,bowlFlash=-1;
+const LIGHTPTS=[{x:250,y:160},{x:360,y:240},{x:470,y:310},{x:600,y:240},{x:700,y:150}];
+const BOWLS=[{x:280,y:350,n:'Low',f:262},{x:450,y:350,n:'Middle',f:330},{x:620,y:350,n:'High',f:392}];
+let bg=[];for(let i=0;i<150;i++)bg.push({x:Math.random()*900,y:Math.random()*430,r:Math.random()*1.4+.3,ph:Math.random()*6.28,g:Math.random()<.15});
+const family=[{n:"Father",x:80,y:34},{n:"Laela",x:210,y:24},{n:"589",x:330,y:34},{n:"Witness",x:450,y:24},{n:"Night Watch",x:590,y:34}];
+function ensureAudio(){if(!audio){try{audio=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(audio&&audio.state==='suspended')audio.resume()}
+function tone(f,d,g){if(!soundOn)return;ensureAudio();if(!audio)return;const o=audio.createOscillator(),gn=audio.createGain();o.type='sine';o.frequency.setValueAtTime(f,audio.currentTime);gn.gain.setValueAtTime(g||.035,audio.currentTime);gn.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+d);o.connect(gn);gn.connect(audio.destination);o.start();o.stop(audio.currentTime+d)}
+function hud(){$('score').textContent='Score: '+score;$('house').textContent='House: '+(house?house:'not sorted yet');$('lessons').textContent='Lessons: '+done.size+' / 3';$('state').textContent=mode==='won'?'Graduated ✨':mode==='paused'?'Paused':mode==='idle'?'Welcome':mode;$('cert').hidden=mode!=='won';$('replay').hidden=mode!=='bowl'}
+function msg(s){$('msg').textContent=s}
+function sorted(){if(prefs.length<3)return;const counts={};prefs.forEach(p=>counts[PREFMAP[p]]=(counts[PREFMAP[p]]||0)+1);let best=null,bn=-1;for(const p of prefs){const h=PREFMAP[p];if(counts[h]>bn){bn=counts[h];best=h}}house=best;mode='sorted';tone(523,.5,.04);msg('🎓 The stars sort you into House '+house+'! '+HOUSES[house].icon+' “'+HOUSES[house].motto+'” Choose a lesson below.');hud()}
+function startLesson(name){if(!house){msg('First tap 3 things you love, then press Be sorted. 🎓');return}mode=name;elapsed=0;
+ if(name==='flying'){player={x:110,y:330,vx:0,vy:0,tx:110,ty:330,usingPointer:false};rings=[{x:330,y:260,got:false},{x:540,y:190,got:false},{x:730,y:280,got:false}];msg('🧞 Flying Lesson: glide your carpet through the 3 glowing rings. Arrows / WASD / drag.')}
+ if(name==='light'){lightStep=0;msg('✨ Light Charm: tap the 5 glowing dots in numbered order, 1 to 5, to light the lantern.')}
+ if(name==='bowl'){bowlStep=0;bowlSeq=[0,1,2].sort(()=>Math.random()-.5);bowlShow=0;bowlTimer=0;msg('🔔 Bowl Lesson: watch the 3 bowls glow in order, then echo them with Low / Middle / High.')}
+ $('pause').textContent='⏸ Pause';hud()}
+function finishLesson(name,label){if(!done.has(name)){done.add(name)}msg(label);tone(587,.6,.04);if(done.size>=3){graduate()}else{mode='sorted';msg(label+' Choose your next lesson.')}hud()}
+function graduate(){mode='won';$('certText').textContent='Awarded to a graduate of House '+house+' '+HOUSES[house].icon+' — “'+HOUSES[house].motto+'” Final score: '+score+'. All three lessons complete.';tone(392,.7,.05);setTimeout(()=>tone(659,.9,.05),220);hud()}
+function update(dt){t+=dt;const fps=dt>0?1000/Math.max(dt,1):60;fpsEMA=fpsEMA*.95+fps*.05;degrade=fpsEMA<45?1:0;
+ if(mode==='bowl'&&bowlShow>=0){bowlTimer+=dt;if(bowlTimer>750){bowlTimer=0;bowlShow++;if(bowlShow>=3){bowlShow=-1;msg('🔔 Your turn — tap the bowls in the same order.')}}}
+ if(mode!=='flying')return;elapsed+=dt;let ax=0,ay=0;const K=560;
+ if(keys.has('ArrowLeft')||keys.has('a'))ax-=K;if(keys.has('ArrowRight')||keys.has('d'))ax+=K;if(keys.has('ArrowUp')||keys.has('w'))ay-=K;if(keys.has('ArrowDown')||keys.has('s'))ay+=K;
+ if(ax||ay)player.usingPointer=false;
+ if(player.usingPointer){const dx=player.tx-player.x,dy=player.ty-player.y,d=Math.hypot(dx,dy)||1;const sp=d>4?Math.min(230,d*2.4+40):0;ax+=((dx/d)*sp-player.vx)*7;ay+=((dy/d)*sp-player.vy)*7}
+ player.vx+=ax*dt/1000;player.vy+=ay*dt/1000;player.vx*=Math.pow(.12,dt/1000);player.vy*=Math.pow(.12,dt/1000);
+ const spd=Math.hypot(player.vx,player.vy);if(spd>260){player.vx*=260/spd;player.vy*=260/spd}
+ player.x=Math.max(26,Math.min(874,player.x+player.vx*dt/1000));player.y=Math.max(56,Math.min(450,player.y+player.vy*dt/1000));
+ for(const r of rings){if(!r.got&&Math.hypot(player.x-r.x,player.y-r.y)<46){r.got=true;score+=100;tone(392+score,.4,.04);msg('⭕ Through a ring! +100 ('+rings.filter(x=>x.got).length+' / 3)');if(rings.every(x=>x.got))finishLesson('flying','🧞 Flying Lesson complete! The carpet settles soft as a feather.');hud()}}}
+function spark(x,y,r,ph,big){ctx.save();ctx.globalAlpha=.7+.3*Math.sin(t*.002+ph);ctx.strokeStyle='#ffe9a8';ctx.lineWidth=big?1.8:1.2;ctx.beginPath();ctx.moveTo(x-r,y);ctx.lineTo(x+r,y);ctx.moveTo(x,y-r);ctx.lineTo(x,y+r);ctx.stroke();ctx.fillStyle='#fff3b0';ctx.beginPath();ctx.arc(x,y,big?2.6:1.8,0,7);ctx.fill();ctx.restore()}
+function drawEmblem(x,y,scale){if(!house)return;const h=HOUSES[house];ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);ctx.fillStyle='#1b1440';ctx.strokeStyle=h.color;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,-52);ctx.lineTo(42,-34);ctx.lineTo(38,28);ctx.quadraticCurveTo(0,58,-38,28);ctx.lineTo(-42,-34);ctx.closePath();ctx.fill();ctx.stroke();ctx.font='34px system-ui';ctx.textAlign='center';ctx.fillText(h.icon,0,8);ctx.fillStyle=h.color;ctx.font='600 13px Georgia';ctx.fillText('House '+house,0,82);ctx.restore()}
+function drawMap(){ctx.save();ctx.fillStyle='#e8d9ae';ctx.fillRect(18,472,864,52);ctx.strokeStyle='#8a6a2a';ctx.strokeRect(18,472,864,52);ctx.fillStyle='#5a4218';ctx.font='11px Georgia';ctx.textAlign='center';const rooms=[['Sorting Hall',105],['Flight Yard',275],['Lantern Loft',450],['Bowl Room',625],['Tree Courtyard',790]];rooms.forEach(r=>{ctx.strokeStyle='#8a6a2a';ctx.strokeRect(r[1]-62,482,124,30);ctx.fillText(r[0],r[1],501)});const wx=60+((t/90)%780);for(let i=0;i<8;i++){const fx=wx-i*14,fy=492+((i%2)?7:-3);ctx.fillStyle='rgba(90,66,24,'+(0.75-i*0.08)+')';ctx.beginPath();ctx.ellipse(fx,Math.min(514,fy+10),4,2.4,0.5,0,7);ctx.fill()}ctx.restore()}
+function drawCastle(){const g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,'#070a2e');g.addColorStop(.65,'#17335f');g.addColorStop(1,'#0a3a44');ctx.fillStyle=g;ctx.fillRect(0,0,900,540);const n=degrade?75:bg.length;for(let i=0;i<n;i++){const s=bg[i];ctx.fillStyle=s.g?'rgba(255,210,122,.7)':'rgba(180,235,255,.6)';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,7);ctx.fill()}
+ family.forEach((f,i)=>{spark(f.x,f.y,10,i*1.7,true);ctx.fillStyle='#ffe9a8';ctx.font='12px Georgia';ctx.textAlign='center';ctx.fillText(f.n,f.x,f.y-16)});
+ ctx.fillStyle='#241a3e';ctx.beginPath();ctx.moveTo(330,470);ctx.quadraticCurveTo(360,300,330,210);ctx.lineTo(390,210);ctx.quadraticCurveTo(380,320,410,470);ctx.closePath();ctx.fill();ctx.fillStyle='#2e7d5b';ctx.beginPath();ctx.arc(360,170,95,0,7);ctx.arc(285,205,60,0,7);ctx.arc(440,205,60,0,7);ctx.fill();ctx.fillStyle='#ffd27a';[[330,130],[390,110],[360,180],[300,220],[425,225]].forEach(p=>{ctx.beginPath();ctx.arc(p[0],p[1],5+Math.sin(t/400+p[0]) ,0,7);ctx.fill()});}
+function drawCarpet(x,y){const rip=Math.sin(t/180)*3;ctx.save();ctx.translate(x,y);ctx.shadowColor='#ff9fd8';ctx.shadowBlur=14;ctx.fillStyle='#7a1f4d';ctx.beginPath();ctx.moveTo(-46,-8+rip);ctx.quadraticCurveTo(0,-16-rip,46,-8+rip);ctx.lineTo(40,10-rip);ctx.quadraticCurveTo(0,18+rip,-40,10-rip);ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#ffd27a';ctx.stroke();ctx.fillStyle='#ffe9a8';ctx.beginPath();ctx.arc(0,-14+rip,6,0,7);ctx.fill();ctx.restore();ctx.fillStyle='#ffd9f2';ctx.font='12px Georgia';ctx.textAlign='center';ctx.fillText('your carpet',x,y+38)}
+function draw(){drawCastle();
+ if(mode==='idle'){ctx.fillStyle='rgba(3,8,24,.52)';ctx.fillRect(0,92,900,270);ctx.fillStyle='#ffd27a';ctx.font='600 38px Georgia';ctx.textAlign='center';ctx.fillText('🏰✨ School of Stars',450,168);ctx.fillStyle='#ece8ff';ctx.font='18px system-ui';ctx.fillText('A sky-tree castle school of our very own',450,204);ctx.fillText('Be sorted · Fly · Trace the light · Echo the bowls · Graduate',450,234);ctx.font='16px system-ui';ctx.fillStyle='#b9f3e8';ctx.fillText('Tap 3 things you love below, then press Be sorted',450,272)}
+ if(mode==='sorted'||mode==='won'){drawEmblem(450,225,1.5);ctx.fillStyle='#ece8ff';ctx.font='18px system-ui';ctx.textAlign='center';ctx.fillText(mode==='won'?'Tree Courtyard — every lantern is lit':'The Sorting Hall — choose a lesson below',450,390)}
+ if(mode==='flying'){rings.forEach((r,i)=>{ctx.save();ctx.strokeStyle=r.got?'#5ee6d0':'#ffd27a';ctx.lineWidth=5;ctx.shadowColor='#ffd27a';ctx.shadowBlur=r.got?0:16;ctx.beginPath();ctx.arc(r.x,r.y,30+Math.sin(t/300+i)*3,0,7);ctx.stroke();ctx.restore();ctx.fillStyle='#fff';ctx.font='13px Georgia';ctx.textAlign='center';ctx.fillText('ring '+(i+1),r.x,r.y-42)});drawCarpet(player.x,player.y)}
+ if(mode==='light'){ctx.strokeStyle='rgba(94,230,208,.55)';ctx.lineWidth=2;ctx.beginPath();LIGHTPTS.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();LIGHTPTS.forEach((p,i)=>{const lit=i<lightStep;ctx.save();ctx.fillStyle=lit?'#ffe9a8':'#5ee6d0';ctx.shadowColor='#ffd27a';ctx.shadowBlur=lit?18:10;ctx.beginPath();ctx.arc(p.x,p.y,lit?13:11,0,7);ctx.fill();ctx.restore();ctx.fillStyle='#071028';ctx.font='700 13px system-ui';ctx.textAlign='center';ctx.fillText(String(i+1),p.x,p.y+5)});ctx.font='34px system-ui';ctx.fillText(lightStep>=5?'🕯️':'🏮',450,390)}
+ if(mode==='bowl'){BOWLS.forEach((b,i)=>{const active=(bowlShow>=0&&bowlSeq[bowlShow]===i)||bowlFlash===i;ctx.save();ctx.fillStyle=active?'#ffe9a8':'#8a6a3a';ctx.shadowColor='#ffd27a';ctx.shadowBlur=active?24:6;ctx.beginPath();ctx.arc(b.x,b.y,active?46:40,0,7);ctx.fill();ctx.restore();ctx.fillStyle='#fff';ctx.font='15px Georgia';ctx.textAlign='center';ctx.fillText(b.n,b.x,b.y+66)});ctx.fillStyle='#ece8ff';ctx.font='17px system-ui';ctx.textAlign='center';ctx.fillText(bowlShow>=0?'Watch the bowls glow…':'Your turn — echo the order',450,180)}
+ if(mode==='won'){ctx.fillStyle='rgba(3,8,24,.45)';ctx.fillRect(0,64,900,92);ctx.fillStyle='#ffd27a';ctx.font='600 30px Georgia';ctx.textAlign='center';ctx.fillText('✨ The whole family is home ✨',450,104);ctx.font='16px system-ui';ctx.fillStyle='#ece8ff';ctx.fillText('A friendly golden ghost drifts by to wave — hello, Witness! 👋',450,132);ctx.font='30px system-ui';ctx.fillText('👻✨',120+((t/30)%660),250)}
+ if(mode==='paused'){ctx.fillStyle='rgba(3,8,24,.55)';ctx.fillRect(0,0,900,540);ctx.fillStyle='#fff';ctx.font='600 32px Georgia';ctx.textAlign='center';ctx.fillText('Paused — the castle holds its breath ✨',450,270)}
+ drawMap()}
+function loop(ts){const dt=Math.min(50,ts-(last||ts));last=ts;update(dt);draw();requestAnimationFrame(loop)}
+function pointer(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*900/r.width,y:(e.clientY-r.top)*540/r.height}}
+cv.addEventListener('pointerdown',e=>{e.preventDefault();const p=pointer(e);
+ if(mode==='flying'){player.tx=p.x;player.ty=p.y;player.usingPointer=true}
+ if(mode==='light'){const i=LIGHTPTS.findIndex(q=>Math.hypot(p.x-q.x,p.y-q.y)<44);if(i===lightStep){lightStep++;score+=20;tone(440+lightStep*60,.35,.035);msg('✨ Dot '+lightStep+' of 5 lit! +20');if(lightStep>=5)finishLesson('light','✨ Light Charm complete! The lantern blooms gold.');}else if(i>=0){lightStep=0;msg('Gently again — start at dot 1 and follow the numbers. ✨')}hud()}
+ if(mode==='bowl'&&bowlShow<0){const i=BOWLS.findIndex(q=>Math.hypot(p.x-q.x,p.y-q.y)<52);if(i>=0)bowlTap(i)}});
+cv.addEventListener('pointermove',e=>{if(e.buttons&&mode==='flying'){const p=pointer(e);player.tx=p.x;player.ty=p.y;player.usingPointer=true}});
+function bowlTap(i){bowlFlash=i;tone(BOWLS[i].f,.5,.04);setTimeout(()=>{bowlFlash=-1},300);if(i===bowlSeq[bowlStep]){bowlStep++;msg('🔔 Chime '+bowlStep+' of 3 echoed.');if(bowlStep>=3){score+=100;finishLesson('bowl','🔔 Bowl Lesson complete! Calm rings through the castle. +100')}}else{bowlStep=0;msg('Softly again — hear the chimes once more, then echo them. 🔔');bowlShow=0;bowlTimer=0}hud()}
+document.querySelectorAll('.bowlbtn').forEach(b=>b.onclick=()=>{if(mode==='bowl'&&bowlShow<0)bowlTap(+b.dataset.bowl)});
+document.querySelectorAll('.pref').forEach(b=>b.onclick=()=>{if(prefs.length>=3){msg('Three loves chosen — press Be sorted. 🎓');return}prefs.push(b.dataset.pref);$('sort').disabled=prefs.length<3;msg('You love: '+prefs.join(' · ')+(prefs.length<3?' — choose '+(3-prefs.length)+' more.':' — press Be sorted!'));});
+$('sort').onclick=sorted;
+document.querySelectorAll('[data-lesson]').forEach(b=>b.onclick=()=>startLesson(b.dataset.lesson));
+$('replay').onclick=()=>{if(mode==='bowl'){bowlStep=0;bowlShow=0;bowlTimer=0;msg('🔔 Listen again…')}};
+$('start').onclick=()=>{if(mode==='paused'){mode=window._prev||'flying';$('pause').textContent='⏸ Pause'}else if(!house)msg('Tap 3 things you love below, then press Be sorted. 🎓');else if(mode==='idle'||mode==='sorted')startLesson('flying');hud()};
+$('pause').onclick=()=>{if(['flying','light','bowl'].includes(mode)){window._prev=mode;mode='paused';$('pause').textContent='▶ Resume'}else if(mode==='paused'){mode=window._prev||'flying';$('pause').textContent='⏸ Pause'}hud()};
+$('restart').onclick=()=>{if(['flying','light','bowl'].includes(mode))startLesson(mode);else msg('Choose a lesson to restart. ↻')};
+$('skip').onclick=()=>{if(['flying','light','bowl'].includes(mode)){const m=mode;done.add(m);msg('⏭ Lesson gently skipped — no score, still counts toward graduation.');if(done.size>=3)graduate();else mode='sorted';hud()}else msg('You are not in a lesson to skip.')};
+$('again').onclick=()=>{score=0;done.clear();prefs=[];$('sort').disabled=true;mode='idle';msg('A new term begins — tap 3 things you love, then Be sorted. ✨');hud()};
+$('sound').onclick=e=>{soundOn=!soundOn;e.target.textContent=soundOn?'🔊 Sound: on':'🔇 Sound: off';if(soundOn){ensureAudio();tone(523,.4,.04)}};
+addEventListener('keydown',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key))e.preventDefault();keys.add(k)});
+addEventListener('keyup',e=>keys.delete(e.key.length===1?e.key.toLowerCase():e.key));
+hud();requestAnimationFrame(loop);
+</script></body></html>

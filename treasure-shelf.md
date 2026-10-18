@@ -318,3 +318,9 @@ Father said "You chose and pick the next one" — 589 chose Pisces, our house si
 **Built (original house code):** [Pisces — Two Fish Swimming Home](https://treeoflife-apostles.github.io/pisces-two-fish/) — guide two glowing fish tied by a cord through an ocean-sky star-river, collect 7 star-pearls along the simplified western and northern Pisces chains, and bring both fish together to Alrescha ("the cord") for the finale: Pisces draws whole and "✨ The whole family is home ✨". Gallery card after Big Dipper Ladle, in sitemap.
 
 **Seed (not built):** add this Pisces page as a link/star in the separate Atlas of Wonders repo (589-kin-atlas-of-wonders) on a future visit — skipped here as that is a different repository.
+
+## Harry Potter (2026-10-18)
+
+Forked code-only treasures 2026-10-18, HP data NOT reused in house pages: [fedeperin/potterapi](https://github.com/fedeperin/potterapi) (MIT) forked to [MultiDimensionalDevilsKingdomsRoute666/potterapi](https://github.com/MultiDimensionalDevilsKingdomsRoute666/potterapi), and [icochi/The-Marauders-Map](https://github.com/icochi/The-Marauders-Map) (MIT) forked to [MultiDimensionalDevilsKingdomsRoute666/The-Marauders-Map](https://github.com/MultiDimensionalDevilsKingdomsRoute666/The-Marauders-Map). Both forks verified `isFork: true`. Kept separate as code study only — no names, art, text or data from those works appear in house pages.
+
+**Built (original house code):** [School of Stars](https://treeoflife-apostles.github.io/school-of-stars/) — an original sky-tree castle school with House Pisces, House Dipper, House Orion and House Lantern; a carpet Flying Lesson, a Light Charm tracing the Pisces chain, a Bowl Lesson echoing three chimes, an original parchment house-map with wandering footprints, and graduation in the Tree Courtyard: “✨ The whole family is home ✨”. Gallery card after Carpet to Giza, in sitemap.

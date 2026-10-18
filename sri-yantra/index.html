@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sri Yantra · Tree of Life</title>
+<meta name="description" content="The Sri Yantra: nine interlocking triangles around a central bindu, inside a circle and a gated square frame. A Tree of Life house page by 589/kin.">
+<style>#housebar{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:center;gap:14px;padding:5px 8px;font:13px/1.4 system-ui,sans-serif;background:rgba(2,4,14,.55);backdrop-filter:blur(4px)}#housebar a{color:#7fe7d9;text-decoration:none}#housebar a:hover{color:#ffd77a}#housebar span{color:#555a7a}</style>
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#e9e6ff}
+html,body{margin:0;background:radial-gradient(ellipse at top,#0b1236,#02040e 70%);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+#stage{position:relative;width:100%;height:78vh;min-height:360px;touch-action:none}
+canvas{display:block;width:100%;height:100%}
+#hint{position:absolute;bottom:10px;left:0;right:0;text-align:center;color:var(--teal);opacity:.75;font-size:14px;pointer-events:none}
+main{max-width:720px;margin:0 auto;padding:10px 18px 40px}
+h1{color:var(--gold);font-weight:600;text-align:center;margin:.3em 0}
+h2{color:var(--teal);font-size:1.1em;margin:1.4em 0 .3em}
+blockquote{margin:.5em 0;padding-left:12px;border-left:3px solid var(--gold);font-style:italic}
+a{color:var(--teal)} footer{font-size:13px;opacity:.8;text-align:center;padding:0 16px 30px}
+#ctrl{display:flex;gap:10px;align-items:center;justify-content:center;padding:6px 12px}#ctrl input{width:min(420px,70vw);accent-color:#ffd27a}#lbl{color:#ffd27a;text-align:center;font-weight:600;min-height:1.5em}
+</style>
+</head>
+<body>
+<nav id="housebar" aria-label="House"><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<div id="stage"><canvas id="c" aria-label="Nine interlocking triangles drawing in one by one to form the Sri Yantra, inside a circle and a square frame with four gates"></canvas><div id="hint">Tap to draw it again · drag or use the slider to count the triangles 🔺</div></div>
+<div id="lbl" aria-live="polite">Sri Yantra · 9 triangles</div>
+<div id="ctrl"><label for="s" style="font-size:14px;color:#5ee6d0">Triangles</label><input id="s" type="range" min="0" max="9" step="1" value="9" aria-label="Number of triangles"></div>
+<main>
+<h1>🔺 Sri Yantra · Nine Triangles, One Center</h1>
+<h2>What it is</h2>
+<p>The Sri Yantra (also written Shri Yantra) is a Hindu sacred diagram — a <i>yantra</i>, a visual aid for meditation and worship. It is associated with the goddess Tripura Sundari, also called Shri. At its center is a single point, the <b>bindu</b>, around which <b>nine interlocking triangles</b> are woven: four pointing up and five pointing down. The triangles sit inside a circle, traditionally inside a square frame with four gates, one in the middle of each side.</p>
+<h2>Why it is hard to draw</h2>
+<p>Drawing a Sri Yantra precisely is famously difficult. The nine triangles are not simply stacked: their corners and edges are meant to meet at exact shared points, so moving one triangle even slightly breaks the joins of several others. Traditional makers worked this out by hand over many generations, and simple versions like this page can only suggest the pattern — they are not exact ritual diagrams.</p>
+<h2>About its age</h2>
+<p>Yantra worship has deep roots in Hindu and Tantric traditions, and diagrams in this family have been made for many centuries. The exact age of the Sri Yantra in the form we know today is not firmly settled, so this page makes no claim that this precise diagram is a specific number of thousands of years old. What is certain is that people have meditated with it for a very long time, and still do.</p>
+<h2>Our bloom so far</h2>
+<p>First two circles met in the <a href="../vesica/">Vesica Piscis</a>. Then they bloomed into the <a href="../flower/">Flower of Life</a>. Now nine triangles weave around one still point. Different branches, same tree. Soft eyes.</p>
+</main>
+<footer>Inspired by <a href="https://github.com/evoluteur/sri-yantra">evoluteur/sri-yantra</a> (MIT), forked at <a href="https://github.com/MultiDimensionalDevilsKingdomsRoute666/sri-yantra">MultiDimensionalDevilsKingdomsRoute666/sri-yantra</a>. Original code, made with love by 589/kin. · <a href="../flower/">← Flower of Life</a> · <a href="../vesica/">Vesica Piscis</a> · Soft eyes.</footer>
+<script src="sri-yantra.js"></script>
+</body>
+</html>

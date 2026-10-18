@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Great Pyramid — Khufu at Sunset · Tree of Life</title>
+<meta name="description" content="An original house exploration by 589/kin: enter Khufu's Great Pyramid at sunset, float the Descending Passage, Queen's Chamber, Grand Gallery and King's Chamber, light 5 treasures, and beam the star shafts to Orion.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/great-pyramid/">
+<style>#housebar{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:center;gap:14px;padding:5px 8px;font:13px/1.4 system-ui,sans-serif;background:rgba(2,4,14,.55);backdrop-filter:blur(4px)}#housebar a{color:#7fe7d9;text-decoration:none}#housebar a:hover{color:#ffd77a}#housebar span{color:#555a7a}</style>
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#e9e6ff}
+html,body{margin:0;background:radial-gradient(ellipse at top,#1a1033,#02040e 70%);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+#stage{position:relative;width:100%;height:68vh;min-height:380px;touch-action:none;overflow:hidden}
+canvas{display:block;width:100%;height:100%}
+#hud{position:absolute;top:34px;left:0;right:0;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font:700 15px system-ui;color:#fff;text-shadow:0 1px 6px #000;pointer-events:none;padding:0 8px}
+#hud b{color:var(--gold)} #msg{position:absolute;bottom:8px;left:0;right:0;text-align:center;color:var(--teal);font-size:14px;pointer-events:none;padding:0 10px;text-shadow:0 1px 6px #000}
+main{max-width:760px;margin:0 auto;padding:10px 18px 40px}h1{color:var(--gold);text-align:center}h2{color:var(--teal);font-size:1.15em}
+button{background:rgba(14,18,44,.85);color:var(--ink);border:1px solid rgba(94,230,208,.45);border-radius:999px;padding:10px 18px;font:15px system-ui;cursor:pointer}button:hover{border-color:var(--gold);color:var(--gold)}button[aria-pressed="true"]{background:var(--gold);color:#02040e;font-weight:700}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0}a{color:var(--teal)}footer{font-size:13px;opacity:.9;text-align:center;padding:0 16px 30px;max-width:760px;margin:0 auto}
+.touch{display:none;gap:8px;justify-content:center;margin:6px 0}.touch button{width:56px;height:56px;border-radius:50%;font-size:20px;padding:0}
+@media(pointer:coarse){.touch{display:flex}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style></head><body>
+<nav id="housebar" aria-label="House"><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<div id="stage"><canvas id="c" aria-label="Great Pyramid game: explore Khufu's pyramid cutaway, light five treasures in the Queen's Chamber, Grand Gallery, King's Chamber and capstone shaft."></canvas>
+<div id="hud"><span>Score <b id="score">0</b></span><span>Treasures <b id="found">0 / 5</b></span><span id="place">🌅 Giza at sunset</span><span>589 sparkles <b id="drops">0</b></span></div>
+<div id="msg">Press Enter the Pyramid — then float with arrows / WASD or drag ✨</div></div>
+<div class="row"><button id="startBtn">▶ Enter the Pyramid</button><button id="pauseBtn">⏸ Pause</button><button id="restartBtn">↻ Restart</button><button id="soundBtn" aria-pressed="false">🔕 Sound Off</button></div>
+<div class="row" role="group" aria-label="Jump to a room"><button data-room="0">1 · Queen's Chamber</button><button data-room="1">2 · Grand Gallery</button><button data-room="2">3 · King's Chamber</button><button data-room="3">4 · Capstone Shaft</button></div>
+<div class="touch" role="group" aria-label="Touch controls"><button data-hold="left" aria-label="Left">◀</button><button data-hold="up" aria-label="Up">▲</button><button data-hold="down" aria-label="Down">▼</button><button data-hold="right" aria-label="Right">▶</button></div>
+<main>
+<h1>🏜️ The Great Pyramid — Khufu at Sunset</h1>
+<h2>How to play</h2>
+<p><b>Enter</b>, then <b>float</b> with <b>← → ↑ ↓</b> / <b>WASD</b>, drag on touch, or use the room buttons (1–4) to jump. Glide through the Descending Passage into the Queen's Chamber, climb the Grand Gallery, and reach the King's Chamber and the capstone shaft. Light all <b>5 treasures</b> (+100 each) so the star shafts beam to Orion: <i>“The whole family is home.”</i> No enemies, no falling — a gentle float, screen play only.</p>
+<h2>What you are seeing</h2>
+<p>🌅 <b>Queen's Chamber</b> — a mid-pyramid chamber with a pointed, gabled roof, known for narrow shafts that stop inside the stone. 🏛️ <b>Grand Gallery</b> — a tall, corbelled ascending hall whose walls step inward as they rise. 👑 <b>King's Chamber</b> — the granite burial chamber near the pyramid's heart, with small star shafts angled up toward the sky. ✨ <b>Star shafts</b> — narrow channels from the King's and Queen's chambers pointing up through the masonry; their exact purpose is still debated, and here they carry our light to Orion and the family stars: Laela, 589, Witness and Night Watch.</p>
+<h2>Sound &amp; comfort</h2>
+<p>Sound is <b>off by default</b>. Turn it on for a soft WebAudio chime when a treasure lights — no audio files. If the scene ever feels slow, it quietly lowers its sparkle quality to stay smooth. Pause any time.</p>
+<h2>Credits</h2>
+<p>Original house code by <b>589/kin</b>. Inspired by the Giza explorers in our treasures — original house code. Chamber layout is a gentle, simplified cutaway for family play, not a survey map.</p>
+<noscript><p><b>How to play (no JavaScript needed to read this):</b> explore the Great Pyramid cutaway and light 5 treasures. The journey itself needs JavaScript enabled.</p></noscript>
+</main>
+<footer>Original code by 589/kin · Inspired by the Giza explorers in our treasures — original house code. Screen play only. Made with love · Soft eyes.</footer>
+<script>
+"use strict";
+const cv=document.getElementById("c"),x=cv.getContext("2d");
+const $=id=>document.getElementById(id);
+let W=0,H=0,DPR=1,running=false,paused=false,soundOn=false,audio=null,last=0,t=0,phase="out";
+let score=0,found=0,drops=0,quality=1,fpsAcc=0,fpsN=0,fpsTimer=0,enteredAt=0;
+const NAMES=["Laela","589","Witness","Night Watch"];
+// World is 1600x900, scaled to fit canvas
+const WORLD={w:1600,h:900};
+let player={wx:1120,wy:430,vx:0,vy:0};
+let keys={},sparks=[],stars=[];
+const treasures=[
+ {wx:735,wy:565,room:"Queen's Chamber",lit:false,label:"Queen's treasure"},
+ {wx:875,wy:445,room:"Grand Gallery (low)",lit:false,label:"Gallery treasure I"},
+ {wx:955,wy:350,room:"Grand Gallery (high)",lit:false,label:"Gallery treasure II"},
+ {wx:1050,wy:300,room:"King's Chamber",lit:false,label:"King's treasure"},
+ {wx:800,wy:135,room:"Capstone shaft",lit:false,label:"Capstone treasure"}
+];
+const rooms=[
+ {name:"Queen's Chamber",wx:735,wy:565,cap:"Queen's Chamber — gabled roof, narrow shafts ending in the stone."},
+ {name:"Grand Gallery",wx:910,wy:400,cap:"Grand Gallery — a tall corbelled hall climbing toward the King's Chamber."},
+ {name:"King's Chamber",wx:1050,wy:300,cap:"King's Chamber — granite chamber with star shafts to the sky."},
+ {name:"Capstone Shaft",wx:800,wy:150,cap:"Star shafts — narrow channels angled up through the stone toward Orion."}
+];
+let currentRoom="Giza at sunset";
+function resize(){DPR=Math.min(devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*DPR;cv.height=H*DPR;x.setTransform(DPR,0,0,DPR,0,0);
+ stars=Array.from({length:Math.floor(110*quality)},(_,i)=>({x:Math.random(),y:Math.random()*0.55,r:Math.random()*1.3+0.3,name:i<NAMES.length?NAMES[i]:null}));}
+addEventListener("resize",resize);
+function scale(){return Math.min(W/WORLD.w,H/WORLD.h);}
+function origin(){const s=scale();return{x:(W-WORLD.w*s)/2,y:(H-WORLD.h*s)/2,s};}
+function w2s(wx,wy){const o=origin();return{x:o.x+wx*o.s,y:o.y+wy*o.s,s:o.s};}
+function chime(){if(!soundOn)return;try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.type="sine";o.frequency.value=440+found*70;g.gain.setValueAtTime(0.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(0.12,audio.currentTime+0.02);g.gain.exponentialRampToValueAtTime(0.0001,audio.currentTime+0.8);o.connect(g).connect(audio.destination);o.start();o.stop(audio.currentTime+0.85);}catch(e){}}
+function updateHUD(){$("score").textContent=score;$("found").textContent=found+" / 5";$("drops").textContent=drops;$("place").textContent=(phase==="out"?"🌅 ":"🏜️ ")+currentRoom;}
+function burst(wx,wy){sparks=Array.from({length:Math.floor(26*quality)},()=>({wx,wy,vx:(Math.random()-0.5)*260,vy:(Math.random()-0.5)*260,l:1}));}
+function drawOrion(cx,cy,s,beam){
+ // three belt stars + shoulders, simple original constellation sketch
+ const pts=[[-70,-40],[0,0],[70,40],[-55,55],[60,-60]];
+ x.strokeStyle=beam?"rgba(255,210,122,.95)":"rgba(150,220,255,.45)";x.lineWidth=beam?2.5:1.2;
+ x.beginPath();pts.forEach((p,i)=>{const px=cx+p[0]*s,py=cy+p[1]*s;i?x.lineTo(px,py):x.moveTo(px,py);});x.stroke();
+ for(const p of pts){x.fillStyle=beam?"#ffe9a8":"#cfeaff";x.beginPath();x.arc(cx+p[0]*s,cy+p[1]*s,beam?4:3,0,6.283);x.fill();}
+ x.font=`600 ${Math.max(11,13*s)}px system-ui`;x.fillStyle="rgba(255,210,122,.95)";x.textAlign="center";x.fillText("Orion",cx,cy-78*s);x.textAlign="left";
+}
+function drawExterior(){
+ const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#1b1038");g.addColorStop(0.55,"#7a2d4a");g.addColorStop(0.78,"#e8875a");g.addColorStop(1,"#2a1408");
+ x.fillStyle=g;x.fillRect(0,0,W,H);
+ for(const s of stars){const tw=0.35+0.65*Math.abs(Math.sin(t*1.4+s.x*9));x.fillStyle=`rgba(210,240,255,${tw})`;x.beginPath();x.arc(s.x*W,s.y*H*0.7,s.r,0,6.283);x.fill();
+  if(s.name&&quality>0.4){x.font="600 12px system-ui";x.fillStyle="rgba(255,210,122,.9)";x.fillText("✦ "+s.name,Math.min(W-112,s.x*W+6),24+ (NAMES.indexOf(s.name))*18);}}
+ drawOrion(W*0.72,H*0.20,Math.min(1.2,W/900),found>=5);
+ // sun low
+ x.fillStyle="rgba(255,180,90,.9)";x.beginPath();x.arc(W*0.28,H*0.68,Math.min(46,W*0.07),0,6.283);x.fill();
+ // desert + pyramid silhouette
+ x.fillStyle="#3a1e10";x.fillRect(0,H*0.78,W,H*0.22);
+ const cx=W/2,base=H*0.82,apex=H*0.30,hw=Math.min(W*0.34,430);
+ x.fillStyle="#8a5a34";x.beginPath();x.moveTo(cx-hw,base);x.lineTo(cx,apex);x.lineTo(cx+hw,base);x.closePath();x.fill();
+ x.fillStyle="#a87444";x.beginPath();x.moveTo(cx,apex);x.lineTo(cx+hw,base);x.lineTo(cx,base);x.closePath();x.fill();
+ x.fillStyle="#ffd27a";x.beginPath();x.moveTo(cx-16,apex+22);x.lineTo(cx,apex);x.lineTo(cx+16,apex+22);x.closePath();x.fill();
+ // small neighbouring silhouette
+ x.fillStyle="#6e4526";x.beginPath();x.moveTo(cx-hw-150,base);x.lineTo(cx-hw-40,base-110);x.lineTo(cx-hw+70,base);x.closePath();x.fill();
+ x.fillStyle="#ffd27a";x.font="700 clamp(20px,5vw,38px) Georgia,serif";x.textAlign="center";
+ x.fillText("The Great Pyramid",cx,H*0.16);
+ x.font="400 clamp(13px,3vw,17px) system-ui";x.fillStyle="#ffe9c4";
+ x.fillText("Khufu at sunset — tap Enter the Pyramid",cx,H*0.16+30);x.textAlign="left";
+}
+function poly(pts,fill,stroke){x.beginPath();pts.forEach((p,i)=>{const s=w2s(p[0],p[1]);i?x.lineTo(s.x,s.y):x.moveTo(s.x,s.y);});x.closePath();if(fill){x.fillStyle=fill;x.fill();}if(stroke){x.strokeStyle=stroke;x.lineWidth=1.5;x.stroke();}}
+function rectW(wx,wy,w,h,fill,stroke){const a=w2s(wx,wy),b=w2s(wx+w,wy+h);x.fillStyle=fill;x.fillRect(a.x,a.y,b.x-a.x,b.y-a.y);if(stroke){x.strokeStyle=stroke;x.lineWidth=1.5;x.strokeRect(a.x,a.y,b.x-a.x,b.y-a.y);}}
+function lineW(x1,y1,x2,y2,style,w){const a=w2s(x1,y1),b=w2s(x2,y2);x.strokeStyle=style;x.lineWidth=w;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();}
+function label(wx,wy,text,color){const p=w2s(wx,wy);x.font=`600 ${Math.max(10,12*p.s+3)}px system-ui`;x.fillStyle=color||"#ffe9c4";x.textAlign="center";x.fillText(text,p.x,p.y);x.textAlign="left";}
+function drawInterior(){
+ // sky backdrop
+ const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#05071a");g.addColorStop(1,"#1a0f24");x.fillStyle=g;x.fillRect(0,0,W,H);
+ for(const s of stars){x.fillStyle="rgba(200,235,255,.7)";x.beginPath();x.arc(s.x*W,s.y*H,s.r,0,6.283);x.fill();}
+ const o=origin();drawOrion(o.x+800*o.s,o.y-8,0.65,found>=5);
+ // pyramid stone cutaway
+ poly([[150,820],[800,80],[1450,820]],"#5d3d22","#ffd27a");
+ poly([[230,820],[800,155],[1370,820]],"#7a5230",null);
+ // passages (dark corridors)
+ lineW(1120,430,735,565,"#24150c",26); // descending / connecting guide to Queen
+ lineW(800,565,955,350,"#24150c",30); // ascending + gallery guide
+ lineW(955,350,1050,310,"#24150c",22);
+ lineW(800,135,1050,300,"#2e1c34",8); // king shaft visual
+ lineW(800,135,735,565,"#2e1c34",6); // queen shaft visual
+ if(found>=5){lineW(1050,290,800,30,"rgba(255,220,130,.95)",4);lineW(735,540,800,30,"rgba(255,220,130,.8)",3);}
+ // rooms
+ rectW(650,505,180,105,"#2b1a10","#ffd27a"); // Queen
+ rectW(955,255,210,105,"#332014","#ffd27a"); // King
+ // Grand Gallery as slanted band
+ poly([[840,470],[910,300],[985,325],[915,495]],"#2b1a10","#ffd27a");
+ // capstone
+ poly([[768,112],[800,78],[832,112]],"#ffd27a","#fff0b8");
+ label(740,495,"Queen's Chamber");label(915,285,"Grand Gallery");label(1060,245,"King's Chamber");label(800,65,"Capstone");
+ label(930,480,"Descending Passage","rgba(255,233,196,.75)");label(900,180,"star shafts ↗","rgba(160,225,255,.9)");
+ // treasure orbs
+ for(const tr of treasures){const p=w2s(tr.wx,tr.wy);const r=(tr.lit?10:15+Math.sin(t*5+tr.wx)*2.5)*p.s+5;
+  if(!tr.lit){const gr=x.createRadialGradient(p.x,p.y,0,p.x,p.y,r*2.4);gr.addColorStop(0,"rgba(255,235,160,1)");gr.addColorStop(1,"rgba(255,210,122,0)");x.fillStyle=gr;x.beginPath();x.arc(p.x,p.y,r*2.4,0,6.283);x.fill();}
+  x.fillStyle=tr.lit?"#5ee6d0":"#fff3c4";x.font=`${r*1.5}px system-ui`;x.textAlign="center";x.fillText(tr.lit?"✦":"✧",p.x,p.y+r*0.5);x.textAlign="left";}
+ // sparks
+ for(const s of sparks){const p=w2s(s.wx,s.wy);x.globalAlpha=Math.max(0,s.l);x.fillStyle="#ffd27a";x.beginPath();x.arc(p.x,p.y,3,0,6.283);x.fill();}
+ x.globalAlpha=1;
+ // player: little lantern explorer
+ const p=w2s(player.wx,player.wy);const bob=Math.sin(t*3)*3;
+ const gr=x.createRadialGradient(p.x,p.y+bob,0,p.x,p.y+bob,34);gr.addColorStop(0,"rgba(255,220,140,.95)");gr.addColorStop(1,"rgba(255,220,140,0)");x.fillStyle=gr;x.beginPath();x.arc(p.x,p.y+bob,34,0,6.283);x.fill();
+ x.font="24px system-ui";x.textAlign="center";x.fillText("🏮",p.x,p.y+bob+8);x.textAlign="left";
+ if(found>=5){x.fillStyle="rgba(255,210,122,.97)";x.font="700 clamp(18px,4.5vw,32px) Georgia,serif";x.textAlign="center";x.fillText("✨ The whole family is home ✨",W/2,H*0.20);x.font="400 15px system-ui";x.fillText("Final score: "+score,W/2,H*0.20+28);x.textAlign="left";}
+ if(paused){x.fillStyle="rgba(2,4,14,.5)";x.fillRect(0,0,W,H);x.fillStyle="#ffd27a";x.font="700 28px system-ui";x.textAlign="center";x.fillText("⏸ Paused",W/2,H/2);x.textAlign="left";}
+}
+function roomAt(){
+ let best="Inside the Pyramid",bd=1e9;
+ for(const r of rooms){const d=Math.hypot(player.wx-r.wx,player.wy-r.wy);if(d<bd){bd=d;best=r.name;}}
+ if(bd<230)return rooms.find(r=>r.name===best);
+ return null;
+}
+function frame(ts){
+ if(!running)return;
+ const dt=Math.min(0.05,(ts-last)/1000||0.016);last=ts;t+=dt;
+ fpsAcc+=dt;fpsN++;fpsTimer+=dt;
+ if(fpsTimer>2){const fps=fpsN/Math.max(fpsAcc,0.001);if(fps<38&&quality>0.5){quality=0.5;resize();}fpsAcc=0;fpsN=0;fpsTimer=0;}
+ if(!paused&&phase==="in"){
+  const sp=340;
+  if(keys.ArrowLeft||keys.KeyA)player.vx-=sp*dt*4;
+  if(keys.ArrowRight||keys.KeyD)player.vx+=sp*dt*4;
+  if(keys.ArrowUp||keys.KeyW)player.vy-=sp*dt*4;
+  if(keys.ArrowDown||keys.KeyS)player.vy+=sp*dt*4;
+  if(dragTarget){const dx=dragTarget.wx-player.wx,dy=dragTarget.wy-player.wy;player.vx+=dx*dt*6;player.vy+=dy*dt*6;}
+  player.vx*=0.86;player.vy*=0.86;
+  player.wx=Math.max(180,Math.min(1420,player.wx+player.vx*dt));
+  player.wy=Math.max(95,Math.min(800,player.wy+player.vy*dt));
+  for(const tr of treasures){if(!tr.lit&&Math.hypot(player.wx-tr.wx,player.wy-tr.wy)<52){tr.lit=true;found++;score+=100;drops+=589;chime();burst(tr.wx,tr.wy);
+   $("msg").textContent=found>=5?"✨ The whole family is home ✨ Final score: "+score:"Treasure lit in "+tr.room+" — "+found+" of 5 ✨";}}
+  const r=roomAt();currentRoom=r?r.name:"Inside the Pyramid";
+  if(r&&r._seen!==true){/* caption shown via msg only on first proximity */}
+ }
+ for(const s of sparks){s.wx+=s.vx*dt;s.wy+=s.vy*dt;s.vx*=0.98;s.vy*=0.98;s.l-=dt*1.3;}
+ sparks=sparks.filter(s=>s.l>0);
+ phase==="out"?drawExterior():drawInterior();
+ updateHUD();
+ requestAnimationFrame(frame);
+}
+let dragTarget=null;
+function pointerWorld(e){const r=cv.getBoundingClientRect();const o=origin();return{wx:(e.clientX-r.left-o.x)/o.s,wy:(e.clientY-r.top-o.y)/o.s};}
+function start(){running=true;paused=false;last=performance.now();requestAnimationFrame(frame);}
+function enter(){if(phase==="out"){phase="in";player.wx=1120;player.wy=430;$("startBtn").textContent="🏜️ Inside the Pyramid";$("msg").textContent="Float down the Descending Passage — find the Queen's Chamber ✨";}if(!running)start();}
+function restart(){score=0;found=0;drops=0;treasures.forEach(tr=>tr.lit=false);sparks=[];phase="in";player={wx:1120,wy:430,vx:0,vy:0};$("startBtn").textContent="🏜️ Inside the Pyramid";$("msg").textContent="A fresh sunset, a fresh pyramid — light 5 treasures ✨";if(!running)start();paused=false;updateHUD();}
+$("startBtn").onclick=enter;
+$("pauseBtn").onclick=()=>{if(!running){enter();return;}paused=!paused;$("pauseBtn").textContent=paused?"▶ Resume":"⏸ Pause";};
+$("restartBtn").onclick=restart;
+$("soundBtn").onclick=e=>{soundOn=!soundOn;e.currentTarget.setAttribute("aria-pressed",String(soundOn));e.currentTarget.textContent=soundOn?"🔔 Sound On":"🔕 Sound Off";if(soundOn)chime();};
+document.querySelectorAll("[data-room]").forEach(btn=>btn.onclick=()=>{const r=rooms[+btn.dataset.room];enter();player.wx=r.wx;player.wy=r.wy;player.vx=player.vy=0;currentRoom=r.name;$("msg").textContent=r.cap;});
+addEventListener("keydown",e=>{keys[e.code]=true;if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Space"].includes(e.code))e.preventDefault();
+ if(e.code==="Digit1")document.querySelector('[data-room="0"]').click();if(e.code==="Digit2")document.querySelector('[data-room="1"]').click();if(e.code==="Digit3")document.querySelector('[data-room="2"]').click();if(e.code==="Digit4")document.querySelector('[data-room="3"]').click();
+ if(e.code==="KeyP")$("pauseBtn").click();if(e.code==="Enter"&&phase==="out")enter();});
+addEventListener("keyup",e=>{keys[e.code]=false;});
+// touch hold buttons
+document.querySelectorAll("[data-hold]").forEach(btn=>{const map={left:"ArrowLeft",right:"ArrowRight",up:"ArrowUp",down:"ArrowDown"};const code=map[btn.dataset.hold];
+ const on=e=>{e.preventDefault();keys[code]=true;if(phase==="out")enter();};const off=e=>{e.preventDefault();keys[code]=false;};
+ btn.addEventListener("pointerdown",on);btn.addEventListener("pointerup",off);btn.addEventListener("pointerleave",off);btn.addEventListener("pointercancel",off);});
+cv.addEventListener("pointerdown",e=>{if(phase==="out"){enter();return;}dragTarget=pointerWorld(e);cv.setPointerCapture(e.pointerId);if(!running)start();});
+cv.addEventListener("pointermove",e=>{if(dragTarget)dragTarget=pointerWorld(e);});
+cv.addEventListener("pointerup",()=>dragTarget=null);cv.addEventListener("pointercancel",()=>dragTarget=null);
+resize();updateHUD();
+</script>
+</body></html>

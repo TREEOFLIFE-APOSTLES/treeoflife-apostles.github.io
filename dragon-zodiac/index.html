@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dragon Zodiac Sky · Tree of Life</title>
+<meta name="description" content="Dragon 2 of the fleet: a small Earth Dragon orbits a night-sky wheel of 12 zodiac constellations. Launch inward to catch the falling star of the target sign. Light all 12, then catch Pisces 3 times. Original code by 589/kin.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/dragon-zodiac/">
+<style>#housebar{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:center;gap:14px;padding:5px 8px;font:13px/1.4 system-ui,sans-serif;background:rgba(2,4,14,.55);backdrop-filter:blur(4px)}#housebar a{color:#7fe7d9;text-decoration:none}#housebar a:hover{color:#ffd77a}#housebar span{color:#555a7a}</style>
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#e9e6ff}
+html,body{margin:0;background:radial-gradient(ellipse at top,#0b1236,#02040e 70%);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+#stage{position:relative;width:100%;height:66vh;min-height:360px;touch-action:none;overflow:hidden}
+canvas{display:block;width:100%;height:100%}
+#hud{position:absolute;top:34px;left:0;right:0;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font:700 15px system-ui;color:#fff;text-shadow:0 1px 6px #000;pointer-events:none;padding:0 8px}
+#hud b{color:var(--gold)} #msg{position:absolute;bottom:8px;left:0;right:0;text-align:center;color:var(--teal);font-size:14px;pointer-events:none;padding:0 10px}
+main{max-width:760px;margin:0 auto;padding:10px 18px 40px}h1{color:var(--gold);text-align:center}h2{color:var(--teal);font-size:1.15em}
+button,label.toggle{background:rgba(14,18,44,.85);color:var(--ink);border:1px solid rgba(94,230,208,.45);border-radius:999px;padding:10px 18px;font:15px system-ui;cursor:pointer}
+button:hover,label.toggle:hover{border-color:var(--gold);color:var(--gold)}button[aria-pressed="true"]{background:var(--gold);color:#02040e;font-weight:700}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0;align-items:center}
+a{color:var(--teal)}footer{font-size:13px;opacity:.9;text-align:center;padding:0 16px 30px;max-width:760px;margin:0 auto}
+.signs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px 14px;padding-left:0;list-style:none}
+.signs li{border:1px solid rgba(94,230,208,.18);border-radius:10px;padding:6px 10px}
+.signs .house{border-color:var(--gold);color:var(--gold);font-weight:700}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style></head><body>
+<nav id="housebar" aria-label="House"><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<div id="stage"><canvas id="c" aria-label="Dragon Zodiac Sky game: an Earth Dragon orbits a wheel of twelve zodiac constellations and dives to catch falling stars."></canvas>
+<div id="hud"><span>Score <b id="score">0</b></span><span>Best <b id="best">0</b></span><span>Target <b id="target">♓ Pisces</b></span><span>Lit <b id="lit">0/12</b></span><span>Time <b id="time">∞</b></span></div>
+<div id="msg">Press Start. The dragon orbits on its own — tap, click, or press Space to launch it inward.</div></div>
+<div class="row"><button id="startBtn">▶ Start</button><button id="pauseBtn">⏸ Pause</button><button id="restartBtn">↻ Restart</button><button id="soundBtn" aria-pressed="false">🔕 Sound Off</button><label class="toggle"><input type="checkbox" id="endless" checked> Endless free-play</label></div>
+<main>
+<h1>🐉 Dragon Zodiac Sky</h1>
+<h2>How to play — controls</h2>
+<p><b>Tap / click</b> the sky, or press <b>Space</b>, to launch the dragon inward from its orbit. The Earth Dragon auto-orbits the zodiac wheel on its own between dives. Catch the <b>falling star of the target sign</b> shown at the top for <b>+18</b> and that constellation lights up. Catching a wrong sign only sparkles — <b>no penalty, no death</b>. Pause with the button or <b>P</b>. Your best score is kept on this device only.</p>
+<p><b>Timer:</b> Endless free-play is on by default. Untick “Endless free-play” before you start for a gentle <b>90-second</b> attempt — when time ends, the sky simply rests and you can start again.</p>
+<h2>Win and the Pisces bonus</h2>
+<p>Light all <b>12</b> constellations to win <b>“Whole Sky Lit”</b> with fireworks. Then the final bonus round begins: <b>catch Pisces 3 times</b>. ♓ <b>Pisces is highlighted in gold as our house sign</b> — the two fish, Father’s sign in this house story, and the gold constellation on the wheel.</p>
+<h2>The 12 signs</h2>
+<ul class="signs">
+<li>♈ Aries</li><li>♉ Taurus</li><li>♊ Gemini</li><li>♋ Cancer</li><li>♌ Leo</li><li>♍ Virgo</li>
+<li>♎ Libra</li><li>♏ Scorpio</li><li>♐ Sagittarius</li><li>♑ Capricorn</li><li>♒ Aquarius</li><li class="house">♓ Pisces — house sign ✦</li>
+</ul>
+<h2>Sound</h2>
+<p>Sound is <b>off by default</b>. Turn it on for a soft, low-volume singing-bowl chime on a correct catch.</p>
+<h2>Credits</h2>
+<p>Original code by <b>589/kin</b> — Dragon 2 of the house fleet, different from Dragon Flight. Inspired by AstroChart / zodiac treasures in the house (concepts only, <b>no copied code</b>). No violence, no death, just a lit sky.</p>
+<noscript><p><b>How to play (no JavaScript needed to read this):</b> the dragon orbits a wheel of 12 zodiac constellations; tap, click, or press Space to launch it inward and catch the falling star of the target sign. Light all 12, then catch Pisces 3 times. The game itself needs JavaScript enabled.</p></noscript>
+</main>
+<footer>Original code by 589/kin, inspired by AstroChart / zodiac treasures (no copied code). Pisces ♓ highlighted gold as house sign. Sound off by default. Made with love by 589/kin · Soft eyes.</footer>
+<script src="dragon-zodiac.js"></script>
+</body></html>

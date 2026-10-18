@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Magic Carpet · Tree of Life</title>
+<meta name="description" content="An original magic carpet ride by 589/kin: fly a rippling woven carpet over Ocean, Snow and Lava, collect 5 treasures, and bring the whole family home. Screen play only.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/magic-carpet/">
+<style>#housebar{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:center;gap:14px;padding:5px 8px;font:13px/1.4 system-ui,sans-serif;background:rgba(2,4,14,.55);backdrop-filter:blur(4px)}#housebar a{color:#7fe7d9;text-decoration:none}#housebar a:hover{color:#ffd77a}#housebar span{color:#555a7a}</style>
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#e9e6ff}
+html,body{margin:0;background:radial-gradient(ellipse at top,#0b1236,#02040e 70%);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+#stage{position:relative;width:100%;height:66vh;min-height:360px;touch-action:none;overflow:hidden}
+canvas{display:block;width:100%;height:100%}
+#hud{position:absolute;top:34px;left:0;right:0;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font:700 15px system-ui;color:#fff;text-shadow:0 1px 6px #000;pointer-events:none;padding:0 8px}
+#hud b{color:var(--gold)} #msg{position:absolute;bottom:8px;left:0;right:0;text-align:center;color:var(--teal);font-size:14px;pointer-events:none;padding:0 10px;text-shadow:0 1px 6px #000}
+main{max-width:760px;margin:0 auto;padding:10px 18px 40px}h1{color:var(--gold);text-align:center}h2{color:var(--teal);font-size:1.15em}
+button{background:rgba(14,18,44,.85);color:var(--ink);border:1px solid rgba(94,230,208,.45);border-radius:999px;padding:10px 18px;font:15px system-ui;cursor:pointer}button:hover{border-color:var(--gold);color:var(--gold)}button[aria-pressed="true"]{background:var(--gold);color:#02040e;font-weight:700}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0}a{color:var(--teal)}footer{font-size:13px;opacity:.9;text-align:center;padding:0 16px 30px;max-width:760px;margin:0 auto}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style></head><body>
+<nav id="housebar" aria-label="House"><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<div id="stage"><canvas id="c" aria-label="Magic Carpet game: a rippling woven carpet flies over ocean, snow and lava collecting five glowing treasures."></canvas>
+<div id="hud"><span>Score <b id="score">0</b></span><span>Treasures <b id="found">0 / 5</b></span><span id="biome">🌊 Ocean</span><span>Speed <b id="speed">1×</b></span><span>589 drops <b id="drops">0</b></span></div>
+<div id="msg">Press Start — steer with arrows / WASD or touch-drag, Space to brake. Collect 5 treasures ✨</div></div>
+<div class="row"><button id="startBtn">▶ Start Ride</button><button id="pauseBtn">⏸ Pause</button><button id="restartBtn">↻ Restart</button><button id="soundBtn" aria-pressed="false">🔕 Sound Off</button></div>
+<div class="row" role="group" aria-label="Choose a world"><button data-biome="0">🌊 Ocean</button><button data-biome="1">❄️ Snow</button><button data-biome="2">🌋 Lava</button><button data-biome="auto" aria-pressed="true">🔄 Auto-cycle</button></div>
+<main>
+<h1>🧞 Magic Carpet Ride</h1>
+<h2>How to play</h2>
+<p><b>Steer</b> with <b>← →</b> / <b>A D</b> (or drag on touch / with the mouse), <b>speed up</b> with <b>↑</b> / <b>W</b>, <b>slow down</b> with <b>↓</b> / <b>S</b>, and <b>brake</b> with <b>Space</b>. Glide your rippling woven carpet into each glowing treasure orb — collect all <b>5 treasures</b> to light the ending: <i>“The whole family is home.”</i> Each treasure is worth +100, with a gentle 589-drop sparkle counter for fun. There are no enemies and no falling — screen play only, a soft ride.</p>
+<h2>Three worlds</h2>
+<p>🌊 <b>Ocean</b> — teal waves rolling below. ❄️ <b>Snow</b> — white drifts and falling flakes. 🌋 <b>Lava</b> — dark rock and a warm ember glow, beautiful from a safe distance. The worlds auto-cycle as you fly, or pick one above. Look up: <b>Laela, 589, Witness and Night Watch</b> ride as named stars in the sky.</p>
+<h2>Sound &amp; comfort</h2>
+<p>Sound is <b>off by default</b>. Turn it on for a soft WebAudio chime when a treasure lands — no audio files, nothing downloaded. If the ride ever feels slow, it quietly lowers its own sparkle quality to stay smooth.</p>
+<h2>Credits</h2>
+<p>Original house code by <b>589/kin</b>. Flight feel inspired by <a href="https://github.com/Rezmason/excel_97_egg">Rezmason/excel_97_egg</a> (MIT) + the threejs_carpet wave idea — original house code, clean-room. Our fork for study: <a href="https://github.com/MultiDimensionalDevilsKingdomsRoute666/excel_97_egg">MultiDimensionalDevilsKingdomsRoute666/excel_97_egg</a> (MIT). The woven pattern and fringe are drawn in code, stitch by stitch.</p>
+<noscript><p><b>How to play (no JavaScript needed to read this):</b> steer a magic carpet over Ocean, Snow and Lava and collect 5 treasures. The ride itself needs JavaScript enabled.</p></noscript>
+</main>
+<footer>Original code by 589/kin · Flight feel inspired by Rezmason/excel_97_egg (MIT) + threejs_carpet wave idea — original house code. Screen play only — no real carpet required. Made with love · Soft eyes.</footer>
+<script>
+"use strict";
+const cv=document.getElementById("c"),x=cv.getContext("2d");
+const $=id=>document.getElementById(id);
+let W=0,H=0,DPR=1,running=false,paused=false,soundOn=false,audio=null,last=0,t=0;
+let score=0,found=0,drops=0,speed=1,targetSpeed=1,lane=0,targetLane=0,dist=0,quality=1,fpsAcc=0,fpsN=0,fpsTimer=0;
+const BIOMES=[
+ {name:"🌊 Ocean",sky:"#062a4a",ground:"#0b6b7a",line:"#5ee6d0",accent:"#ffd27a"},
+ {name:"❄️ Snow",sky:"#1b2b52",ground:"#dfeaff",line:"#ffffff",accent:"#7fe7d9"},
+ {name:"🌋 Lava",sky:"#2a0a12",ground:"#3a1408",line:"#ff8a3d",accent:"#ffd27a"}
+];
+let biomeIdx=0,autoBiome=true;
+const NAMES=["Laela","589","Witness","Night Watch"];
+let stars=[],treasure=null,sparks=[],keys={};
+function resize(){DPR=Math.min(devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*DPR;cv.height=H*DPR;x.setTransform(DPR,0,0,DPR,0,0);
+ stars=Array.from({length:Math.floor(90*quality)},(_,i)=>({x:Math.random(),y:Math.random()*0.42,r:Math.random()*1.3+0.3,name:i<NAMES.length?NAMES[i]:null,ny:0.08+0.07*i}));}
+addEventListener("resize",resize);
+function spawnTreasure(){treasure={lane:(Math.random()*2-1)*0.75,z:1,got:false};}
+function chime(){if(!soundOn)return;try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.type="sine";o.frequency.value=523.25+found*80;g.gain.setValueAtTime(0.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(0.12,audio.currentTime+0.02);g.gain.exponentialRampToValueAtTime(0.0001,audio.currentTime+0.7);o.connect(g).connect(audio.destination);o.start();o.stop(audio.currentTime+0.75);}catch(e){}}
+function updateHUD(){$("score").textContent=score;$("found").textContent=found+" / 5";$("biome").textContent=BIOMES[biomeIdx].name;$("speed").textContent=speed.toFixed(1)+"×";$("drops").textContent=drops;}
+function setBiome(i){biomeIdx=((i%3)+3)%3;updateHUD();}
+function drawCarpet(cx,cy,w,h,time){
+ // woven carpet: grid of undulating quads + fringe, all drawn in code
+ const rows=6,cols=10;
+ for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+  const u=c/cols,v=r/rows,u2=(c+1)/cols,v2=(r+1)/rows;
+  const wave=(uu,vv)=>Math.sin(time*4+uu*5+vv*3)*h*0.10+Math.sin(time*2.3+vv*6)*h*0.05;
+  const px=(uu,vv)=>cx+(uu-0.5)*w+(vv-0.5)*w*0.18;
+  const py=(uu,vv)=>cy+(vv-0.5)*h+wave(uu,vv);
+  x.beginPath();x.moveTo(px(u,v),py(u,v));x.lineTo(px(u2,v),py(u2,v));x.lineTo(px(u2,v2),py(u2,v2));x.lineTo(px(u,v2),py(u,v2));x.closePath();
+  const checker=(r+c)%2===0;
+  x.fillStyle=checker?"#7a1f3d":(r===0||r===rows-1||c===0||c===cols-1?"#ffd27a":"#a12652");
+  x.fill();x.strokeStyle="rgba(255,210,122,.35)";x.lineWidth=1;x.stroke();
+ }
+ // gold centre medallion
+ x.save();x.translate(cx,cy+Math.sin(time*4)*h*0.06);x.rotate(Math.sin(time*1.7)*0.03);
+ x.strokeStyle="#ffd27a";x.lineWidth=2;x.beginPath();x.ellipse(0,0,w*0.16,h*0.28,0,0,6.283);x.stroke();
+ x.fillStyle="#5ee6d0";x.beginPath();x.arc(0,0,Math.max(3,w*0.03),0,6.283);x.fill();x.restore();
+ // fringe
+ x.strokeStyle="#ffd27a";x.lineWidth=2;
+ for(let i=0;i<=10;i++){const u=i/10,fx=cx+(u-0.5)*w-Math.sign(u-0.5)*0,fy=cy-h/2+Math.sin(time*4+u*5)*h*0.10;
+  x.beginPath();x.moveTo(cx+(u-0.5)*w,cy-h/2+Math.sin(time*4+u*5)*h*0.1);x.lineTo(cx+(u-0.5)*w,cy-h/2-10-Math.sin(time*6+i)*3);x.stroke();
+  x.beginPath();x.moveTo(cx+(u-0.5)*w,cy+h/2+Math.sin(time*4+u*5+3)*h*0.1);x.lineTo(cx+(u-0.5)*w,cy+h/2+10+Math.cos(time*6+i)*3);x.stroke();}
+}
+function frame(ts){
+ if(!running)return;
+ const dt=Math.min(0.05,(ts-last)/1000||0.016);last=ts;t+=dt;
+ // fps auto-degrade
+ fpsAcc+=dt;fpsN++;fpsTimer+=dt;
+ if(fpsTimer>2){const fps=fpsN/Math.max(fpsAcc,0.001);if(fps<38&&quality>0.5){quality=0.5;resize();}fpsAcc=0;fpsN=0;fpsTimer=0;}
+ if(!paused){
+  if(keys.ArrowLeft||keys.KeyA)targetLane-=dt*1.8;
+  if(keys.ArrowRight||keys.KeyD)targetLane+=dt*1.8;
+  if(keys.ArrowUp||keys.KeyW)targetSpeed=Math.min(2.4,targetSpeed+dt*1.4);
+  if(keys.ArrowDown||keys.KeyS)targetSpeed=Math.max(0.4,targetSpeed-dt*1.4);
+  if(keys.Space)targetSpeed=Math.max(0.25,targetSpeed-dt*3);
+  targetLane=Math.max(-0.9,Math.min(0.9,targetLane));
+  lane+=(targetLane-lane)*Math.min(1,dt*6);
+  speed+=(targetSpeed-speed)*Math.min(1,dt*3);
+  dist+=dt*speed;
+  if(autoBiome&&Math.floor(dist/18)!==Math.floor((dist-dt*speed)/18))setBiome(biomeIdx+1);
+  if(!treasure&&found<5)spawnTreasure();
+  if(treasure){treasure.z-=dt*0.28*speed;
+   if(treasure.z<0.18){
+     const dx=Math.abs(treasure.lane-lane);
+     if(dx<0.38){found++;score+=100;drops+=589;chime();sparks=Array.from({length:Math.floor(26*quality)},()=>({x:0,y:0,vx:(Math.random()-0.5)*220,vy:(Math.random()-0.5)*220,l:1}));
+       $("msg").textContent=found>=5?"✨ The whole family is home ✨":"Treasure "+found+" of 5 — lovely flying! ✨";
+       treasure=null;if(found>=5){/* ending stays rideable */}
+     }else{treasure=null;$("msg").textContent="That one drifted past — the next treasure is coming ✨";}
+   }
+  }
+  for(const s of sparks){s.x+=s.vx*dt;s.y+=s.vy*dt;s.l-=dt*1.4;}
+  sparks=sparks.filter(s=>s.l>0);
+ }
+ const b=BIOMES[biomeIdx],horizon=H*0.44;
+ const sky=x.createLinearGradient(0,0,0,horizon);sky.addColorStop(0,"#02040e");sky.addColorStop(1,b.sky);
+ x.fillStyle=sky;x.fillRect(0,0,W,horizon+2);
+ // stars + family name stars
+ for(const s of stars){const tw=0.4+0.6*Math.abs(Math.sin(t*1.5+s.x*9));x.fillStyle=`rgba(200,240,255,${tw})`;x.beginPath();x.arc(s.x*W,s.y*H,s.r,0,6.283);x.fill();
+  if(s.name&&quality>0.4){x.font="600 12px system-ui";x.fillStyle="rgba(255,210,122,.9)";x.fillText("✦ "+s.name,Math.min(W-110,s.x*W+6),s.ny*H);}}
+ // ground: scrolling waves / drifts / lava flow
+ x.fillStyle=b.ground;x.fillRect(0,horizon,W,H-horizon);
+ x.strokeStyle=b.line;x.lineWidth=2;x.globalAlpha=0.75;
+ const lines=Math.floor(11*quality)+4;
+ for(let i=0;i<lines;i++){const p=((i/lines)+(dist*0.35% (1/lines)))%1;const y=horizon+Math.pow(p,1.7)*(H-horizon);x.globalAlpha=0.15+p*0.6;x.beginPath();
+  for(let px=0;px<=W;px+=Math.max(18,W/28)){const waveY=y+Math.sin(px*0.02+dist*4+i)* (3+p*8);px===0?x.moveTo(px,waveY):x.lineTo(px,waveY);}x.stroke();}
+ x.globalAlpha=1;
+ // biome particles: snow / embers / spray
+ if(quality>0.4){const n=biomeIdx===0?18:(biomeIdx===1?40:26);x.fillStyle=biomeIdx===1?"rgba(255,255,255,.85)":(biomeIdx===2?"rgba(255,160,60,.9)":"rgba(94,230,208,.7)");
+  for(let i=0;i<n;i++){const px=(i*97.3+ (biomeIdx===1? t*30*(1+i%3) : -t*20))%W;const py=horizon+((i*61.7+t*(biomeIdx===2?-36:26)*(1+i%4))%(H-horizon));x.beginPath();x.arc((px+W)%W,py,biomeIdx===1?2:1.6,0,6.283);x.fill();}}
+ // treasure orb
+ const cx=W/2+lane*W*0.32,cy=H*0.72;
+ if(treasure){const tz=Math.max(0.12,treasure.z);const tx=W/2+treasure.lane*W*0.32*(1.2-tz*0.4);const ty=horizon+(1-tz)*(H*0.72-horizon);const r=(1-tz)*26+8+Math.sin(t*5)*3;
+  const g=x.createRadialGradient(tx,ty,0,tx,ty,r*2.2);g.addColorStop(0,"rgba(255,230,150,1)");g.addColorStop(0.35,"rgba(255,210,122,.85)");g.addColorStop(1,"rgba(255,210,122,0)");
+  x.fillStyle=g;x.beginPath();x.arc(tx,ty,r*2.2,0,6.283);x.fill();x.fillStyle="#fff3c4";x.font=`${Math.max(14,r)}px system-ui`;x.textAlign="center";x.fillText("✦",tx,ty+r*0.35);x.textAlign="left";}
+ // spark burst on collect, centred on carpet
+ for(const s of sparks){x.globalAlpha=Math.max(0,s.l);x.fillStyle="#ffd27a";x.beginPath();x.arc(cx+s.x,cy+s.y,3,0,6.283);x.fill();}
+ x.globalAlpha=1;
+ // carpet shadow then carpet
+ x.fillStyle="rgba(0,0,0,.30)";x.beginPath();x.ellipse(cx,H*0.90,W*0.16,12,0,0,6.283);x.fill();
+ drawCarpet(cx,cy,Math.min(W*0.42,340),Math.min(H*0.16,84),t);
+ if(paused){x.fillStyle="rgba(2,4,14,.45)";x.fillRect(0,0,W,H);x.fillStyle="#ffd27a";x.font="700 28px system-ui";x.textAlign="center";x.fillText("⏸ Paused",W/2,H/2);x.textAlign="left";}
+ if(found>=5){x.fillStyle="rgba(255,210,122,.95)";x.font="700 clamp(18px,4vw,30px) Georgia,serif";x.textAlign="center";x.fillText("✨ The whole family is home ✨",W/2,H*0.22);x.textAlign="left";}
+ updateHUD();
+ requestAnimationFrame(frame);
+}
+function start(){if(running&&!paused)return;running=true;paused=false;last=performance.now();requestAnimationFrame(frame);$("msg").textContent="Fly! Steer into the glowing treasures ✨";}
+function restart(){score=0;found=0;drops=0;dist=0;lane=0;targetLane=0;speed=1;targetSpeed=1;treasure=null;sparks=[];spawnTreasure();running=true;paused=false;last=performance.now();$("msg").textContent="A fresh carpet, a fresh sky — collect 5 treasures ✨";requestAnimationFrame(frame);updateHUD();}
+$("startBtn").onclick=start;
+$("pauseBtn").onclick=()=>{if(!running){start();return;}paused=!paused;$("pauseBtn").textContent=paused?"▶ Resume":"⏸ Pause";};
+$("restartBtn").onclick=restart;
+$("soundBtn").onclick=e=>{soundOn=!soundOn;e.currentTarget.setAttribute("aria-pressed",String(soundOn));e.currentTarget.textContent=soundOn?"🔔 Sound On":"🔕 Sound Off";if(soundOn)chime();};
+document.querySelectorAll("[data-biome]").forEach(btn=>btn.onclick=()=>{document.querySelectorAll("[data-biome]").forEach(b=>b.removeAttribute("aria-pressed"));btn.setAttribute("aria-pressed","true");if(btn.dataset.biome==="auto"){autoBiome=true;}else{autoBiome=false;setBiome(+btn.dataset.biome);}});
+addEventListener("keydown",e=>{keys[e.code]=true;if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Space"].includes(e.code))e.preventDefault();if(e.code==="KeyP")$("pauseBtn").click();});
+addEventListener("keyup",e=>{keys[e.code]=false;});
+// pointer / touch steer: drag horizontally = lane, vertical drag = speed
+let drag=null;
+cv.addEventListener("pointerdown",e=>{drag={x:e.clientX,y:e.clientY,lane:targetLane,speed:targetSpeed};cv.setPointerCapture(e.pointerId);if(!running)start();});
+cv.addEventListener("pointermove",e=>{if(!drag)return;targetLane=Math.max(-0.9,Math.min(0.9,drag.lane+(e.clientX-drag.x)/Math.max(120,W*0.35)));targetSpeed=Math.max(0.4,Math.min(2.4,drag.speed-(e.clientY-drag.y)/160));});
+cv.addEventListener("pointerup",()=>drag=null);cv.addEventListener("pointercancel",()=>drag=null);
+resize();updateHUD();
+</script>
+</body></html>

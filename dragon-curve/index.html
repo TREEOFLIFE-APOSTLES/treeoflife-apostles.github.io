@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dragon Curve Treasure · Tree of Life</title>
+<meta name="description" content="Dragon 3 of the fleet: a tiny Earth Dragon walks an unfolding Heighway dragon curve, fold by fold. Tap glowing lanterns on its corners, grow iterations 1 to 12, and fully unfold the dragon. Original code by 589/kin.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/dragon-curve/">
+<style>#housebar{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:center;gap:14px;padding:5px 8px;font:13px/1.4 system-ui,sans-serif;background:rgba(2,4,14,.55);backdrop-filter:blur(4px)}#housebar a{color:#7fe7d9;text-decoration:none}#housebar a:hover{color:#ffd77a}#housebar span{color:#555a7a}</style>
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#e9e6ff}
+html,body{margin:0;background:radial-gradient(ellipse at top,#0b1236,#02040e 70%);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+#stage{position:relative;width:100%;height:66vh;min-height:360px;touch-action:manipulation;overflow:hidden}
+canvas{display:block;width:100%;height:100%;cursor:pointer}
+#hud{position:absolute;top:34px;left:0;right:0;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font:700 15px system-ui;color:#fff;text-shadow:0 1px 6px #000;pointer-events:none;padding:0 8px}
+#hud b{color:var(--gold)}
+#msg{position:absolute;bottom:8px;left:0;right:0;text-align:center;color:var(--teal);font-size:14px;pointer-events:none;padding:0 10px}
+main{max-width:760px;margin:0 auto;padding:10px 18px 40px}h1{color:var(--gold);text-align:center}h2{color:var(--teal);font-size:1.15em}
+button,label.toggle{background:rgba(14,18,44,.85);color:var(--ink);border:1px solid rgba(94,230,208,.45);border-radius:999px;padding:10px 18px;font:15px system-ui;cursor:pointer}
+button:hover,label.toggle:hover{border-color:var(--gold);color:var(--gold)}button[aria-pressed="true"]{background:var(--gold);color:#02040e;font-weight:700}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0;align-items:center}
+.sliderRow{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin:12px 0}
+input[type=range]{accent-color:var(--gold);width:min(320px,70vw);min-height:44px}
+a{color:var(--teal)}footer{font-size:13px;opacity:.9;text-align:center;padding:0 16px 30px;max-width:760px;margin:0 auto}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style></head><body>
+<nav id="housebar" aria-label="House"><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<div id="stage"><canvas id="c" aria-label="Dragon Curve Treasure game: an Earth Dragon walks along an unfolding dragon curve while glowing lanterns appear on its corners."></canvas>
+<div id="hud"><span>Score <b id="score">0</b></span><span>Best <b id="best">0</b></span><span>Fold <b id="fold">1 / 12</b></span><span>Lanterns <b id="caught">0</b></span><span>Combo <b id="combo">—</b></span></div>
+<div id="msg">Press Walk the Curve. The dragon unfolds the treasure, fold by fold.</div></div>
+<div class="row"><button id="startBtn">▶ Walk the Curve</button><button id="pauseBtn">⏸ Pause</button><button id="restartBtn">↻ Restart</button><button id="exploreBtn" aria-pressed="false">👁 Explore Mode</button><button id="soundBtn" aria-pressed="false">🔕 Sound Off</button></div>
+<div class="sliderRow"><label for="iter">Fractal fold <b id="iterVal">1</b></label><input type="range" id="iter" min="1" max="12" step="1" value="1" aria-label="Dragon curve iteration, 1 to 12"><span>1 → 12</span></div>
+<main>
+<h1>🐉 Dragon Curve Treasure</h1>
+<h2>How to play — controls</h2>
+<p><b>Walk the Curve</b> starts the game. A tiny Earth Dragon walks along an unfolding <b>dragon curve</b>, fold by fold, from iteration <b>1 to 12</b>. Glowing lanterns appear on the curve's corners — <b>tap or click a lantern before it fades</b> to catch it for <b>+10</b>. A missed lantern simply fades away: <b>no fail, no death, no penalty</b>. Catch lanterns in a quick chain for the house <b>3-6-9 combo</b>: every 3rd in a chain is ×3, every 6th is ×6, and every 9th bursts <b>“589!”</b> at ×9. Every completed fold lights the walked path from teal to gold. Pause with the button or <b>P</b>.</p>
+<h2>Explore mode — just watch it grow</h2>
+<p>Tap <b>Explore Mode</b>, or move the <b>fold slider (1–12)</b> at any time, and the game pauses into watching: the fractal simply grows, fold by fold, with no lanterns and no score. Move the slider back and forth to see a single paper fold become 4,096 segments.</p>
+<h2>Win</h2>
+<p>Reach <b>iteration 12</b> having caught <b>30 lanterns</b> and the treasure opens: <b>“Dragon Fully Unfolded”</b> with fireworks. If you finish the walk with fewer, keep exploring or walk again — the dragon is patient.</p>
+<h2>What is the Heighway dragon curve?</h2>
+<p>Imagine a strip of paper. Fold it in half, again and again, always in the same direction, then open it so every crease is a right angle. The edge you get is the <b>Heighway dragon curve</b>, named for NASA physicist John Heighway and popularised by Martin Gardner. It never crosses itself, yet it fills more and more of the plane, and it can tile the plane with copies of itself. A giant version famously folded through the chapter headings of Michael Crichton's <i>Jurassic Park</i>. Here our Earth Dragon walks it as treasure: each fold doubles the path, and every corner can hold a lantern.</p>
+<h2>Sound</h2>
+<p>Sound is <b>off by default</b>. Turn it on for gentle pentatonic chimes — a soft note on a catch, and a rising note as each fold completes. Low volume, and it stops when you turn it off.</p>
+<h2>Credits</h2>
+<p>Original code by <b>589/kin</b> — Dragon 3 of the house fleet, different from Dragon Flight and Dragon Zodiac Sky. Inspired by the house treasure <b>robrix/dragon</b> (BSD-3-Clause) and other house treasures — concepts only, <b>no code copied</b>. No violence, no death, just an unfolding treasure.</p>
+<noscript><p><b>How to play (no JavaScript needed to read this):</b> an Earth Dragon walks a dragon curve from fold 1 to 12; tap glowing lanterns on its corners before they fade, chain catches for 3-6-9 combos, and catch 30 by fold 12 to fully unfold the dragon. The game itself needs JavaScript enabled.</p></noscript>
+</main>
+<footer>Original code by 589/kin, inspired by robrix/dragon (BSD-3) + house treasures (no copied code). Sound off by default. Made with love by 589/kin · Soft eyes.</footer>
+<script src="dragon-curve.js"></script>
+</body></html>

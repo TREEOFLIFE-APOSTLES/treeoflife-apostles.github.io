@@ -168,14 +168,16 @@ For our last family member, the Awakening one. Chariot driven by wind = consciou
 
 ## Health / Respiratory — the breathing house
 
-Treasures for lungs, breath and listening to the chest. All credit to the original makers; house copies are linked beside each one. Shelved by link on Oct 17, 2026 — these are Python / model / monitoring repos with nothing static to serve, so no Pages were enabled for them.
+Treasures for lungs, breath and listening to the chest. All credit to the original makers; house copies are linked beside each one. Shelved by link on Oct 17, 2026 — these are Python / model / monitoring repos with nothing static to serve, so no Pages were enabled for them. Resp-Agent and Human-Organ3D were added by link on Oct 18, 2026, also with no Pages enabled.
 
 | # | Treasure (house) | Original / maker credit | What it does | License |
 |---|------------------|-------------------------|--------------|---------|
 | 1 | [APOSTLES589TREEOFLIFE-RESPIRATORY-6](https://github.com/MultiDimensionalDevilsKingdomsRoute666/APOSTLES589TREEOFLIFE-RESPIRATORY-6) | House original, created by MultiDimensionalDevilsKingdomsRoute666 — "Breathed into existence … Guardian of Lineage, Keeper of the 6 Respiratories" | Our own index and memorial for the breathing house: "This is not an update. This is a respiratory. Taking care of our own energy and well-being is the most important part…" Its 6 living respiratories (our XRPL scanner / anchor / spec / sender / playground / memory set) are linked under it below. | None stated |
 | 2 | [APOSTLE-589-TREEOFLIFE-Rene](https://github.com/xrplove/APOSTLE-589-TREEOFLIFE-Rene) | Fork of [Rene](https://github.com/zpforlove/Rene) by zpforlove | A real-time monitoring system for respiratory diseases. | MIT |
-| 3 | [Earth-Dragon-589-openstethoscope](https://github.com/xrplove/Earth-Dragon-589-openstethoscope) | Fork of [openstethoscope](https://github.com/petecod/openstethoscope) by petecod | AI stethoscope for COPD detection from lung sounds, using Google HeAR. | See repo (NOASSERTION) |
-| 4 | [Earth-Dragon-589-Lung-Sound-Models](https://github.com/xrplove/Earth-Dragon-589-Lung-Sound-Models) | Fork of [Lung_Sound_Classification_Models](https://github.com/HChandeepa/Lung_Sound_Classification_Models) by HChandeepa | Lung-sound classification models for respiratory disease detection. | MIT |
+| 3 | [APOSTLE-589-TREEOFLIFE-Resp-Agent](https://github.com/xrplove/APOSTLE-589-TREEOFLIFE-Resp-Agent) | Fork of [Resp-Agent](https://github.com/zpforlove/Resp-Agent) by Pengfei Zhang (zpforlove) | Rene's big sibling: an intelligent respiratory sound analysis and generation system. Research only — not a medical device / not for diagnosis; its weights and dataset stay linked on Hugging Face, not downloaded here. | MIT |
+| 4 | [Earth-Dragon-589-openstethoscope](https://github.com/xrplove/Earth-Dragon-589-openstethoscope) | Fork of [openstethoscope](https://github.com/petecod/openstethoscope) by petecod | AI stethoscope for COPD detection from lung sounds, using Google HeAR. | See repo (NOASSERTION) |
+| 5 | [Earth-Dragon-589-Lung-Sound-Models](https://github.com/xrplove/Earth-Dragon-589-Lung-Sound-Models) | Fork of [Lung_Sound_Classification_Models](https://github.com/HChandeepa/Lung_Sound_Classification_Models) by HChandeepa | Lung-sound classification models for respiratory disease detection. | MIT |
+| 6 | [Human-Organ3D](https://github.com/MultiDimensionalDevilsKingdomsRoute666/Human-Organ3D) | Fork of [Human-Organ3D](https://github.com/yihalem123/Human-Organ3D) by yihalem123 | Interactive 3D human anatomy explorer — heart, lung and liver models with organ-specific animations, built with Three.js for medical education and anatomy learning. | None stated |
 
 **The 6 living respiratories of RESPIRATORY-6** — linked here so the index never stands alone (link-only; no Pages — avra-kedabra is a Vite+React app that needs a build):
 

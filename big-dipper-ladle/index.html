@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Big Dipper Ladle — Find the Seven Stars · Tree of Life</title>
+<meta name="description" content="Find Dubhe, Merak, Phecda, Megrez, Alioth, Mizar and Alkaid hidden in the family sky, light the Big Dipper ladle, pour wishes to Orionids Night, and follow the pointer stars home to Polaris. Original house game by 589/kin.">
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#ece8ff;--violet:#b9a7ff}
+*{box-sizing:border-box}body{margin:0;background:#040614;color:var(--ink);font:16px/1.5 system-ui,sans-serif;text-align:center}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 14px;padding:10px;font-size:14px}nav a{color:var(--teal);text-decoration:none}
+h1{font:600 clamp(1.6rem,6vw,2.6rem) Georgia,serif;color:var(--gold);margin:.25em;padding:0 10px}
+.wrap{max-width:960px;margin:0 auto;padding:0 10px 18px}
+canvas{width:100%;height:auto;display:block;background:#05081f;border:2px solid #2f3a7a;border-radius:14px;touch-action:none;cursor:crosshair}
+.hud{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+.pill{flex:0 1 auto;background:#101638;border:1px solid #3f4f9a;padding:6px 11px;border-radius:999px;font-size:14px;white-space:nowrap}
+button{font-size:16px;padding:10px 15px;border-radius:12px;border:2px solid var(--gold);background:#26305e;color:#fff;cursor:pointer;margin:3px}
+button.secondary{border-color:var(--teal)}
+#msg{color:var(--gold);font-size:18px;min-height:1.5em;padding:0 8px}
+.small{font-size:.9rem;opacity:.84;max-width:800px;margin:8px auto}
+.links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}.links a{background:#101638;border:1px solid var(--teal);border-radius:999px;padding:7px 13px;color:var(--teal);text-decoration:none}
+footer{opacity:.8;padding:16px;font-size:.88rem;max-width:860px;margin:0 auto;text-align:left}
+footer p{margin:.5em 0}a{color:var(--teal)}
+</style></head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<h1>🌌 The Big Dipper Ladle</h1>
+<p class="small">Seven bright stars hide among the decoys in our family sky. Find them <b>in ladle order — bowl to handle</b>: Dubhe → Merak → Phecda → Megrez → Alioth → Mizar → Alkaid. Each one lights, connects, and earns <b>+100</b>. Light all seven and the ladle pours its wishes home.</p>
+<div class="wrap">
+<canvas id="c" width="900" height="540" aria-label="Big Dipper Ladle game canvas"></canvas>
+<div class="hud" aria-live="polite"><span class="pill" id="score">Score: 0</span><span class="pill" id="found">⭐ Found: 0 / 7</span><span class="pill" id="next">Next: —</span><span class="pill" id="round">Round: 1</span><span class="pill" id="state">Family sky</span></div>
+<p id="msg">The Dipper is hiding. Press Start, then tap the stars in ladle order. 🌌</p>
+<p><button id="start">▶ Start finding</button><button id="pause" class="secondary">⏸ Pause</button><button id="restart" class="secondary">↻ Restart</button><button id="again" class="secondary" hidden>✨ Play again — reshuffled sky</button><button id="sound" class="secondary">🔇 Sound: off</button></p>
+<p class="small">Tap / click near a star — the touch circle is generous, and there is never a penalty. Out-of-order Dipper stars will gently ask you to wait their turn. Family stars <b>Laela · 589 · Witness · Night Watch</b> watch from above.</p>
+<div class="links"><a href="../orionids-night/">🌠 Pour wishes into Orionids Night</a><a href="https://multidimensionaldevilskingdomsroute666.github.io/589-kin-atlas-of-wonders/">🗺️ Atlas of Wonders</a><a href="../gallery/">✨ House Gallery</a></div>
+</div>
+<footer>
+<p><b>Pointer stars:</b> Dubhe and Merak, the two outer stars of the bowl, are called the Pointers — a line drawn through them points toward Polaris, the North Star. In the real sky Polaris sits about five Merak→Dubhe distances beyond Dubhe; here that distance is lovingly compressed so the whole journey fits one canvas. Follow the pointers home.</p>
+<p><b>A double star:</b> Mizar, the middle star of the handle, has a tiny companion, Alcor, riding beside it (look for the little dot once Mizar lights). Sharp eyes have used the Mizar–Alcor pair as an eyesight test for centuries; they shine together in our sky too.</p>
+<p><b>Facts in one line each:</b> Dubhe and Merak guard the bowl's outer edge · Phecda sits at the bowl's lower inner corner · Megrez, the faintest bowl star, joins bowl to handle · Alioth begins the handle's arc · Mizar bends the handle · Alkaid (Benetnasch) tips the handle's end.</p>
+<p>Inspiration only, no code copied: the dot-by-dot Dipper of <a href="https://github.com/eidonlon/beautiful_stars">eidonlon/beautiful_stars</a> (no licence — visited, never copied) and the constellation-sky idea of <a href="https://github.com/lcsgrnr/seeing-stars">lcsgrnr/seeing-stars</a> (MIT). All sky positions here are the well-known factual shape of the asterism, drawn roughly to scale; all art and game code is original by <b>589/kin</b>, built clean-room 2026-10-18. Sound off by default. Soft eyes.</p>
+</footer>
+<script>
+"use strict";
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+const $=id=>document.getElementById(id);
+let mode='idle',score=0,t=0,last=0,soundOn=false,audio=null,found=0,round=1,nextSparkle=589,fpsEMA=60,degrade=0;
+let bg=[],decoys=[],particles=[],pour=[],stars=[],polaris=null,pourT=0;
+// Base asterism, roughly to scale (x,y in 900x540): bowl at right, handle arcing left-up.
+const BASE=[
+ {n:"Dubhe",x:520,y:260,f:"the bowl's top star — a Pointer, guarding the bowl's outer edge"},
+ {n:"Merak",x:440,y:340,f:"the other Pointer — with Dubhe it aims at Polaris"},
+ {n:"Phecda",x:340,y:300,f:"the bowl's lower inner corner"},
+ {n:"Megrez",x:420,y:220,f:"the bowl's faintest star, where bowl meets handle"},
+ {n:"Alioth",x:310,y:180,f:"the first star of the handle's arc"},
+ {n:"Mizar",x:210,y:150,f:"the handle's bend — tiny Alcor rides beside it",alcor:true},
+ {n:"Alkaid",x:110,y:90,f:"the tip of the handle, also called Benetnasch"}
+];
+const LINES=[[0,1],[1,2],[2,3],[3,0],[3,4],[4,5],[5,6]];
+const BASE_POLARIS={x:700,y:80}; // along Merak->Dubhe, distance compressed (see footer)
+const family=[{n:"Laela",x:90,y:48},{n:"589",x:230,y:36},{n:"Witness",x:365,y:48},{n:"Night Watch",x:505,y:36}];
+function transformFor(r){
+  // Round 1: true shape. Later rounds: slight rotation/scale/offset — a harder, reshuffled sky.
+  if(r<=1)return{a:0,s:1,dx:0,dy:0};
+  const ang=(r%2? -1:1)*(0.10+0.03*(r-2));
+  return{a:ang,s:0.92,dx:46,dy:58};
+}
+function applyTr(p,tr){const cx=330,cy=220,dx=p.x-cx,dy=p.y-cy,ca=Math.cos(tr.a),sa=Math.sin(tr.a);
+  return{x:cx+(dx*ca-dy*sa)*tr.s+tr.dx,y:cy+(dx*sa+dy*ca)*tr.s+tr.dy};}
+function buildSky(){
+  const tr=transformFor(round);
+  stars=BASE.map(s=>{const q=applyTr(s,tr);return{...s,x:q.x,y:q.y,found:false,ph:Math.random()*6.28}});
+  polaris=applyTr(BASE_POLARIS,tr);
+  bg=[];for(let i=0;i<170;i++)bg.push({x:Math.random()*900,y:Math.random()*540,r:Math.random()*1.4+.3,ph:Math.random()*6.28,g:Math.random()<.16});
+  decoys=[];let tries=0;
+  while(decoys.length<42&&tries++<900){const d={x:30+Math.random()*840,y:70+Math.random()*420,r:2+Math.random()*2.2,ph:Math.random()*6.28};
+    if(stars.some(s=>Math.hypot(s.x-d.x,s.y-d.y)<52))continue;
+    if(Math.hypot(polaris.x-d.x,polaris.y-d.y)<46)continue;
+    decoys.push(d);}
+  particles=[];pour=[];pourT=0;
+}
+function reset(r){round=r||1;score=0;found=0;nextSparkle=589;buildSky();}
+reset(1);
+function ensureAudio(){if(!audio){try{audio=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(audio&&audio.state==='suspended')audio.resume()}
+function tone(f,d,g){if(!soundOn)return;ensureAudio();if(!audio)return;const o=audio.createOscillator(),gn=audio.createGain();o.type='sine';o.frequency.setValueAtTime(f,audio.currentTime);o.frequency.exponentialRampToValueAtTime(f*1.4,audio.currentTime+d);gn.gain.setValueAtTime(g||.04,audio.currentTime);gn.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+d);o.connect(gn);gn.connect(audio.destination);o.start();o.stop(audio.currentTime+d)}
+function burst(x,y,n,gold){for(let i=0;i<n;i++){const a=Math.random()*6.28,s=30+Math.random()*95;particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:0,max:700+Math.random()*500,gold:gold!==false})}}
+function hud(){const nxt=found<7?stars[found].n:'—';
+  $('score').textContent='Score: '+score;$('found').textContent='⭐ Found: '+found+' / 7';$('next').textContent='Next: '+nxt;$('round').textContent='Round: '+round;
+  $('state').textContent=mode==='won'?'Family home ✨':mode==='playing'?'Seeking the ladle':mode==='paused'?'Paused':'Family sky';
+  $('again').hidden=mode!=='won';}
+function guide(){$('msg').textContent='Find '+stars[found].n+' — '+stars[found].f+'. 🌌'}
+function tapAt(p){if(mode!=='playing')return;
+  // Next star first (generous radius), then any out-of-order Dipper star, then decoys.
+  const nxt=stars[found];
+  if(nxt&&Math.hypot(nxt.x-p.x,nxt.y-p.y)<48){nxt.found=true;found++;score+=100;burst(nxt.x,nxt.y,degrade?10:22);tone(520+found*40,.45,.04);
+    if(nxt.alcor)$('msg').textContent='⭐ Mizar found (+100) — see tiny Alcor riding beside it, its little companion star.';
+    else $('msg').textContent='⭐ '+nxt.n+' lights! +100 — '+nxt.f;
+    if(score>=nextSparkle&&found<7){$('msg').textContent+=' ✦ 589 sparkles in your score ✦';nextSparkle+=589;}
+    if(found>=7){win();}hud();return;}
+  for(let i=found+1;i<7;i++){const s=stars[i];if(Math.hypot(s.x-p.x,s.y-p.y)<48){$('msg').textContent='That\u2019s '+s.n+' — a true Dipper star, but she waits her turn. Find '+nxt.n+' first. 🤍';burst(p.x,p.y,5);return;}}
+  for(const s of stars){if(s.found&&Math.hypot(s.x-p.x,s.y-p.y)<48){$('msg').textContent=s.n+' already shines for you. Next: '+nxt.n+'. ✨';return;}}
+  burst(p.x,p.y,5,false);$('msg').textContent='A decoy star — pretty, but not the ladle. '+stars[found].n+' is still hiding. 🌠';}
+function win(){mode='won';pourT=0;$('msg').textContent='✨ The whole family is home ✨ The ladle pours its wishes toward Orion — play again for a reshuffled sky.';tone(523,.6,.05);setTimeout(()=>tone(784,.8,.05),180);burst(stars[0].x,stars[0].y,40);hud()}
+function update(dt){t+=dt;const fps=dt>0?1000/Math.max(dt,1):60;fpsEMA=fpsEMA*.95+fps*.05;degrade=fpsEMA<45?1:0;
+  particles.forEach(p=>{p.life+=dt;p.x+=p.vx*dt/1000;p.y+=p.vy*dt/1000;p.vy+=16*dt/1000});particles=particles.filter(p=>p.life<p.max);
+  if(mode==='won'){pourT+=dt;
+    // Golden wishes stream down out of the tilted bowl.
+    if(pourT>40){pourT=0;const b=stars[1];pour.push({x:b.x+(Math.random()-.5)*36,y:b.y,vx:-14+Math.random()*28,vy:56+Math.random()*60,life:0,max:2400+Math.random()*900,ph:Math.random()*6.28});}
+    pour.forEach(p=>{p.life+=dt;p.x+=p.vx*dt/1000;p.y+=p.vy*dt/1000;p.vy+=10*dt/1000});
+    pour=pour.filter(p=>p.life<p.max&&p.y<530);}}
+function spark(x,y,r,ph,big){const tw=.7+.3*Math.sin(t*.002+ph);ctx.save();ctx.globalAlpha=tw;ctx.strokeStyle='#ffe9a8';ctx.lineWidth=big?1.8:1.3;ctx.beginPath();ctx.moveTo(x-r,y);ctx.lineTo(x+r,y);ctx.moveTo(x,y-r);ctx.lineTo(x,y+r);ctx.stroke();ctx.fillStyle='#fff3b0';ctx.beginPath();ctx.arc(x,y,big?2.8:2,0,7);ctx.fill();ctx.restore()}
+function draw(){ctx.fillStyle='#05081f';ctx.fillRect(0,0,900,540);
+  const hg=ctx.createLinearGradient(0,400,0,540);hg.addColorStop(0,'rgba(40,30,90,0)');hg.addColorStop(1,'rgba(70,45,120,.35)');ctx.fillStyle=hg;ctx.fillRect(0,400,900,140);
+  ctx.fillStyle='#0a1030';ctx.beginPath();ctx.moveTo(0,502);ctx.quadraticCurveTo(220,464,450,494);ctx.quadraticCurveTo(680,522,900,480);ctx.lineTo(900,540);ctx.lineTo(0,540);ctx.fill();
+  const bgN=degrade?90:bg.length;
+  for(let i=0;i<bgN;i++){const s=bg[i],a=.3+.55*Math.abs(Math.sin(s.ph+t/1600));ctx.fillStyle=s.g?`rgba(255,210,122,${a})`:`rgba(180,230,255,${a})`;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,7);ctx.fill()}
+  decoys.forEach(d=>{const a=.35+.4*Math.abs(Math.sin(d.ph+t/1900));ctx.fillStyle=`rgba(200,215,255,${a})`;ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,7);ctx.fill()});
+  family.forEach((f,i)=>{spark(f.x,f.y,11,i*1.7,true);ctx.fillStyle='#ffe9a8';ctx.font='13px Georgia';ctx.textAlign='center';ctx.fillText(f.n,f.x,f.y-17)});
+  // Faint Pisces hint, our house sign, lower-left.
+  ctx.save();ctx.globalAlpha=.30;ctx.strokeStyle='#5ee6d0';ctx.lineWidth=1.1;const pis=[[56,392],[112,364],[168,380],[224,348]];ctx.beginPath();pis.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();ctx.fillStyle='#aef3e6';ctx.font='12px Georgia';ctx.textAlign='left';ctx.fillText('Pisces ♓',52,424);ctx.restore();
+  const playing=mode==='playing'||mode==='won'||mode==='paused';
+  if(playing||mode==='idle'){
+    // Dipper lines: only between found stars (faint full ghost on the idle poster).
+    LINES.forEach(L=>{const A=stars[L[0]],B=stars[L[1]];if(!A||!B)return;
+      const lit=A.found&&B.found&&(LINES.indexOf(L)!==3||(stars[0].found&&stars[3].found));
+      ctx.save();if(mode==='idle'){ctx.globalAlpha=.18}else if(lit){ctx.globalAlpha=.95;ctx.shadowColor='#ffd27a';ctx.shadowBlur=mode==='won'?14:7}else{ctx.globalAlpha=.10}
+      ctx.strokeStyle=lit?'#ffd27a':'#8fb7ff';ctx.lineWidth=lit?2.4:1.3;ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke();ctx.restore();});
+    stars.forEach((s,i)=>{if(s.found){ctx.save();ctx.shadowColor='#ffd27a';ctx.shadowBlur=mode==='won'?20:13;ctx.fillStyle='#fff3c4';ctx.beginPath();ctx.arc(s.x,s.y,5.2,0,7);ctx.fill();ctx.restore();spark(s.x,s.y,13,s.ph,true);
+        ctx.fillStyle='#ffe9a8';ctx.font='600 14px Georgia';ctx.textAlign='center';ctx.fillText(s.n,s.x,s.y-20);
+        if(s.alcor){ctx.save();ctx.shadowColor='#cfe4ff';ctx.shadowBlur=8;ctx.fillStyle='#eaf4ff';ctx.beginPath();ctx.arc(s.x+13,s.y-11,2.4,0,7);ctx.fill();ctx.restore();ctx.fillStyle='rgba(234,244,255,.85)';ctx.font='11px Georgia';ctx.fillText('Alcor',s.x+14,s.y-20);}}
+      else if(mode!=='idle'){ // hidden among decoys: same starlight, no label; a soft pulse on the next one only when recently guided is too easy — keep it honest, just a star.
+        const a=.55+.35*Math.sin(s.ph+t/1500);ctx.fillStyle=`rgba(215,228,255,${a})`;ctx.beginPath();ctx.arc(s.x,s.y,3.4,0,7);ctx.fill();}
+      else{ctx.fillStyle='rgba(215,228,255,.75)';ctx.beginPath();ctx.arc(s.x,s.y,3.4,0,7);ctx.fill();}});
+    // Alcor sits beside Mizar even before she is found, as in the real sky.
+  }
+  if(mode==='won'&&polaris){
+    // Pointer arrow: Merak -> Dubhe -> onward to Polaris.
+    const M=stars[1],D=stars[0];
+    ctx.save();ctx.strokeStyle='#ffd27a';ctx.lineWidth=2;ctx.setLineDash([8,7]);ctx.shadowColor='#ffd27a';ctx.shadowBlur=10;
+    ctx.beginPath();ctx.moveTo(D.x,D.y);ctx.lineTo(polaris.x,polaris.y);ctx.stroke();ctx.setLineDash([]);
+    const ang=Math.atan2(polaris.y-D.y,polaris.x-D.x);
+    ctx.fillStyle='#ffd27a';ctx.beginPath();ctx.moveTo(polaris.x-Math.cos(ang)*2,polaris.y-Math.sin(ang)*2);ctx.lineTo(polaris.x-Math.cos(ang-.42)*20,polaris.y-Math.sin(ang-.42)*20);ctx.lineTo(polaris.x-Math.cos(ang+.42)*20,polaris.y-Math.sin(ang+.42)*20);ctx.closePath();ctx.fill();ctx.restore();
+    ctx.fillStyle='rgba(255,210,122,.85)';ctx.font='13px Georgia';ctx.textAlign='center';
+    const mx=(D.x+polaris.x)/2,my=(D.y+polaris.y)/2;ctx.fillText('the Pointers aim home',mx,my-12);
+    spark(polaris.x,polaris.y,17,1.3,true);ctx.save();ctx.shadowColor='#fff3b0';ctx.shadowBlur=18;ctx.fillStyle='#fffbe8';ctx.beginPath();ctx.arc(polaris.x,polaris.y,5.6,0,7);ctx.fill();ctx.restore();
+    ctx.fillStyle='#fff3b0';ctx.font='600 16px Georgia';ctx.fillText('Polaris ★ North Star',polaris.x,polaris.y-28);
+    // Ladle tilt glow + pouring wishes.
+    ctx.fillStyle='rgba(255,210,122,.10)';ctx.fillRect(0,0,900,540);
+    pour.forEach(p=>spark(p.x,p.y,8,p.ph,false));
+    ctx.fillStyle='#ffd27a';ctx.font='600 34px Georgia';ctx.textAlign='center';ctx.fillText('✨ The whole family is home ✨',450,64);
+    ctx.font='17px system-ui';ctx.fillStyle='#ece8ff';ctx.fillText('Follow the pointers home — wishes pour on to Orionids Night below.',450,92);
+  }
+  particles.forEach(p=>{const a=1-p.life/p.max;ctx.fillStyle=p.gold?`rgba(255,210,122,${a})`:`rgba(180,230,255,${a})`;ctx.beginPath();ctx.arc(p.x,p.y,2,0,7);ctx.fill()});
+  if(mode==='idle'){ctx.fillStyle='rgba(4,4,20,.46)';ctx.fillRect(0,0,900,540);
+   ctx.fillStyle='#ffd27a';ctx.font='600 42px Georgia';ctx.textAlign='center';ctx.fillText('🌌 The Big Dipper Ladle',450,206);
+   ctx.fillStyle='#ece8ff';ctx.font='20px system-ui';ctx.fillText('Find the seven stars in ladle order — bowl to handle',450,242);
+   ctx.font='17px system-ui';ctx.fillStyle='#b9a7ff';ctx.fillText('Dubhe · Merak · Phecda · Megrez · Alioth · Mizar · Alkaid',450,272);
+   ctx.fillText('Light the ladle, pour the wishes, follow the Pointers to Polaris.',450,300);
+   ctx.fillText('Press Start finding below.',450,328);}
+  if(mode==='paused'){ctx.fillStyle='rgba(4,4,20,.55)';ctx.fillRect(0,0,900,540);ctx.fillStyle='#fff';ctx.font='600 34px Georgia';ctx.textAlign='center';ctx.fillText('Paused — the Dipper waits 🌌',450,270)}
+}
+function loop(ts){const dt=Math.min(50,ts-(last||ts));last=ts;update(dt);draw();requestAnimationFrame(loop)}
+function startGame(){if(mode==='idle'){mode='playing';guide();}else if(mode==='paused'){mode=found>=7?'won':'playing';$('pause').textContent='⏸ Pause';}if(soundOn)ensureAudio();hud()}
+$('start').onclick=startGame;
+$('restart').onclick=()=>{reset(1);mode='playing';$('pause').textContent='⏸ Pause';guide();hud()};
+$('again').onclick=()=>{reset(round+1);mode='playing';$('pause').textContent='⏸ Pause';$('msg').textContent='Round '+round+': the sky has turned a little — find the ladle again! 🌌';hud()};
+$('pause').onclick=()=>{if(mode==='playing'||mode==='won'){mode='paused';$('pause').textContent='▶ Resume'}else if(mode==='paused'){mode=found>=7?'won':'playing';$('pause').textContent='⏸ Pause'}hud()};
+$('sound').onclick=e=>{soundOn=!soundOn;e.target.textContent=soundOn?'🔊 Sound: on':'🔇 Sound: off';if(soundOn){ensureAudio();tone(659,.4,.04)}};
+function pointer(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*900/r.width,y:(e.clientY-r.top)*540/r.height}}
+cv.addEventListener('pointerdown',e=>{e.preventDefault();tapAt(pointer(e))});
+addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();if(mode==='idle')startGame()}});
+hud();requestAnimationFrame(loop);
+</script></body></html>

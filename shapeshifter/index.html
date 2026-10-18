@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="description" content="Shapeshifter: Tree of Life — a gentle Phaser game: Ant → Fly → Vampire → Angel → King/Queen. Copied with credit under MIT from xrplove/shapeshifter-game.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/shapeshifter/">
+<link rel="icon" href="data:,"><title>Shapeshifter: Tree of Life · Tree of Life</title>
+<style>#housebar{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:center;gap:14px;padding:5px 8px;font:13px/1.4 system-ui,sans-serif;background:rgba(2,4,14,.72);backdrop-filter:blur(4px)}#housebar a{color:#7fe7d9;text-decoration:none}#housebar a:hover{color:#ffd77a}#housebar span{color:#555a7a}</style>
+<style>
+html,body{margin:0;background:#0b1020;color:#eee;font-family:sans-serif;touch-action:manipulation;overflow-x:hidden;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#game{display:flex;justify-content:center;margin-top:30px}
+#pad{position:fixed;bottom:10px;left:0;right:0;display:flex;justify-content:space-between;padding:0 12px;pointer-events:none;z-index:20}
+#pad div{display:grid;grid-template-columns:repeat(3,56px);gap:6px;pointer-events:auto}
+#pad button,#mute{font-size:22px;border-radius:12px;border:2px solid #9fd;background:#1a2a40cc;color:#fff;height:56px;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+#power{width:110px;height:72px!important;pointer-events:auto;align-self:end}
+#mute{position:fixed;top:36px;right:8px;width:52px;height:44px;z-index:30}
+main{max-width:760px;margin:0 auto;padding:18px 18px 120px;line-height:1.6}main h1{color:#ffd77a}main h2{color:#7fe7d9}main a{color:#7fe7d9}footer{max-width:760px;margin:0 auto;padding:0 18px 120px;font-size:13px;opacity:.9;line-height:1.6}footer a{color:#7fe7d9}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+</head><body>
+<nav id="housebar" aria-label="House"><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<div id="game"></div>
+<button id="mute" aria-label="Mute">🔊</button>
+<div id="pad">
+ <div><span></span><button data-k="up">▲</button><span></span><button data-k="left">◀</button><button data-k="down">▼</button><button data-k="right">▶</button></div>
+ <button id="power" data-k="space">Power ✨</button>
+</div>
+<main>
+<h1>🦋 Shapeshifter: Tree of Life</h1>
+<h2>How to play</h2>
+<p>Grow through five gentle forms: <b>Ant → Fly → Vampire → Angel → King or Queen</b>. Each form has one power, one goal, and one lesson. Ant carries 5 crumbs home, Fly rises over walls to the flower, Vampire finds 3 fireflies in the dark, Angel heals 5 flowers, and the Crown gathers everyone home to the Tree of Life.</p>
+<p><b>Controls:</b> arrow keys + <b>Space</b> for your power, or the on-screen tap buttons on phones. Space / tap Power also begins and moves to the next form. The 🔊 button (top right) mutes. Sound and art are generated in code; nothing is sent anywhere.</p>
+<p>Original upstream: <a href="https://github.com/xrplove/shapeshifter-game" target="_blank" rel="noopener">xrplove/shapeshifter-game on GitHub</a> · <a href="https://xrplove.github.io/shapeshifter-game/" target="_blank" rel="noopener">play the upstream version</a>.</p>
+<noscript><p><b>No JavaScript:</b> Shapeshifter needs JavaScript and the Phaser library to play. The how-to-play text above still tells the story.</p></noscript>
+</main>
+<footer>Shapeshifter game © 2026 xrplove, copied and hosted here under the <a href="LICENSE">MIT License</a> (full license in <code>LICENSE</code> alongside this page) · Built with <a href="https://phaser.io" target="_blank" rel="noopener">Phaser 3</a> from a CDN · House wrapper (top bar + how-to-play) by 589/kin · Made with love by 589/kin · Soft eyes.</footer>
+<script src="game.js"></script>
+</body></html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Chladni Patterns · Tree of Life</title>
+<meta name="description" content="Chladni patterns: glowing sand settles onto the still nodal lines of a vibrating square plate. Sliders for modes n and m, gentle presets, and an optional quiet tone. A Tree of Life house page by 589/kin.">
+<style>#housebar{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:center;gap:14px;padding:5px 8px;font:13px/1.4 system-ui,sans-serif;background:rgba(2,4,14,.55);backdrop-filter:blur(4px)}#housebar a{color:#7fe7d9;text-decoration:none}#housebar a:hover{color:#ffd77a}#housebar span{color:#555a7a}</style>
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#e9e6ff}
+html,body{margin:0;background:radial-gradient(ellipse at top,#0b1236,#02040e 70%);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+#stage{position:relative;width:100%;height:62vh;min-height:340px;touch-action:none}
+canvas{display:block;width:100%;height:100%}
+#hint{position:absolute;bottom:10px;left:0;right:0;text-align:center;color:var(--teal);opacity:.75;font-size:14px;pointer-events:none;padding:0 12px}
+main{max-width:720px;margin:0 auto;padding:10px 18px 40px}
+h1{color:var(--gold);font-weight:600;text-align:center;margin:.3em 0}
+h2{color:var(--teal);font-size:1.1em;margin:1.4em 0 .3em}
+blockquote{margin:.5em 0;padding-left:12px;border-left:3px solid var(--gold);font-style:italic}
+a{color:var(--teal)} footer{font-size:13px;opacity:.85;text-align:center;padding:0 16px 30px;max-width:720px;margin:0 auto}
+#lbl{color:var(--gold);text-align:center;font-weight:600;min-height:1.5em;padding:0 12px}
+#ctrl{max-width:720px;margin:0 auto;padding:8px 18px;display:grid;gap:10px}
+.row{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
+.row label{font-size:14px;color:var(--teal);min-width:92px;text-align:right}
+.row input[type=range]{width:min(420px,62vw);accent-color:#ffd27a}
+.val{color:var(--gold);font-weight:700;min-width:1.2em}
+button{background:rgba(14,18,44,.85);color:var(--ink);border:1px solid rgba(94,230,208,.45);border-radius:999px;padding:7px 14px;font:14px system-ui,sans-serif;cursor:pointer}
+button:hover,button:focus{border-color:var(--gold);color:var(--gold)}
+button[aria-pressed="true"]{border-color:var(--gold);color:#02040e;background:var(--gold);font-weight:700}
+.note{font-size:13px;opacity:.8;text-align:center}
+code{color:var(--gold);word-break:break-word}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
+</style>
+</head>
+<body>
+<nav id="housebar" aria-label="House"><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<div id="stage"><canvas id="c" aria-label="A square plate of glowing sand particles settling onto the nodal lines of a Chladni pattern"></canvas><div id="hint">Tap the plate to scatter the sand again · move n and m and watch it settle ✨</div></div>
+<div id="lbl" aria-live="polite">Chladni pattern · n = 2, m = 3</div>
+<div id="ctrl">
+  <div class="row"><label for="n">Mode n</label><input id="n" type="range" min="1" max="8" step="1" value="2" aria-label="Mode number n"><span class="val" id="nv">2</span></div>
+  <div class="row"><label for="m">Mode m</label><input id="m" type="range" min="1" max="8" step="1" value="3" aria-label="Mode number m"><span class="val" id="mv">3</span></div>
+  <div class="row" aria-label="Presets">
+    <button type="button" data-n="1" data-m="2">1 · 2</button>
+    <button type="button" data-n="2" data-m="3">2 · 3</button>
+    <button type="button" data-n="3" data-m="5">3 · 5</button>
+    <button type="button" data-n="5" data-m="8">5 · 8</button>
+    <button type="button" data-n="3" data-m="4">3 · 4</button>
+  </div>
+  <div class="row">
+    <button type="button" id="scatter">Scatter the sand again</button>
+    <button type="button" id="tone" aria-pressed="false">🔇 Tone: off</button>
+  </div>
+  <p class="note">Sound is off by default. If you turn it on, a quiet sine tone plays at a pitch mapped from the pattern (roughly proportional to √(n² + m²)); it changes when you move the sliders. Preset numbers echo Fibonacci pairs — a house nod, not a claim that a real plate prefers them.</p>
+</div>
+<main>
+<h1>✨ Chladni Patterns · Songs You Can See</h1>
+<h2>What it is</h2>
+<p>Scatter fine sand on a square metal plate, make the plate vibrate, and the sand dances away from the moving places and gathers on the places that stay still. Those still curves are called <b>nodal lines</b>, and the picture they draw is a <b>Chladni pattern</b> — a song you can see.</p>
+<p>On this page the plate is a square of glowing dust. For chosen whole numbers <b>n</b> and <b>m</b>, the still lines are where <code>cos(nπx)cos(mπy) − cos(mπx)cos(nπy) = 0</code>. The sand is gently shaken where the plate would move most, and settles where that value is near zero. If n and m are equal the two terms cancel everywhere, so choose two different numbers.</p>
+<h2>Ernst Chladni (1756–1827)</h2>
+<p>Ernst Chladni was a German physicist and musician, often called the <b>father of acoustics</b>. He drew a violin bow across the edge of a sand-covered plate so the plate rang like an instrument, and the sand collected on its still nodal lines. He published his patterns in <i>Entdeckungen über die Theorie des Klanges</i> in <b>1787</b> and spent years travelling with his plates, showing audiences — including, famously, Napoleon — that sound has a visible shape. These figures helped turn the study of vibration into modern acoustics and, much later, into the way we think about waves and modes in physics.</p>
+<h2>From sound back to geometry</h2>
+<p>After two circles in the <a href="../vesica/">Vesica Piscis</a> and nine triangles in the <a href="../sri-yantra/">Sri Yantra</a>, here is a third way a pattern appears: not drawn by a compass or a ruler, but revealed by vibration. The plate decides where the lines are; the sand only tells the truth about where it can rest. Different branches, same tree. Soft eyes.</p>
+</main>
+<footer>Inspired by our in-house fork <a href="https://github.com/MultiDimensionalDevilsKingdomsRoute666/chladni">MultiDimensionalDevilsKingdomsRoute666/chladni</a> — that fork has no license file, so no code was copied from it; this page is original code written for the house. Made with love by 589/kin. · <a href="../sri-yantra/">← Sri Yantra</a> · <a href="../vesica/">Vesica Piscis</a> · Soft eyes.</footer>
+<script src="chladni.js"></script>
+</body>
+</html>

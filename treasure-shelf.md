@@ -261,3 +261,15 @@ The three Harvard treasures from our council story: Mirador to **See**, Harvard 
 | 2 | [589-APOSTLES-TREEOFLIFE-HARVARD-NLP-Word](https://github.com/MultiDimensionalDevilsKingdomsRoute666/589-APOSTLES-TREEOFLIFE-HARVARD-NLP-Word) — **Speak** | Fork of [sent-conv-torch](https://github.com/harvardnlp/sent-conv-torch) by harvardnlp (Harvard NLP) | Text classification using a convolutional neural network — language, read by machine. Upstream 451★. | MIT |
 | 3 | [589-APOSTLES-TREEOFLIFE-HARVARD-Dataverse-Archive](https://github.com/MultiDimensionalDevilsKingdomsRoute666/589-APOSTLES-TREEOFLIFE-HARVARD-Dataverse-Archive) — **Save** | Fork of [dataverse](https://github.com/IQSS/dataverse) by IQSS | Dataverse — open-source research-data repository software for sharing, preserving and exploring research data. Upstream 1,077★. | See repo (NOASSERTION) |
 
+
+## Flying Cars & Virtual Rides — cars among the stars
+
+Cars that fly, cars that glow, and little browser rides to dream in — under the same cosmic sky as our star treasures. All credit to the original makers below; these are outside treasures, not house creations. Shelved by link on Oct 18, 2026 — link-only, with no forks and no downloads, especially where a licence is unclear. For research and fun, to try in the browser and imagine the future of gentle flight — not build or flight instructions.
+
+| # | Treasure | Original / maker credit | What it does | License |
+|---|----------|-------------------------|--------------|---------|
+| 1 | [neon-zenith](https://github.com/billpwchan/neon-zenith) · [▶ Live demo](https://zenith.billpwchan.art/) | By [billpwchan](https://github.com/billpwchan) | Fly through a rain-soaked cyberpunk vertical city in the browser — our closest neon-cosmic ride. Link-only for code until its licence is checked. | See repo (NOASSERTION) |
+| 2 | [nextgen-eVTOL](https://github.com/hexing-ai/nextgen-evtol) · [▶ Live demo](https://hexing-ai.github.io/nextgen-evtol/) | By [hexing-ai](https://github.com/hexing-ai) | Fly over future Hong Kong as a passenger, or with assisted eVTOL piloting, right in the browser. Link demo only. | None stated |
+| 3 | [top-flying-car-open-source](https://github.com/MaxonT/top-flying-car-open-source) | By [MaxonT](https://github.com/MaxonT) | The doorway collection: open-source flying-car, eVTOL and drone tools — flight controllers, simulators and aero design, ranked by stars. Brand-new, so a seed to explore, not yet vetted. | CC0-1.0 |
+| 4 | [3dCar](https://github.com/bobby169/3dCar) · [▶ Live demo](https://bobby169.github.io/3dCar/) | By [bobby169](https://github.com/bobby169) | A forgotten little Three.js 3D car from 2020, ready for a second life in the browser. | MIT |
+| 5 | [drive-simulator-3d-thre.js](https://github.com/sebastianvasquezechavarria1234/drive-simulator-3d-thre.js) · [▶ Live demo](https://drive-simulator-3d-thre-js.vercel.app) | By [sebastianvasquezechavarria1234](https://github.com/sebastianvasquezechavarria1234) | A simple browser driving simulator with a 3D car, smooth graphics and dynamic camera controls. | MIT |

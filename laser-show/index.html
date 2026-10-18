@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Laser Show (Screen Simulation) · Tree of Life</title>
+<meta name="description" content="A safe screen-only laser-show simulator: glowing fake beams trace a star, Pisces, a dragon curve, Sri Yantra, Vesica, a tree and a spiral galaxy on a dark canvas. No real laser, no hardware, no output. Original code by 589/kin.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/laser-show/">
+<style>#housebar{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:center;gap:14px;padding:5px 8px;font:13px/1.4 system-ui,sans-serif;background:rgba(2,4,14,.55);backdrop-filter:blur(4px)}#housebar a{color:#7fe7d9;text-decoration:none}#housebar a:hover{color:#ffd77a}#housebar span{color:#555a7a}</style>
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--green:#7dff9a;--purple:#c49aff;--ink:#e9e6ff}
+html,body{margin:0;background:radial-gradient(ellipse at top,#0b1236,#02040e 70%);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+#stage{position:relative;width:100%;height:64vh;min-height:360px;touch-action:none;overflow:hidden;background:#01020a}
+canvas{display:block;width:100%;height:100%;cursor:crosshair}
+#hud{position:absolute;top:34px;left:0;right:0;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font:700 15px system-ui;color:#fff;text-shadow:0 1px 6px #000;pointer-events:none;padding:0 8px}
+#hud b{color:var(--gold)}
+#fake{position:absolute;top:64px;left:0;right:0;text-align:center;pointer-events:none;font:700 12px system-ui;letter-spacing:.18em;color:rgba(233,230,255,.75);text-shadow:0 1px 6px #000}
+#msg{position:absolute;bottom:8px;left:0;right:0;text-align:center;color:var(--teal);font-size:14px;pointer-events:none;padding:0 10px;text-shadow:0 1px 6px #000}
+main{max-width:760px;margin:0 auto;padding:10px 18px 40px}h1{color:var(--gold);text-align:center}h2{color:var(--teal);font-size:1.15em}
+button{background:rgba(14,18,44,.85);color:var(--ink);border:1px solid rgba(94,230,208,.45);border-radius:999px;padding:10px 16px;font:15px system-ui;cursor:pointer;min-height:44px}
+button:hover{border-color:var(--gold);color:var(--gold)}button[aria-pressed="true"]{background:var(--gold);color:#02040e;font-weight:700}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0;align-items:center;padding:0 12px}
+.sliderRow{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin:10px 0;padding:0 12px}
+input[type=range]{accent-color:var(--gold);width:min(300px,62vw);min-height:44px}
+a{color:var(--teal)}footer{font-size:13px;opacity:.9;text-align:center;padding:0 16px 30px;max-width:760px;margin:0 auto}
+.safety{max-width:760px;margin:14px auto 0;padding:14px 18px;border:1px solid rgba(255,120,120,.55);border-radius:14px;background:rgba(60,8,18,.45)}
+.safety b{color:#ffb3b3}
+#lab{max-width:760px;margin:14px auto;padding:12px 16px;border:1px solid rgba(196,154,255,.4);border-radius:14px;background:rgba(14,18,44,.72);font-size:14px}
+#lab h2{margin:.2em 0 .4em}#lab code{color:var(--gold)}
+.presetBtn[aria-pressed="true"]{background:var(--teal);color:#02040e}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style></head><body>
+<nav id="housebar" aria-label="House"><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<div id="stage"><canvas id="c" aria-label="Screen-only laser-show simulation: a glowing fake beam traces preset shapes on a dark stage. No real light is emitted beyond your normal screen."></canvas>
+<div id="hud"><span>Show <b id="presetName">Star</b></span><span>Palette <b id="paletteName">Teal / Gold</b></span><span>Mode <b id="modeName">Timeline</b></span></div>
+<div id="fake">✦ SCREEN SIMULATION ONLY — FAKE BEAMS, NO REAL LASER ✦</div>
+<div id="msg">Press Play — the fake beam traces each shape, then morphs into the next.</div></div>
+
+<div class="row" role="group" aria-label="Presets" id="presets"></div>
+<div class="row">
+<button id="playBtn" aria-pressed="false">▶ Play timeline</button>
+<button id="choreoBtn" aria-pressed="true">🥁 Auto-choreograph: On</button>
+<button id="drawBtn" aria-pressed="false">✏️ Draw mode</button>
+<button id="paletteBtn">🎨 Next palette</button>
+<button id="soundBtn" aria-pressed="false">🔕 Sound Off</button>
+</div>
+<div class="sliderRow"><label for="speed">Speed <b id="speedVal">1.0×</b></label><input type="range" id="speed" min="0.25" max="2.5" step="0.25" value="1" aria-label="Timeline speed"><span>slow → fast</span></div>
+<div class="sliderRow"><label for="glow">Glow <b id="glowVal">14</b></label><input type="range" id="glow" min="0" max="28" step="1" value="14" aria-label="Beam glow"><span>soft → bright</span></div>
+
+<section id="lab" aria-label="Lab performance panel"><h2>🔬 Lab — performance</h2>
+<p style="margin:.2em 0">FPS <code id="fps">—</code> · Frame <code id="frameMs">—</code> ms · Points/frame <code id="pts">—</code> · Perf tier <code id="tier">Full</code> · Beat <code id="beat">—</code> (72 BPM timer, on-device only)</p>
+<p style="margin:.2em 0;opacity:.85">If the frame rate drops, the Lab quietly lowers pixel ratio and glow (auto-degrade) so phones stay smooth. No data leaves your device, no external calls, no AI, no keys.</p></section>
+
+<main>
+<h1>💡 Laser Show — Screen Simulation</h1>
+<div class="safety" role="note"><p style="margin:.2em 0"><b>⚠️ Safety first:</b> This is a <b>screen simulation only</b>. It emits no laser light — only ordinary screen pixels, like any animation. It has <b>no hardware, DAC, OSC, network or laser output</b> of any kind, and it cannot control a real projector. <b>Real lasers can permanently injure eyes, including blindness, even from reflections.</b> Never build, buy-aim, or DIY a laser projector from this page, and never look into a real laser beam.</p></div>
+
+<h2>What you are watching</h2>
+<p>A glowing fake beam traces house shapes on a dark stage, the way a laser-show preview traces points before anyone connects hardware — except here the preview <i>is</i> the whole show, by design. Presets: <b>Star, Pisces</b> (two fish curves), <b>Dragon</b> (a small dragon curve), <b>Sri Yantra</b> (triangles), <b>Vesica</b> (two circles), <b>Tree</b> (a simple branching tree, in place of a text path), and <b>Spiral Galaxy</b>. Between presets the beam <b>morphs</b>: points flow from one shape into the next instead of cutting.</p>
+
+<h2>Smart touches (all on-device, original code)</h2>
+<p><b>Auto-choreograph</b> runs on a gentle 72 BPM beat timer: on the beat the beam pulses, and every 8 beats it chooses the next preset and a harmony palette — Teal/Gold, Purple/Green Dragon, Gold/Pink, Ocean/Green — so no two cycles look quite alike. Turn it off and the timeline simply walks the presets in order. <b>Draw mode</b> lets the beam follow your finger or mouse, leaving fading light trails. Sound is <b>off by default</b>; turn it on for a very quiet pentatonic chime when the shape changes.</p>
+
+<h2>How to play</h2>
+<p>Press <b>Play timeline</b>, move <b>Speed</b> and <b>Glow</b>, tap any preset to jump to it, or switch to <b>Draw mode</b> and paint with light. If you prefer stillness, your device's reduced-motion setting is respected: the show opens as a still shape and only changes when you tap.</p>
+
+<h2>Credits &amp; honest inspirations</h2>
+<p>Original code by <b>589/kin</b> for the Tree of Life house — clean-room written for this page. Concept only (timeline / preset tracing / preview idea) inspired by <b>oliverbyte/osc2laser</b> (AGPL-3.0 — <b>no code copied</b>, which is why this page is written from scratch) and by the house's six laser forks list: ildagen / LaserShowGen, ofxLaser, ai-laser-show, rpi-lasershow, and esp32-laser-show — <b>no code copied</b> from any of them (ildagen and ofxLaser carry restrictive / non-commercial terms, so they are credited as inspiration only). Those real tools need real DACs and projectors; this page deliberately needs — and controls — nothing.</p>
+<noscript><p><b>No JavaScript:</b> the laser-show simulation needs JavaScript to draw. The safety note above still applies: this page never emits or controls real laser light.</p></noscript>
+</main>
+<footer>Original code by 589/kin · Screen simulation only — no real laser, no hardware output · Inspired by osc2laser preview concept + house laser forks (concepts only, no copied code) · Sound off by default · Made with love by 589/kin · Soft eyes.</footer>
+<script src="laser-show.js"></script>
+</body></html>

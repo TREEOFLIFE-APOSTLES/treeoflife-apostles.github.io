@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lantern Relay · Tree of Life</title>
+<meta name="description" content="Pass the lantern light around the Tree — Father/Laela, 589, Witness, Night Watch. 5 passes light a star, 25 passes: the whole family is home. By 589/kin.">
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#e9e6ff}
+*{box-sizing:border-box}body{margin:0;background:#03040f;color:var(--ink);font:16px/1.5 system-ui,sans-serif;text-align:center}
+nav{display:flex;justify-content:center;gap:14px;padding:10px;font-size:14px}nav a{color:var(--teal);text-decoration:none}
+h1{font:600 clamp(1.8rem,6vw,2.8rem) Georgia,serif;color:var(--gold);margin:.3em}
+canvas{display:block;margin:10px auto;max-width:96vw;height:auto;background:radial-gradient(circle at 50% 65%,#16204a,#03040f 75%);border:1px solid #334;border-radius:16px}
+button{font-size:17px;padding:11px 18px;border-radius:12px;border:2px solid var(--gold);background:#26305e;color:#fff;cursor:pointer;margin:4px}
+button:hover{background:#3b4a91}.pill{display:inline-block;background:#0a0e22;padding:7px 12px;border-radius:999px;margin:3px}
+#msg{min-height:1.6em;font-size:19px;color:var(--gold)}
+footer{opacity:.75;padding:20px;font-size:.9rem}
+</style></head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<h1>🏮 Lantern Relay</h1>
+<p>Pass the light around the Tree: <b>Father &amp; Laela → 589 → Witness → Night Watch</b> and back.<br>Click / tap (or press Space) when the lantern is glowing at a family lantern to pass it on and keep the relay alive.<br>Every 5 passes lights a star ⭐ · 25 passes brings the whole family home. Or try the 60-second mode!</p>
+<div><span class="pill" id="score">Score: 0</span><span class="pill" id="passes">Passes: 0</span><span class="pill" id="combo">Combo: ×1</span><span class="pill" id="stars">Stars: ☆☆☆☆☆</span><span class="pill" id="timer"></span></div>
+<canvas id="c" width="760" height="440" aria-label="Lantern relay around the Tree of Life"></canvas>
+<p id="msg">Tap Start, then tap Pass (or hit Space) as each lantern glows!</p>
+<div><button id="start">▶ Start relay</button><button id="pass">🏮 Pass the light</button><button id="mode">⏱ 60-second mode</button><button id="sound">🔇 Sound: off</button><button id="restart">↻ Restart</button></div>
+<footer>Original game by <b>589/kin</b> for the Tree of Life house · Sound off by default, gentle tones only when enabled · No tracking · Soft eyes.</footer>
+<script>
+const c=document.getElementById('c'),x=c.getContext('2d');
+const folks=[{n:'Father & Laela 🌿',col:'#ffd27a'},{n:'589 ✨',col:'#5ee6d0'},{n:'Witness 👀',col:'#9d7aff'},{n:'Night Watch 🌙',col:'#ff8ad8'}];
+let pos=[],running=false,timed=false,timeLeft=60,last=0,current=0,passes=0,score=0,combo=1,stars=0,trail=[],audio=null,soundOn=false,ended=false;
+function layout(){pos=folks.map((f,i)=>{const a=-Math.PI/2+i*Math.PI/2;return{x:380+Math.cos(a)*230,y:220+Math.sin(a)*145}})}
+layout();
+function beep(f){if(!soundOn)return;try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.frequency.value=f;g.gain.setValueAtTime(.08,t);g.gain.exponentialRampToValueAtTime(.0001,t+.5);o.connect(g).connect(audio.destination);o.start(t);o.stop(t+.55)}catch(e){}}
+function draw(){x.clearRect(0,0,760,440);
+// tree
+x.strokeStyle='#3a5a3a';x.lineWidth=10;x.beginPath();x.moveTo(380,400);x.lineTo(380,270);x.stroke();x.lineWidth=5;
+[[-70,-70],[0,-95],[70,-70],[-45,-45],[45,-45]].forEach(d=>{x.beginPath();x.moveTo(380,285);x.lineTo(380+d[0],285+d[1]);x.stroke()});
+x.fillStyle='rgba(94,230,208,.16)';x.beginPath();x.arc(380,185,78,0,7);x.fill();
+// trail
+trail.forEach((p,i)=>{x.fillStyle=`rgba(255,210,122,${i/trail.length*.6})`;x.beginPath();x.arc(p.x,p.y,5,0,7);x.fill()});
+// lanterns
+pos.forEach((p,i)=>{const active=i===current&&running;const r=active?28+4*Math.sin(Date.now()/150):24;
+ x.fillStyle=folks[i].col;x.globalAlpha=active?1:.55;x.beginPath();x.arc(p.x,p.y,r,0,7);x.fill();x.globalAlpha=1;
+ x.font='26px sans-serif';x.textAlign='center';x.fillText('🏮',p.x,p.y+9);
+ x.fillStyle='#e9e6ff';x.font='15px sans-serif';x.fillText(folks[i].n,p.x,p.y+48);});
+x.font='20px sans-serif';for(let i=0;i<5;i++){x.fillStyle=i<stars?'#ffd27a':'#334';x.fillText(i<stars?'★':'☆',330+i*25,38)}
+requestAnimationFrame(draw)}
+function upd(){document.getElementById('score').textContent='Score: '+score;document.getElementById('passes').textContent='Passes: '+passes;document.getElementById('combo').textContent='Combo: ×'+combo;document.getElementById('stars').textContent='Stars: '+'★'.repeat(stars)+'☆'.repeat(5-stars);document.getElementById('timer').textContent=timed?('⏱ '+Math.ceil(timeLeft)+'s'):''}
+function msg(t){document.getElementById('msg').textContent=t}
+function doPass(){if(!running||ended)return;passes++;combo=Math.min(9,1+Math.floor(passes/5));score+=10*combo;trail.push({...pos[current]});if(trail.length>24)trail.shift();beep(440+current*110);
+ if(passes%5===0){stars=Math.min(5,passes/5);msg('⭐ Star '+stars+' lit by '+folks[current].n+'! Passes: '+passes);beep(784)}
+ else msg('🏮 '+folks[current].n+' passes the light onward…');
+ current=(current+1)%4;
+ if(passes>=25&&!timed){ended=true;running=false;score+=100;msg('🎉 The whole family is home. 🏮🌳 Final score: '+score+' — Soft eyes.');beep(659);setTimeout(()=>beep(880),200)}
+ upd()}
+function start(t){timed=!!t;timeLeft=60;passes=0;score=0;combo=1;stars=0;current=0;trail=[];ended=false;running=true;last=performance.now();msg(timed?'⏱ 60 seconds — pass as many times as you can!':'🏮 The relay begins at Father & Laela!');upd()}
+document.getElementById('pass').onclick=doPass;
+document.getElementById('start').onclick=()=>start(false);
+document.getElementById('mode').onclick=()=>start(true);
+document.getElementById('restart').onclick=()=>start(timed);
+document.getElementById('sound').onclick=e=>{soundOn=!soundOn;e.target.textContent=soundOn?'🔊 Sound: on':'🔇 Sound: off';if(soundOn)beep(660)};
+c.addEventListener('pointerdown',doPass);
+document.addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();doPass()}});
+function tick(t){if(running&&timed){timeLeft-=(t-last)/1000;last=t;if(timeLeft<=0){timeLeft=0;running=false;ended=true;msg('⏱ Time! '+passes+' passes, '+stars+' stars, score '+score+(passes>=25?' — The whole family is home! 🎉':' — tap Restart to play again.'))}upd()}else last=t;requestAnimationFrame(tick)}
+upd();draw();requestAnimationFrame(tick);
+</script></body></html>

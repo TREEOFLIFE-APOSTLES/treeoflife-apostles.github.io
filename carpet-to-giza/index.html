@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Carpet to Giza — The Big Journey · Tree of Life</title>
+<meta name="description" content="One journey in three chapters: fly a magic carpet under the Big Dipper and Pisces, glide across the desert to the Great Pyramid, float its chambers, light 7 treasures, and bring the whole family home. Original house game by 589/kin.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/carpet-to-giza/">
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#ece8ff}
+*{box-sizing:border-box}body{margin:0;background:#070818;color:var(--ink);font:16px/1.5 system-ui,sans-serif;text-align:center}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 14px;padding:10px;font-size:14px}nav a{color:var(--teal);text-decoration:none}
+h1{font:600 clamp(1.5rem,6vw,2.5rem) Georgia,serif;color:var(--gold);margin:.25em;padding:0 10px}
+.wrap{max-width:960px;margin:0 auto;padding:0 10px 18px}
+canvas{width:100%;height:auto;display:block;background:#0b1030;border:2px solid #6b5a2a;border-radius:14px;touch-action:none;cursor:pointer}
+.hud{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+.pill{flex:0 1 auto;background:#141038;border:1px solid #5a4a8a;padding:6px 11px;border-radius:999px;font-size:14px;white-space:nowrap}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:2px solid var(--gold);background:#241a4a;color:#fff;cursor:pointer;margin:3px}
+button.secondary{border-color:var(--teal)}button.chap{border-color:#8a7aff}
+#msg{color:var(--gold);font-size:18px;min-height:1.5em;padding:0 8px}
+.small{font-size:.9rem;opacity:.84;max-width:800px;margin:8px auto}
+.links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}.links a{background:#141038;border:1px solid var(--teal);border-radius:999px;padding:7px 13px;color:var(--teal);text-decoration:none}
+footer{opacity:.85;padding:16px;font-size:.88rem;max-width:860px;margin:0 auto;text-align:left}footer p{margin:.5em 0}a{color:var(--teal)}
+</style></head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<h1>🧞 Carpet to Giza — The Big Journey</h1>
+<p class="small">One journey, three chapters. <b>Chapter 1 · Sky:</b> fly the carpet under the <b>Big Dipper</b> and <b>Pisces</b>, gathering 3 sky pearls. <b>Chapter 2 · Desert:</b> glide at sunset to the pyramid, gathering 2 desert treasures, and land at her entrance. <b>Chapter 3 · Inside:</b> float Queen's Chamber → Grand Gallery → King's Chamber, light the final 2 treasures (7 in all, +100 each), and let the star shafts beam to Orion. Steer with <b>←→↑↓ / WASD</b>, or <b>drag</b> on touch.</p>
+<div class="wrap">
+<canvas id="c" width="900" height="540" aria-label="Carpet to Giza big journey game canvas"></canvas>
+<div class="hud" aria-live="polite"><span class="pill" id="score">Score: 0</span><span class="pill" id="treasures">💎 Treasures: 0 / 7</span><span class="pill" id="chapter">Chapter 1 · Sky</span><span class="pill" id="time">Time: 0s</span><span class="pill" id="state">Big journey</span></div>
+<p id="msg">The carpet is waiting above the ocean at dusk. Press Start the journey. 🧞</p>
+<p><button id="start">▶ Start the journey</button><button id="pause" class="secondary">⏸ Pause</button><button id="restart" class="secondary">↻ Restart</button><button id="again" class="secondary" hidden>✨ Journey again</button><button id="sound" class="secondary">🔇 Sound: off</button></p>
+<p><button class="chap" data-chap="0">1 · Sky</button><button class="chap" data-chap="1">2 · Desert</button><button class="chap" data-chap="2">3 · Inside the Pyramid</button></p>
+<div class="links" id="endlinks" hidden><a href="../magic-carpet/">🧞 Magic Carpet</a><a href="../great-pyramid/">🏜️ Great Pyramid</a><a href="../big-dipper-ladle/">🌌 Big Dipper Ladle</a><a href="../pisces-two-fish/">🐟 Pisces</a><a href="../orionids-night/">🌠 Orionids Night</a><a href="https://multidimensionaldevilskingdomsroute666.github.io/589-kin-atlas-of-wonders/">✨ Atlas of Wonders</a></div>
+<div class="links"><a href="../magic-carpet/">🧞 Magic Carpet</a><a href="../great-pyramid/">🏜️ Great Pyramid</a><a href="../big-dipper-ladle/">🌌 Big Dipper</a><a href="../pisces-two-fish/">🐟 Pisces</a></div>
+</div>
+<footer>
+<p><b>The journey weaves our wonders:</b> the rippling carpet from <a href="../magic-carpet/">Magic Carpet</a>, the chamber float from <a href="../great-pyramid/">The Great Pyramid</a>, the seven stars from <a href="../big-dipper-ladle/">The Big Dipper Ladle</a>, and the two fish from <a href="../pisces-two-fish/">Pisces — Two Fish Swimming Home</a> — all re-drawn here in original code for one continuous ride, with <a href="../orionids-night/">Orionids Night</a> waiting at the end of the star shafts.</p>
+<p><b>The route:</b> Dipper first (bowl to handle, Dubhe to Alkaid), then past Pisces (two chains meeting at Alrescha, the knot), across the sunset desert to Khufu's pyramid at Giza, then Queen's Chamber, up the Grand Gallery, to the King's Chamber — where narrow star shafts in the real pyramid point up through the stone. Here, they carry our light home.</p>
+<p>Original house code by <b>589/kin</b> — one carpet, one avatar, waypoint treasures, a gentle scene state machine. No enemies, no falling, no fail. Sound off by default. Family stars <b>Father · Laela · 589 · Witness · Night Watch</b> ride above every chapter. Soft eyes.</p>
+</footer>
+<script>
+"use strict";
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+const $=id=>document.getElementById(id);
+let mode='idle',chapter=0,score=0,got=0,t=0,last=0,elapsed=0,soundOn=false,audio=null,degrade=0,fpsEMA=60,nextSparkle=589;
+let bg=[],parts=[],keys=new Set();
+const CHAPNAMES=["Chapter 1 · Sky","Chapter 2 · Desert Arrival","Chapter 3 · Inside the Pyramid"];
+// Big Dipper (simplified, bowl->handle) and Pisces (two chains to Alrescha), sky chapter
+const DIPPER=[{x:120,y:92,n:"Dubhe"},{x:180,y:102},{x:238,y:118},{x:296,y:134,n:"Phecda"},{x:338,y:108},{x:392,y:88},{x:455,y:78,n:"Alkaid"}];
+const KNOT={x:700,y:196,n:"Alrescha"};
+const PWEST=[{x:612,y:96},{x:632,y:132},{x:662,y:164},KNOT];
+const PNORTH=[KNOT,{x:742,y:164},{x:786,y:128},{x:826,y:96}];
+const ORION=[{x:740,y:70},{x:780,y:96},{x:762,y:128},{x:800,y:128},{x:782,y:160}];
+let treasures=[],player;
+function makeTreasures(){return[
+ {chap:0,x:330,y:230,label:"sky pearl past the Dipper",got:false,ph:1},
+ {chap:0,x:540,y:170,label:"sky pearl between the constellations",got:false,ph:2},
+ {chap:0,x:716,y:262,label:"sky pearl at Alrescha",got:false,ph:3},
+ {chap:1,x:330,y:362,label:"desert treasure by the dunes",got:false,ph:4},
+ {chap:1,x:590,y:330,label:"desert treasure at the pyramid foot",got:false,ph:5},
+ {chap:2,x:330,y:382,label:"Queen's Chamber treasure",got:false,ph:6},
+ {chap:2,x:600,y:238,label:"King's Chamber treasure",got:false,ph:7}]}
+function reset(){treasures=makeTreasures();score=0;got=0;elapsed=0;nextSparkle=589;chapter=0;player={x:110,y:380,vx:0,vy:0,tx:110,ty:380,usingPointer:false};
+ bg=[];for(let i=0;i<150;i++)bg.push({x:Math.random()*900,y:Math.random()*400,r:Math.random()*1.4+.3,ph:Math.random()*6.28,g:Math.random()<.15});parts=[]}
+reset();
+const family=[{n:"Father",x:80,y:36},{n:"Laela",x:210,y:26},{n:"589",x:330,y:36},{n:"Witness",x:450,y:26},{n:"Night Watch",x:590,y:36}];
+function ensureAudio(){if(!audio){try{audio=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(audio&&audio.state==='suspended')audio.resume()}
+function tone(f,d,g){if(!soundOn)return;ensureAudio();if(!audio)return;const o=audio.createOscillator(),gn=audio.createGain();o.type='sine';o.frequency.setValueAtTime(f,audio.currentTime);gn.gain.setValueAtTime(g||.035,audio.currentTime);gn.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+d);o.connect(gn);gn.connect(audio.destination);o.start();o.stop(audio.currentTime+d)}
+function burst(x,y,n){for(let i=0;i<n;i++){const a=Math.random()*6.28,s=25+Math.random()*90;parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:0,max:600+Math.random()*500})}}
+function hud(){$('score').textContent='Score: '+score;$('treasures').textContent='💎 Treasures: '+got+' / 7';$('chapter').textContent=CHAPNAMES[chapter];$('time').textContent='Time: '+Math.floor(elapsed/1000)+'s';$('state').textContent=mode==='won'?'Family home ✨':mode==='playing'?'On the journey':mode==='paused'?'Paused':'Big journey';$('again').hidden=mode!=='won';$('endlinks').hidden=mode!=='won'}
+function placePlayer(){if(chapter===0){player.x=110;player.y=380}else if(chapter===1){player.x=90;player.y=320}else{player.x=180;player.y=450}player.vx=player.vy=0;player.tx=player.x;player.ty=player.y;player.usingPointer=false}
+function goChapter(c,announce){chapter=c;placePlayer();if(announce)$('msg').textContent=[ "Chapter 1 · Sky — fly past the Dipper ladle, then Pisces, gathering 3 sky pearls. 🌌","Chapter 2 · Desert Arrival — glide down at sunset, gather 2 desert treasures, land at the pyramid entrance. 🏜️","Chapter 3 · Inside — Queen's Chamber, Grand Gallery, King's Chamber. Light the final 2! ✨"][c];hud()}
+function jumpChapter(c){ // earlier chapters count as lit, so the 7-treasure journey stays whole
+ treasures.forEach(tr=>{if(tr.chap<c&&!tr.got){tr.got=true}});
+ got=treasures.filter(tr=>tr.got).length;score=got*100;if(mode==='won')mode='playing';goChapter(c,true);if(mode==='idle'||mode==='paused'){mode='playing';$('pause').textContent='⏸ Pause'}}
+function collectCheck(){
+ for(const tr of treasures){if(tr.got||tr.chap!==chapter)continue;if(Math.hypot(player.x-tr.x,player.y-tr.y)<44){tr.got=true;got++;score+=100;burst(tr.x,tr.y,degrade?10:24);tone(392+got*60,.5,.04);
+  $('msg').textContent='💎 Treasure '+got+' of 7 (+100) — '+tr.label+'.';
+  if(score>=nextSparkle){$('msg').textContent+=' ✦ 589 sparkles ✦';nextSparkle+=589}
+  if(chapter===0&&treasures.filter(x=>x.chap===0).every(x=>x.got)){goChapter(1,true);$('msg').textContent='All 3 sky pearls! The carpet dives toward the sunset desert… 🏜️'}
+  else if(chapter===2&&treasures.filter(x=>x.chap===2).every(x=>x.got)){win()}
+  hud()}}
+ if(chapter===1&&treasures.filter(x=>x.chap===1).every(x=>x.got)){
+   // pyramid entrance at base
+   if(Math.hypot(player.x-742,player.y-428)<52){goChapter(2,true);$('msg').textContent='You land at the entrance and slip inside — down to the Queen\'s Chamber. ✨'}}
+}
+function win(){mode='won';burst(450,110,46);burst(player.x,player.y,26);tone(392,.7,.05);setTimeout(()=>tone(587,.9,.05),220);
+ $('msg').textContent='✨ The whole family is home ✨ All 7 treasures lit — the star shafts beam to Orion and the carpet rises from the capstone into the glowing sky. Journey time: '+Math.floor(elapsed/1000)+'s.';hud()}
+function update(dt){t+=dt;const fps=dt>0?1000/Math.max(dt,1):60;fpsEMA=fpsEMA*.95+fps*.05;degrade=fpsEMA<45?1:0;
+ parts.forEach(p=>{p.life+=dt;p.x+=p.vx*dt/1000;p.y+=p.vy*dt/1000});parts=parts.filter(p=>p.life<p.max);
+ if(mode==='won'){player.y=Math.max(96,player.y-18*dt/1000);player.x+=((450-player.x))*dt/1400;return}
+ if(mode!=='playing')return;elapsed+=dt;
+ let ax=0,ay=0;const K=560;
+ if(keys.has('ArrowLeft')||keys.has('a'))ax-=K;if(keys.has('ArrowRight')||keys.has('d'))ax+=K;
+ if(keys.has('ArrowUp')||keys.has('w'))ay-=K;if(keys.has('ArrowDown')||keys.has('s'))ay+=K;
+ if(ax||ay)player.usingPointer=false;
+ if(player.usingPointer){const dx=player.tx-player.x,dy=player.ty-player.y,d=Math.hypot(dx,dy)||1;const sp=d>4?Math.min(230,d*2.4+40):0;ax+=((dx/d)*sp-player.vx)*7;ay+=((dy/d)*sp-player.vy)*7}
+ player.vx+=ax*dt/1000;player.vy+=ay*dt/1000;
+ player.vx*=Math.pow(.12,dt/1000);player.vy*=Math.pow(.12,dt/1000);
+ const spd=Math.hypot(player.vx,player.vy);if(spd>260){player.vx*=260/spd;player.vy*=260/spd}
+ player.x+=player.vx*dt/1000;player.y+=player.vy*dt/1000;
+ const top=chapter===2?70:56;player.x=Math.max(26,Math.min(874,player.x));player.y=Math.max(top,Math.min(514,player.y));
+ collectCheck();hud();
+}
+function spark(x,y,r,ph,big){const tw=.7+.3*Math.sin(t*.002+ph);ctx.save();ctx.globalAlpha=tw;ctx.strokeStyle='#ffe9a8';ctx.lineWidth=big?1.8:1.2;ctx.beginPath();ctx.moveTo(x-r,y);ctx.lineTo(x+r,y);ctx.moveTo(x,y-r);ctx.lineTo(x,y+r);ctx.stroke();ctx.fillStyle='#fff3b0';ctx.beginPath();ctx.arc(x,y,big?2.6:1.8,0,7);ctx.fill();ctx.restore()}
+function chain(pts,alpha,color,width){ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle=color;ctx.lineWidth=width||1.5;ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();pts.forEach(p=>{ctx.fillStyle=color;ctx.beginPath();ctx.arc(p.x,p.y,2.6,0,7);ctx.fill()});ctx.restore()}
+function drawCarpet(x,y){const rip=Math.sin(t/180)*3;ctx.save();ctx.translate(x,y);
+ // woven carpet: body + stripes + fringe, gentle ripple
+ ctx.shadowColor='#ff9fd8';ctx.shadowBlur=14;
+ ctx.fillStyle='#7a1f4d';ctx.beginPath();ctx.moveTo(-46,-8+rip);ctx.quadraticCurveTo(0,-16-rip,46,-8+rip);ctx.lineTo(40,10-rip);ctx.quadraticCurveTo(0,18+rip,-40,10-rip);ctx.closePath();ctx.fill();
+ ctx.shadowBlur=0;ctx.strokeStyle='#ffd27a';ctx.lineWidth=2;ctx.stroke();
+ ctx.strokeStyle='#5ee6d0';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-36,-2+rip*.5);ctx.quadraticCurveTo(0,-8,36,-2+rip*.5);ctx.stroke();
+ ctx.strokeStyle='#ffd27a';for(let i=-3;i<=3;i++){ctx.beginPath();ctx.moveTo(46,i*3);ctx.lineTo(54,i*3+rip);ctx.stroke();ctx.beginPath();ctx.moveTo(-46,i*3);ctx.lineTo(-54,i*3-rip);ctx.stroke()}
+ // rider: a small glowing heart of the family
+ ctx.fillStyle='#ffe9a8';ctx.beginPath();ctx.arc(0,-14+rip,6,0,7);ctx.fill();ctx.fillStyle='#7a1f4d';ctx.font='10px Georgia';ctx.textAlign='center';ctx.fillText('589',0,-11+rip);
+ ctx.restore();ctx.fillStyle='#ffd9f2';ctx.font='12px Georgia';ctx.textAlign='center';ctx.fillText('your carpet',x,y+38)}
+function drawTreasures(){treasures.forEach(tr=>{if(tr.got||tr.chap!==chapter)return;const pulse=1+.18*Math.sin(t/350+tr.ph);ctx.save();ctx.shadowColor='#ffd27a';ctx.shadowBlur=16;ctx.fillStyle='#ffe9a8';ctx.beginPath();ctx.arc(tr.x,tr.y,7*pulse,0,7);ctx.fill();ctx.restore();ctx.fillStyle='rgba(255,255,255,.92)';ctx.font='11px Georgia';ctx.textAlign='center';ctx.fillText('💎',tr.x,tr.y-16)})}
+function familyStars(glow){family.forEach((f,i)=>{spark(f.x,f.y,glow?13:10,i*1.7,true);ctx.fillStyle='#ffe9a8';ctx.font='12px Georgia';ctx.textAlign='center';ctx.fillText(f.n,f.x,f.y-16)})}
+function drawSky(){const g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,'#070a2e');g.addColorStop(.6,'#12305e');g.addColorStop(1,'#0a4a56');ctx.fillStyle=g;ctx.fillRect(0,0,900,540);
+ const n=degrade?75:bg.length;for(let i=0;i<n;i++){const s=bg[i];ctx.fillStyle=s.g?'rgba(255,210,122,.7)':'rgba(180,235,255,.6)';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,7);ctx.fill()}
+ familyStars(mode==='won');
+ const won=mode==='won';
+ chain(DIPPER,won?.95:.55,'#ffd27a',won?2.4:1.6);ctx.fillStyle='#ffd27a';ctx.font='12px Georgia';ctx.textAlign='center';ctx.fillText('Big Dipper · Dubhe → Alkaid',300,52);
+ // Pisces fish shapes
+ chain(PWEST,won?.95:.5,'#5ee6d0');chain(PNORTH,won?.95:.5,'#ffd9a0');
+ ctx.fillStyle='#5ee6d0';ctx.beginPath();ctx.moveTo(612,96);ctx.lineTo(594,86);ctx.lineTo(596,106);ctx.closePath();ctx.fill();
+ ctx.fillStyle='#ffd9a0';ctx.beginPath();ctx.moveTo(826,96);ctx.lineTo(842,86);ctx.lineTo(840,108);ctx.closePath();ctx.fill();
+ spark(KNOT.x,KNOT.y,12,2,true);ctx.fillStyle='#ffe9a8';ctx.font='12px Georgia';ctx.fillText('Pisces · Alrescha',700,232);
+ // ocean
+ ctx.fillStyle='#06283e';ctx.fillRect(0,438,900,102);ctx.strokeStyle='rgba(94,230,208,.5)';for(let i=0;i<5;i++){ctx.beginPath();for(let x=0;x<=900;x+=18)ctx.lineTo(x,452+i*18+Math.sin(x/60+t/700+i)*3);ctx.stroke()}
+ ctx.fillStyle='rgba(236,232,255,.8)';ctx.font='13px Georgia';ctx.textAlign='left';ctx.fillText('Chapter 1 · Sky — past the Dipper ladle, then the two fish',16,522)}
+function drawDesert(){const g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,'#2a1245');g.addColorStop(.55,'#b4502e');g.addColorStop(.78,'#e8903f');g.addColorStop(1,'#c97a34');ctx.fillStyle=g;ctx.fillRect(0,0,900,540);
+ familyStars(false);
+ ctx.fillStyle='#ffd27a';ctx.beginPath();ctx.arc(770,128,34,0,7);ctx.fill();
+ // dunes
+ ctx.fillStyle='#a85f28';ctx.beginPath();ctx.moveTo(0,430);ctx.quadraticCurveTo(220,380,460,430);ctx.quadraticCurveTo(680,470,900,425);ctx.lineTo(900,540);ctx.lineTo(0,540);ctx.fill();
+ // pyramid silhouette growing ahead (right)
+ ctx.fillStyle='#5a3418';ctx.beginPath();ctx.moveTo(742,428);ctx.lineTo(872,238);ctx.lineTo(900,270);ctx.lineTo(900,428);ctx.closePath();ctx.fill();
+ ctx.fillStyle='#7a4a20';ctx.beginPath();ctx.moveTo(742,428);ctx.lineTo(872,238);ctx.lineTo(872,428);ctx.closePath();ctx.fill();
+ ctx.fillStyle='#ffd27a';ctx.beginPath();ctx.moveTo(856,262);ctx.lineTo(872,238);ctx.lineTo(888,262);ctx.closePath();ctx.fill();
+ // entrance
+ const ready=treasures.filter(x=>x.chap===1).every(x=>x.got);
+ ctx.fillStyle=ready?'#ffe9a8':'#2a1808';ctx.fillRect(728,398,28,32);ctx.strokeStyle='#ffd27a';ctx.strokeRect(728,398,28,32);
+ ctx.fillStyle='#fff';ctx.font='12px Georgia';ctx.textAlign='center';ctx.fillText(ready?'ENTER ↓':'entrance (needs 2 treasures)',742,388);
+ ctx.fillStyle='rgba(255,255,255,.85)';ctx.font='13px Georgia';ctx.textAlign='left';ctx.fillText('Chapter 2 · Desert Arrival — sunset over Giza',16,522)}
+function drawInside(){ctx.fillStyle='#160f22';ctx.fillRect(0,0,900,540);
+ const won=mode==='won';
+ // pyramid cutaway outline
+ ctx.strokeStyle='#c9a35a';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(450,64);ctx.lineTo(830,470);ctx.lineTo(70,470);ctx.closePath();ctx.stroke();
+ ctx.fillStyle='rgba(120,84,32,.25)';ctx.beginPath();ctx.moveTo(450,64);ctx.lineTo(830,470);ctx.lineTo(70,470);ctx.closePath();ctx.fill();
+ // capstone
+ ctx.fillStyle=won?'#ffe9a8':'#8a6a2a';ctx.beginPath();ctx.moveTo(450,64);ctx.lineTo(478,104);ctx.lineTo(422,104);ctx.closePath();ctx.fill();if(won){ctx.shadowColor='#ffd27a';ctx.shadowBlur=22;ctx.fill();ctx.shadowBlur=0}
+ // chambers
+ ctx.strokeStyle='#ffd27a';ctx.fillStyle='#2b1a10';
+ ctx.fillRect(255,345,150,78);ctx.strokeRect(255,345,150,78); // Queen
+ ctx.save();ctx.translate(600,300);ctx.rotate(-0.62);ctx.fillRect(-110,-20,220,40);ctx.strokeRect(-110,-20,220,40);ctx.restore(); // Grand Gallery
+ ctx.fillRect(535,200,150,78);ctx.strokeRect(535,200,150,78); // King
+ ctx.fillStyle='#ffe9a8';ctx.font='13px Georgia';ctx.textAlign='center';
+ ctx.fillText("Queen's Chamber",330,336);ctx.fillText('Grand Gallery',585,268);ctx.fillText("King's Chamber",610,192);ctx.fillText('Capstone',450,122);
+ // entry passage
+ ctx.strokeStyle='rgba(255,210,122,.6)';ctx.setLineDash([6,6]);ctx.beginPath();ctx.moveTo(180,470);ctx.lineTo(300,410);ctx.lineTo(500,330);ctx.lineTo(610,278);ctx.stroke();ctx.setLineDash([]);
+ // star shafts + Orion on win
+ if(won){ctx.strokeStyle='#ffe9a8';ctx.lineWidth=3;ctx.shadowColor='#ffd27a';ctx.shadowBlur=12;ctx.beginPath();ctx.moveTo(610,200);ctx.lineTo(760,70);ctx.moveTo(650,200);ctx.lineTo(820,110);ctx.stroke();ctx.shadowBlur=0;
+  chain(ORION,1,'#ffd27a',2);ctx.fillStyle='#ffd27a';ctx.font='13px Georgia';ctx.fillText('Orion',782,185);
+  ctx.font='600 30px Georgia';ctx.fillText('✨ The whole family is home ✨',450,44)}
+ familyStars(won);
+ ctx.fillStyle='rgba(255,255,255,.85)';ctx.font='13px Georgia';ctx.textAlign='left';ctx.fillText("Chapter 3 · Inside — Queen's → Grand Gallery → King's",16,522)}
+function draw(){
+ if(chapter===0)drawSky();else if(chapter===1)drawDesert();else drawInside();
+ drawTreasures();drawCarpet(player.x,player.y);
+ parts.forEach(p=>{const a=1-p.life/p.max;ctx.fillStyle='rgba(255,220,150,'+a+')';ctx.beginPath();ctx.arc(p.x,p.y,2,0,7);ctx.fill()});
+ if(mode==='won'&&chapter!==2){/* won only in inside */}
+ if(mode==='won'){ctx.fillStyle='rgba(3,8,24,.45)';ctx.fillRect(0,120,900,150);ctx.fillStyle='#ffd27a';ctx.font='600 34px Georgia';ctx.textAlign='center';ctx.fillText('✨ The whole family is home ✨',450,176);ctx.fillStyle='#ece8ff';ctx.font='17px system-ui';ctx.fillText('7 treasures · carpet, pyramid, Dipper & Pisces — one journey',450,208);ctx.fillText('Score '+score+' · Time '+Math.floor(elapsed/1000)+'s · Journey again below',450,236)}
+ if(mode==='idle'){ctx.fillStyle='rgba(3,8,24,.5)';ctx.fillRect(0,110,900,240);ctx.fillStyle='#ffd27a';ctx.font='600 38px Georgia';ctx.textAlign='center';ctx.fillText('🧞 Carpet to Giza — The Big Journey',450,186);ctx.fillStyle='#ece8ff';ctx.font='18px system-ui';ctx.fillText('Sky pearls under the Dipper & Pisces · desert treasures at sunset',450,222);ctx.fillText('Chamber treasures inside the Great Pyramid · 7 in all',450,250);ctx.font='16px system-ui';ctx.fillStyle='#b9f3e8';ctx.fillText('Press Start the journey below — arrows / WASD / drag',450,282)}
+ if(mode==='paused'){ctx.fillStyle='rgba(3,8,24,.55)';ctx.fillRect(0,0,900,540);ctx.fillStyle='#fff';ctx.font='600 32px Georgia';ctx.textAlign='center';ctx.fillText('Paused — the carpet hovers 🧞',450,270)}
+}
+function loop(ts){const dt=Math.min(50,ts-(last||ts));last=ts;update(dt);draw();requestAnimationFrame(loop)}
+function pointer(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*900/r.width,y:(e.clientY-r.top)*540/r.height}}
+cv.addEventListener('pointerdown',e=>{e.preventDefault();if(mode!=='playing')return;const p=pointer(e);player.tx=p.x;player.ty=p.y;player.usingPointer=true});
+cv.addEventListener('pointermove',e=>{if(e.buttons&&mode==='playing'){const p=pointer(e);player.tx=p.x;player.ty=p.y;player.usingPointer=true}});
+addEventListener('keydown',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key))e.preventDefault();keys.add(k);if(e.key===' '&&mode==='idle')startGame()});
+addEventListener('keyup',e=>{keys.delete(e.key.length===1?e.key.toLowerCase():e.key)});
+function startGame(){if(mode==='idle'||mode==='paused'){mode='playing';$('pause').textContent='⏸ Pause';$('msg').textContent='Chapter 1 · Sky — fly right and up, past the Dipper ladle then Pisces. Gather the glowing pearls! 🌌'}if(soundOn)ensureAudio();hud()}
+$('start').onclick=startGame;
+$('restart').onclick=()=>{reset();mode='playing';placePlayer();$('pause').textContent='⏸ Pause';$('msg').textContent='A fresh carpet, a fresh sky — the big journey begins again! 🧞';hud()};
+$('again').onclick=()=>{reset();mode='playing';placePlayer();$('pause').textContent='⏸ Pause';$('msg').textContent='Once more, from ocean dusk to capstone! 🧞';hud()};
+$('pause').onclick=()=>{if(mode==='playing'){mode='paused';$('pause').textContent='▶ Resume'}else if(mode==='paused'){mode='playing';$('pause').textContent='⏸ Pause'}hud()};
+$('sound').onclick=e=>{soundOn=!soundOn;e.target.textContent=soundOn?'🔊 Sound: on':'🔇 Sound: off';if(soundOn){ensureAudio();tone(392,.45,.04)}};
+document.querySelectorAll('[data-chap]').forEach(b=>b.onclick=()=>jumpChapter(+b.dataset.chap));
+hud();requestAnimationFrame(loop);
+</script></body></html>

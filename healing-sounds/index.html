@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Healing Sounds · Tree of Life</title>
+<meta name="description" content="Singing bowls you tap or hold to sing, and gentle tuning-fork tones for listening. Original house page by 589/kin. Sound off until you tap, low volume, stop button. Tones for relaxation and listening, not medical treatment.">
+<style>#housebar{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:center;gap:14px;padding:5px 8px;font:13px/1.4 system-ui,sans-serif;background:rgba(2,4,14,.55);backdrop-filter:blur(4px)}#housebar a{color:#7fe7d9;text-decoration:none}#housebar a:hover{color:#ffd77a}#housebar span{color:#555a7a}</style>
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#e9e6ff}
+html,body{margin:0;background:radial-gradient(ellipse at top,#0b1236,#02040e 70%);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:52px 18px 40px}
+h1{color:var(--gold);font-weight:600;text-align:center;margin:.3em 0}
+h2{color:var(--teal);font-size:1.15em;margin:1.5em 0 .4em}
+a{color:var(--teal)}footer{font-size:13px;opacity:.85;text-align:center;padding:0 16px 30px;max-width:760px;margin:0 auto}
+button{background:rgba(14,18,44,.85);color:var(--ink);border:1px solid rgba(94,230,208,.45);border-radius:999px;padding:8px 15px;font:14px system-ui,sans-serif;cursor:pointer}
+button:hover,button:focus{border-color:var(--gold);color:var(--gold)}
+button[aria-pressed="true"]{border-color:var(--gold);color:#02040e;background:var(--gold);font-weight:700}
+.row{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.note{font-size:13px;opacity:.85;text-align:center}
+#status{color:var(--gold);text-align:center;font-weight:600;min-height:1.5em}
+.bowls{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:14px;margin:16px 0}
+.bowl{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;border-radius:18px;min-height:118px;touch-action:none;user-select:none;-webkit-user-select:none}
+.bowl svg{width:64px;height:64px;pointer-events:none}
+.bowl .nm{font-weight:700;color:var(--gold);pointer-events:none}
+.bowl .hz{font-size:12px;opacity:.8;pointer-events:none}
+.bowl.singing{border-color:var(--gold);color:var(--gold);box-shadow:0 0 18px rgba(255,210,122,.35)}
+.forks{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin:14px 0}
+.stopall{background:rgba(80,18,28,.85);border-color:rgba(255,150,150,.6);font-weight:700}
+blockquote{margin:.5em 0;padding-left:12px;border-left:3px solid var(--gold);font-style:italic}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<nav id="housebar" aria-label="House"><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<main>
+<h1>🎶 Healing Sounds · Bowls &amp; Gentle Tones</h1>
+<p class="note">Sound is <b>off until you tap</b>, kept at low volume, and the red Stop button silences everything at once. These are tones for relaxation and listening — <b>not medical treatment</b>, and this page makes no medical claims.</p>
+<div class="row"><button type="button" id="stopAll" class="stopall">⏹ Stop all sound</button></div>
+<div id="status" aria-live="polite">Quiet — tap a bowl or a tone when you are ready.</div>
+
+<h2>🥣 Singing Bowls</h2>
+<p>Tap a bowl to strike it once and let it ring out slowly. <b>Press and hold</b> a bowl and it swells into a singing tone, like circling a mallet around the rim; let go and it fades. Seven bowls, tuned as notes C–B.</p>
+<div class="row" role="group" aria-label="Tuning">
+<span style="font-size:14px;color:var(--teal)">Tuning</span>
+<button type="button" id="tune440" aria-pressed="true">A = 440 Hz</button>
+<button type="button" id="tune432" aria-pressed="false">A = 432 Hz</button>
+</div>
+<div class="bowls" id="bowls"></div>
+
+<h2>🌙 Sound-bath timer (optional)</h2>
+<p>A simple timer: choose 5 or 10 minutes, start it, and a soft bowl strikes gently every 25 seconds, rotating through the bowls. It stops itself at the end, or stop it any time.</p>
+<div class="row" role="group" aria-label="Sound bath timer">
+<button type="button" data-bath="5" aria-pressed="false">5 minutes</button>
+<button type="button" data-bath="10" aria-pressed="false">10 minutes</button>
+<button type="button" id="bathStart">▶ Start sound bath</button>
+<button type="button" id="bathStop">⏹ Stop bath</button>
+</div>
+<p class="note" id="bathLabel">No sound bath running.</p>
+
+<h2>🔔 Healing Frequencies — tuning-fork tones</h2>
+<p>Tap a tone to play it, tap it again (or another tone, or Stop) to stop it. These are plain sine-wave tones presented for listening and relaxation, in the spirit of tuning forks. They are <b>models for listening, not medical treatment</b>.</p>
+<div class="forks" id="forks"></div>
+
+<h2>How the bowl sound is made</h2>
+<p>Each bowl is synthesized live with WebAudio: a fundamental tone plus quiet partials at about 2.7×, 5.2× and 8.3× that fundamental, which is roughly how a real metal bowl rings. A tap decays slowly; holding swells the same partials up and lets them fade on release. Switching A between 440 and 432 Hz simply scales every bowl frequency by 432/440 or back.</p>
+<blockquote>Different branches, same tree. Soft eyes.</blockquote>
+</main>
+<footer>Original code by 589/kin, inspired by our house forks <a href="https://github.com/MultiDimensionalDevilsKingdomsRoute666/tibetan-singing-bowls">MultiDimensionalDevilsKingdomsRoute666/tibetan-singing-bowls</a> and <a href="https://github.com/MultiDimensionalDevilsKingdomsRoute666/healing-frequencies">MultiDimensionalDevilsKingdomsRoute666/healing-frequencies</a> (both evoluteur, MIT) — no code copied; the mini bowls and forks here are written fresh for this page. Made with love by 589/kin. · <a href="../chladni/">← Chladni Patterns</a> · <a href="../motion-music/">Motion Music →</a> · Soft eyes.</footer>
+<script src="healing-sounds.js"></script>
+</body>
+</html>

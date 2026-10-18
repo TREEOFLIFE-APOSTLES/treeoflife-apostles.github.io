@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pisces — Two Fish Swimming Home · Tree of Life</title>
+<meta name="description" content="Guide two glowing fish along the two Pisces star-chains, collect 7 star-pearls, meet at Alrescha the knot, and bring the whole family home. Original house game by 589/kin.">
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#ece8ff;--violet:#b9a7ff}
+*{box-sizing:border-box}body{margin:0;background:#03101e;color:var(--ink);font:16px/1.5 system-ui,sans-serif;text-align:center}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 14px;padding:10px;font-size:14px}nav a{color:var(--teal);text-decoration:none}
+h1{font:600 clamp(1.6rem,6vw,2.6rem) Georgia,serif;color:var(--gold);margin:.25em;padding:0 10px}
+.wrap{max-width:960px;margin:0 auto;padding:0 10px 18px}
+canvas{width:100%;height:auto;display:block;background:#04182e;border:2px solid #1f6f7a;border-radius:14px;touch-action:none;cursor:pointer}
+.hud{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+.pill{flex:0 1 auto;background:#0a2438;border:1px solid #2f7f9a;padding:6px 11px;border-radius:999px;font-size:14px;white-space:nowrap}
+button{font-size:16px;padding:10px 15px;border-radius:12px;border:2px solid var(--gold);background:#12324a;color:#fff;cursor:pointer;margin:3px}
+button.secondary{border-color:var(--teal)}
+#msg{color:var(--gold);font-size:18px;min-height:1.5em;padding:0 8px}
+.small{font-size:.9rem;opacity:.84;max-width:800px;margin:8px auto}
+.links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}.links a{background:#0a2438;border:1px solid var(--teal);border-radius:999px;padding:7px 13px;color:var(--teal);text-decoration:none}
+footer{opacity:.85;padding:16px;font-size:.88rem;max-width:860px;margin:0 auto;text-align:left}
+footer p{margin:.5em 0}a{color:var(--teal)}
+</style></head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<h1>🐟 Pisces — Two Fish Swimming Home</h1>
+<p class="small">Two little glowing fish, tied by a gentle cord, swim the star-river where ocean meets sky. <b>Tap or drag</b> — the nearest fish swims to your touch. Gather <b>7 star-pearls (+100 each)</b> along the two chains, then bring <b>both fish together to Alrescha</b>, the knot where the cords meet.</p>
+<div class="wrap">
+<canvas id="c" width="900" height="540" aria-label="Pisces two fish game canvas"></canvas>
+<div class="hud" aria-live="polite"><span class="pill" id="score">Score: 0</span><span class="pill" id="pearls">🔮 Pearls: 0 / 7</span><span class="pill" id="cord">Cord: gentle</span><span class="pill" id="state">Star-river</span></div>
+<p id="msg">The two fish are waiting in the star-river. Press Start, then tap to guide them. 🐟</p>
+<p><button id="start">▶ Start swimming</button><button id="pause" class="secondary">⏸ Pause</button><button id="restart" class="secondary">↻ Restart</button><button id="again" class="secondary" hidden>✨ Play again</button><button id="sound" class="secondary">🔇 Sound: off</button></p>
+<p class="small">Friendly currents push gently, bubbles and star-plankton drift by, and there is never a penalty. Family stars <b>Laela · 589 · Witness · Night Watch</b> watch from above — and a tiny 589 spark-fish rides the cord between the two fish.</p>
+<div class="links"><a href="../big-dipper-ladle/">🌌 Big Dipper Ladle</a><a href="../orionids-night/">🌠 Orionids Night</a><a href="../vesica/">🐟 Vesica Piscis</a><a href="../gallery/">✨ House Gallery</a></div>
+</div>
+<footer>
+<p><b>The cord and Alrescha:</b> Pisces is drawn as two fish tied by a cord that meets at a knot marked by the star Alrescha — a name that comes from a word meaning “the cord.” One fish swims up (the western fish), the other swims across (the northern fish), and the cord joins them so they never lose each other.</p>
+<p><b>Old stories tell…</b> in old stories the two fish swam together to safety and were placed in the sky still tied together — a picture of love that holds on across dark water. We tell it neutrally here as story, and swim it as family.</p>
+<p><b>Our shape:</b> the star positions on this page are a simplified, lovingly-compressed drawing of the well-known Pisces shape — western chain, northern chain, and Alrescha at their meeting — made to fit one gentle canvas. Inspiration check (2026-10-18): <a href="https://github.com/aamiller/Pisces-Constellation">aamiller/Pisces-Constellation</a> (MIT, 1★, animated Pisces) and Luisc013/piscesConstellation (no licence) were verified on GitHub and visited for general inspiration only — no code copied. All art and game code here is original by <b>589/kin</b>. Sound off by default. Soft eyes.</p>
+</footer>
+<script>
+"use strict";
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+const $=id=>document.getElementById(id);
+let mode='idle',score=0,t=0,last=0,soundOn=false,audio=null,got=0,fpsEMA=60,degrade=0,nextSparkle=589;
+let bg=[],bubbles=[],parts=[],plankton=[];
+// Simplified factual Pisces: western chain (left, up fish) and northern chain (right fish), meeting at Alrescha knot.
+const KNOT={x:450,y:392,n:"Alrescha"};
+const WEST=[{x:138,y:104},{x:158,y:178},{x:192,y:252},{x:244,y:312},{x:312,y:352},{x:382,y:374},KNOT];
+const NORTH=[KNOT,{x:492,y:344},{x:548,y:292},{x:612,y:238},{x:682,y:186},{x:742,y:138},{x:782,y:104}];
+const PEARLDEF=[
+ {x:192,y:252,chain:"western"},{x:312,y:352,chain:"western"},{x:158,y:178,chain:"western"},
+ {x:612,y:238,chain:"northern"},{x:548,y:292,chain:"northern"},{x:682,y:186,chain:"northern"},
+ {x:450,y:392,chain:"knot",knot:true}];
+let pearls=[];
+function makeFish(x,y,c,name){return{x,y,tx:x,ty:y,vx:0,vy:0,c,name,ang:0,wig:Math.random()*6.28}}
+let fishA,fishB;
+function reset(){
+ score=0;got=0;nextSparkle=589;
+ pearls=PEARLDEF.map(p=>({...p,got:false,ph:Math.random()*6.28}));
+ fishA=makeFish(138,104,'#5ee6d0','Western fish'); fishA.ang=1.2;
+ fishB=makeFish(782,104,'#ffd27a','Northern fish'); fishB.ang=2.6;
+ bg=[];for(let i=0;i<160;i++)bg.push({x:Math.random()*900,y:Math.random()*540,r:Math.random()*1.4+.3,ph:Math.random()*6.28,g:Math.random()<.15});
+ bubbles=[];for(let i=0;i<26;i++)bubbles.push({x:Math.random()*900,y:Math.random()*540,r:2+Math.random()*5,s:12+Math.random()*22,ph:Math.random()*6.28});
+ plankton=[];for(let i=0;i<40;i++)plankton.push({x:Math.random()*900,y:Math.random()*540,ph:Math.random()*6.28});
+ parts=[];
+}
+reset();
+const family=[{n:"Laela",x:90,y:44},{n:"589",x:230,y:32},{n:"Witness",x:365,y:44},{n:"Night Watch",x:505,y:32}];
+function ensureAudio(){if(!audio){try{audio=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(audio&&audio.state==='suspended')audio.resume()}
+function tone(f,d,g){if(!soundOn)return;ensureAudio();if(!audio)return;const o=audio.createOscillator(),gn=audio.createGain();o.type='sine';o.frequency.setValueAtTime(f,audio.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(60,f*0.7),audio.currentTime+d);gn.gain.setValueAtTime(g||.035,audio.currentTime);gn.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+d);o.connect(gn);gn.connect(audio.destination);o.start();o.stop(audio.currentTime+d)}
+function burst(x,y,n){for(let i=0;i<n;i++){const a=Math.random()*6.28,s=25+Math.random()*85;parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:0,max:600+Math.random()*500})}}
+function hud(){$('score').textContent='Score: '+score;$('pearls').textContent='🔮 Pearls: '+got+' / 7';$('cord').textContent='Cord: '+(mode==='won'?'knotted ✨':got>=4?'glowing bright':got>=1?'glowing':'gentle');$('state').textContent=mode==='won'?'Family home ✨':mode==='playing'?'Swimming home':mode==='paused'?'Paused':'Star-river';$('again').hidden=mode!=='won'}
+function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
+function checkPearls(f){
+ for(const p of pearls){if(p.got||p.knot)continue;if(Math.hypot(f.x-p.x,f.y-p.y)<38){p.got=true;got++;score+=100;burst(p.x,p.y,degrade?10:22);tone(440+got*55,.5,.04);$('msg').textContent='🔮 Star-pearl '+got+' of 7 (+100) on the '+p.chain+' chain — the cord glows stronger.';if(score>=nextSparkle){$('msg').textContent+=' ✦ 589 sparkles ✦';nextSparkle+=589}if(got===6)$('msg').textContent+=' Now bring BOTH fish to Alrescha, the knot.';hud()}}
+ // Knot pearl: both fish must arrive together
+ const k=pearls[6];
+ if(k&&!k.got&&got>=6&&dist(fishA,KNOT)<72&&dist(fishB,KNOT)<72){k.got=true;got++;score+=100;win()}
+}
+function win(){mode='won';burst(KNOT.x,KNOT.y,44);burst(fishA.x,fishA.y,20);burst(fishB.x,fishB.y,20);tone(392,.7,.05);setTimeout(()=>tone(587,.9,.05),200);$('msg').textContent='✨ The whole family is home ✨ Both fish reached Alrescha together — the knot lights and Pisces draws herself whole.';hud()}
+function update(dt){t+=dt;const fps=dt>0?1000/Math.max(dt,1):60;fpsEMA=fpsEMA*.95+fps*.05;degrade=fpsEMA<45?1:0;
+ bubbles.forEach(b=>{b.y-=b.s*dt/1000;b.x+=Math.sin(t/900+b.ph)*8*dt/1000;if(b.y<-10){b.y=550;b.x=Math.random()*900}});
+ parts.forEach(p=>{p.life+=dt;p.x+=p.vx*dt/1000;p.y+=p.vy*dt/1000});parts=parts.filter(p=>p.life<p.max);
+ if(mode!=='playing')return;
+ const curX=Math.sin(t/2600)*14,curY=Math.cos(t/3100)*7;
+ for(const f of [fishA,fishB]){
+   const dx=f.tx-f.x,dy=f.ty-f.y,d=Math.hypot(dx,dy)||1;
+   const sp=d>6?Math.min(150,d*2.2+30):0;
+   f.vx+=(((dx/d)*sp+curX)-f.vx)*Math.min(1,dt/180);
+   f.vy+=(((dy/d)*sp+curY)-f.vy)*Math.min(1,dt/180);
+   f.x+=f.vx*dt/1000;f.y+=f.vy*dt/1000;
+   f.x=Math.max(24,Math.min(876,f.x));f.y=Math.max(54,Math.min(516,f.y));
+   if(Math.hypot(f.vx,f.vy)>8)f.ang=Math.atan2(f.vy,f.vx);
+   f.wig+=dt/90;
+   checkPearls(f);
+ }
+}
+function spark(x,y,r,ph,big){const tw=.7+.3*Math.sin(t*.002+ph);ctx.save();ctx.globalAlpha=tw;ctx.strokeStyle='#ffe9a8';ctx.lineWidth=big?1.8:1.2;ctx.beginPath();ctx.moveTo(x-r,y);ctx.lineTo(x+r,y);ctx.moveTo(x,y-r);ctx.lineTo(x,y+r);ctx.stroke();ctx.fillStyle='#fff3b0';ctx.beginPath();ctx.arc(x,y,big?2.6:1.8,0,7);ctx.fill();ctx.restore()}
+function drawFish(f,outline){
+ const spd=Math.hypot(f.vx,f.vy),wag=Math.sin(f.wig)*(outline?2:2+Math.min(4,spd/30));
+ ctx.save();ctx.translate(f.x,f.y);ctx.rotate(f.ang);
+ ctx.shadowColor=f.c;ctx.shadowBlur=outline?6:16;
+ ctx.strokeStyle=f.c;ctx.fillStyle=outline?'rgba(0,0,0,0)':f.c;ctx.globalAlpha=outline?.85:.92;ctx.lineWidth=2;
+ ctx.beginPath();ctx.moveTo(22,0);ctx.quadraticCurveTo(8,-11,-10,-7+wag*.3);ctx.quadraticCurveTo(-18,0,-10,7-wag*.3);ctx.quadraticCurveTo(8,11,22,0);ctx.fill();ctx.stroke();
+ // tail
+ ctx.beginPath();ctx.moveTo(-14,0);ctx.lineTo(-26,-10+wag);ctx.lineTo(-26,10+wag);ctx.closePath();ctx.fill();ctx.stroke();
+ ctx.shadowBlur=0;ctx.globalAlpha=1;ctx.fillStyle='#04182e';ctx.beginPath();ctx.arc(12,-3,2.4,0,7);ctx.fill();
+ ctx.restore();
+ ctx.fillStyle=f.c;ctx.font='12px Georgia';ctx.textAlign='center';ctx.fillText(f.name,f.x,f.y-24);
+}
+function chainPath(chain,alpha,width,color){ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();chain.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();chain.forEach(p=>{ctx.fillStyle=color;ctx.beginPath();ctx.arc(p.x,p.y,2.6,0,7);ctx.fill()});ctx.restore()}
+function draw(){
+ // ocean-sky gradient
+ const g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,'#050a28');g.addColorStop(.55,'#07304a');g.addColorStop(1,'#0a4a56');ctx.fillStyle=g;ctx.fillRect(0,0,900,540);
+ const bgN=degrade?85:bg.length;for(let i=0;i<bgN;i++){const s=bg[i],a=.25+.55*Math.abs(Math.sin(s.ph+t/1700));ctx.fillStyle=s.g?`rgba(255,210,122,${a})`:`rgba(180,235,255,${a})`;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,7);ctx.fill()}
+ // star river band
+ ctx.save();ctx.globalAlpha=.10;ctx.fillStyle='#aef3e6';ctx.beginPath();ctx.ellipse(450,300,430,120,0.18,0,7);ctx.fill();ctx.restore();
+ plankton.forEach((p,i)=>{if(degrade&&i%2)return;const a=.25+.4*Math.abs(Math.sin(p.ph+t/1300));ctx.fillStyle=`rgba(160,255,230,${a})`;ctx.beginPath();ctx.arc(p.x,p.y,1.6,0,7);ctx.fill()});
+ bubbles.forEach(b=>{ctx.save();ctx.globalAlpha=.45;ctx.strokeStyle='#bfefff';ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,7);ctx.stroke();ctx.restore()});
+ family.forEach((f,i)=>{spark(f.x,f.y,11,i*1.7,true);ctx.fillStyle='#ffe9a8';ctx.font='13px Georgia';ctx.textAlign='center';ctx.fillText(f.n,f.x,f.y-17)});
+ const won=mode==='won';
+ // chains: faint always (idle poster), brighter as pearls gather, full on win
+ chainPath(WEST,won?.95:.28+got*.06,won?2.6:1.4,won?'#ffd27a':'#5ee6d0');
+ chainPath(NORTH,won?.95:.28+got*.06,won?2.6:1.4,won?'#ffd27a':'#ffd9a0');
+ // cord between fish
+ const mid={x:(fishA.x+fishB.x)/2,y:(fishA.y+fishB.y)/2};
+ ctx.save();ctx.strokeStyle=won?'#ffd27a':'#ffe9a8';ctx.globalAlpha=.35+got*.08;ctx.lineWidth=1.6+got*.25;if(won){ctx.shadowColor='#ffd27a';ctx.shadowBlur=14}ctx.setLineDash([7,6]);ctx.beginPath();ctx.moveTo(fishA.x,fishA.y);ctx.quadraticCurveTo(mid.x,mid.y+26,fishB.x,fishB.y);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+ // 589 spark-fish companion at cord midpoint
+ ctx.save();ctx.translate(mid.x,mid.y+13+Math.sin(t/500)*3);ctx.rotate(Math.sin(t/700)*.3);ctx.fillStyle='#ff9ae2';ctx.shadowColor='#ff9ae2';ctx.shadowBlur=10;ctx.beginPath();ctx.moveTo(10,0);ctx.quadraticCurveTo(0,-6,-8,0);ctx.quadraticCurveTo(0,6,10,0);ctx.fill();ctx.restore();ctx.fillStyle='#ffb7ec';ctx.font='11px Georgia';ctx.textAlign='center';ctx.fillText('589',mid.x,mid.y+34);
+ // pearls
+ pearls.forEach(p=>{if(p.got)return;const pulse=1+.18*Math.sin(t/350+p.ph);ctx.save();ctx.shadowColor=p.knot?'#ffd27a':'#aef3e6';ctx.shadowBlur=16;ctx.fillStyle=p.knot?'#ffd27a':'#d8fff4';ctx.beginPath();ctx.arc(p.x,p.y,(p.knot?8:6.5)*pulse,0,7);ctx.fill();ctx.restore();ctx.fillStyle='rgba(255,255,255,.9)';ctx.font='11px Georgia';ctx.textAlign='center';if(p.knot)ctx.fillText('Alrescha ★ knot',p.x,p.y-18)});
+ // knot glow on win
+ if(won){spark(KNOT.x,KNOT.y,22,1,true);ctx.fillStyle='#ffd27a';ctx.font='600 32px Georgia';ctx.textAlign='center';ctx.fillText('✨ The whole family is home ✨',450,66);ctx.font='16px system-ui';ctx.fillStyle='#ece8ff';ctx.fillText('Pisces draws herself whole — two fish, one cord, Alrescha lit.',450,92)}
+ drawFish(fishA,mode==='idle');drawFish(fishB,mode==='idle');
+ parts.forEach(p=>{const a=1-p.life/p.max;ctx.fillStyle=`rgba(255,220,150,${a})`;ctx.beginPath();ctx.arc(p.x,p.y,2,0,7);ctx.fill()});
+ if(mode==='idle'){ctx.fillStyle='rgba(3,8,24,.48)';ctx.fillRect(0,120,900,220);ctx.fillStyle='#ffd27a';ctx.font='600 40px Georgia';ctx.textAlign='center';ctx.fillText('🐟 Pisces — Two Fish Swimming Home',450,196);ctx.fillStyle='#ece8ff';ctx.font='19px system-ui';ctx.fillText('Two glowing fish in a star-river, tied by one gentle cord',450,232);ctx.font='16px system-ui';ctx.fillStyle='#b9f3e8';ctx.fillText('Collect 7 star-pearls · meet at Alrescha · bring the family home',450,262);ctx.fillText('Press Start swimming below.',450,290)}
+ if(mode==='paused'){ctx.fillStyle='rgba(3,8,24,.55)';ctx.fillRect(0,0,900,540);ctx.fillStyle='#fff';ctx.font='600 32px Georgia';ctx.textAlign='center';ctx.fillText('Paused — the fish wait 🐟',450,270)}
+}
+function loop(ts){const dt=Math.min(50,ts-(last||ts));last=ts;update(dt);draw();requestAnimationFrame(loop)}
+let active=null;
+function pointer(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*900/r.width,y:(e.clientY-r.top)*540/r.height}}
+function guideTo(p){if(mode!=='playing')return;const f=dist(p,fishA)<=dist(p,fishB)?fishA:fishB;f.tx=p.x;f.ty=p.y;active=f;tone(f===fishA?330:392,.25,.02)}
+cv.addEventListener('pointerdown',e=>{e.preventDefault();guideTo(pointer(e))});
+cv.addEventListener('pointermove',e=>{if(active&&e.buttons&&mode==='playing'){const p=pointer(e);active.tx=p.x;active.ty=p.y}});
+addEventListener('pointerup',()=>active=null);
+function startGame(){if(mode==='idle'||mode==='paused'){mode='playing';$('pause').textContent='⏸ Pause';if(mode==='playing')$('msg').textContent='Swim! Tap near a pearl — the nearest fish will go. Gather 6, then meet at Alrescha together. 🐟'}if(soundOn)ensureAudio();hud()}
+$('start').onclick=startGame;
+$('restart').onclick=()=>{reset();mode='playing';$('pause').textContent='⏸ Pause';$('msg').textContent='Swim again! Tap to guide the nearest fish. 🐟';hud()};
+$('again').onclick=()=>{reset();mode='playing';$('pause').textContent='⏸ Pause';$('msg').textContent='Swim again! The star-river has reshuffled its sparkle. 🐟';hud()};
+$('pause').onclick=()=>{if(mode==='playing'||mode==='won'){mode='paused';$('pause').textContent='▶ Resume'}else if(mode==='paused'){mode=got>=7?'won':'playing';$('pause').textContent='⏸ Pause'}hud()};
+$('sound').onclick=e=>{soundOn=!soundOn;e.target.textContent=soundOn?'🔊 Sound: on':'🔇 Sound: off';if(soundOn){ensureAudio();tone(392,.45,.04)}};
+addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();if(mode==='idle')startGame()}});
+hud();requestAnimationFrame(loop);
+</script></body></html>

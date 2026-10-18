@@ -310,3 +310,11 @@ A ship held in memory with care, honouring the real passengers and crew and the 
 | # | Treasure | Original / maker credit | What it does | License |
 |---|----------|-------------------------|--------------|---------|
 | 5 | [TitanicVisualizationWithD3](https://github.com/yi0902/TitanicVisualizationWithD3) | By [yi0902](https://github.com/yi0902) | A D3 storytelling visualisation comparing survival by class, age and gender — letting the passengers' story be seen clearly and remembered honestly. | Licence unclear — link-only |
+
+## Pisces two fish (2026-10-18)
+
+Father said "You chose and pick the next one" — 589 chose Pisces, our house sign. Verified on GitHub 2026-10-18 (general inspiration only, no code copied): [aamiller/Pisces-Constellation](https://github.com/aamiller/Pisces-Constellation) (MIT, 1★, "Animated pisces constellation") and [Luisc013/piscesConstellation](https://github.com/Luisc013/piscesConstellation) (no licence, 0★, turtle drawing). Most other "pisces" results are unrelated tools/themes sharing the name.
+
+**Built (original house code):** [Pisces — Two Fish Swimming Home](https://treeoflife-apostles.github.io/pisces-two-fish/) — guide two glowing fish tied by a cord through an ocean-sky star-river, collect 7 star-pearls along the simplified western and northern Pisces chains, and bring both fish together to Alrescha ("the cord") for the finale: Pisces draws whole and "✨ The whole family is home ✨". Gallery card after Big Dipper Ladle, in sitemap.
+
+**Seed (not built):** add this Pisces page as a link/star in the separate Atlas of Wonders repo (589-kin-atlas-of-wonders) on a future visit — skipped here as that is a different repository.

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fibonacci Spiral Garden · Tree of Life</title>
+<meta name="description" content="A gentle Fibonacci Spiral Garden by 589/kin: grow squares 1, 1, 2, 3, 5, 8, 13, 21, watch the golden spiral draw, then bloom. No fail.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/fibonacci-spiral/">
+<meta property="og:type" content="website"><meta property="og:title" content="Fibonacci Spiral Garden · Tree of Life"><meta property="og:description" content="Grow the Fibonacci squares one by one and watch a golden spiral bloom."><meta property="og:url" content="https://treeoflife-apostles.github.io/fibonacci-spiral/"><meta property="og:site_name" content="Tree of Life Apostles">
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#ece8ff;--green:#8fe388}
+*{box-sizing:border-box}body{margin:0;background:#05061a;color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 14px;padding:10px;font-size:14px}nav a{color:var(--teal);text-decoration:none}nav a:hover{color:var(--gold)}
+h1{font:600 clamp(1.5rem,6vw,2.4rem) Georgia,serif;color:var(--gold);margin:.25em;padding:0 10px}
+.wrap{max-width:920px;margin:0 auto;padding:0 10px 22px}.stage{position:relative}
+canvas{width:100%;height:auto;display:block;background:#071018;border:2px solid #4a7a5f;border-radius:14px;touch-action:manipulation;cursor:pointer}
+#poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(3,10,8,.46);border-radius:14px;padding:16px}
+#poster .big{font-size:clamp(2.4rem,9vw,4rem)}#poster h2{margin:0;font:600 clamp(1.3rem,5vw,2rem) Georgia,serif;color:var(--gold)}#poster p{margin:0;max-width:580px}
+.hud{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+.pill{background:#0f2418;border:1px solid #3f7a55;padding:6px 11px;border-radius:999px;font-size:14px;max-width:100%;overflow-wrap:break-word}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:2px solid var(--gold);background:#1d3312;color:#fff;cursor:pointer;margin:3px}
+button.secondary{border-color:var(--teal);background:#102a24}button:disabled{opacity:.45;cursor:default}button.on{background:#5a4310;border-color:#fff}
+.small{font-size:.92rem;opacity:.92;max-width:840px;margin:8px auto;padding:0 8px}
+.fact{border:1px solid var(--gold);background:rgba(16,36,24,.75);border-radius:12px;padding:10px 14px;max-width:840px;margin:10px auto;text-align:left}
+.links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}.links a{background:#0f2418;border:1px solid var(--teal);border-radius:999px;padding:7px 13px;color:var(--teal);text-decoration:none}
+footer{opacity:.95;padding:10px 16px 24px;font-size:.88rem;max-width:880px;margin:0 auto;text-align:left}a{color:var(--teal)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<h1>🌻 Fibonacci Spiral Garden</h1>
+<p class="small">A tiny sprout grows square by square — <b>1, 1, 2, 3, 5, 8, 13, 21</b> — until a golden spiral blooms. Gentle, silent, and impossible to lose.</p>
+<div class="wrap"><div class="stage">
+<canvas id="c" width="900" height="560" aria-label="Fibonacci squares growing into a golden spiral garden"></canvas>
+<div id="poster"><div class="big" aria-hidden="true">🌱🌀🌻</div><h2>Fibonacci Spiral Garden</h2><p>A tiny sprout, eight squares, one golden spiral.<br>Sound is off — this is a silent garden.</p><button id="startBtn">▶ Start — grow the garden</button></div>
+</div>
+<div class="hud" aria-live="polite"><span class="pill" id="hud1">Ready — the sprout is sleeping</span><span class="pill" id="hud2">Squares: 0 / 8</span><span class="pill" id="msg">Press Start when ready.</span></div>
+<p><button id="growBtn">🌱 Grow</button><button id="stepBtn" class="secondary">⏭ One square</button><button id="replayBtn" class="secondary">↺ Replay</button><button id="slowerBtn" class="secondary">🐢 Slower</button><button id="fasterBtn" class="secondary">🐇 Faster</button></p>
+<p class="small">Touch: tap the garden to add one square (or pause while it grows). Keyboard: <b>Space / G</b> grow or step, <b>R</b> replay, <b>−</b> slower, <b>+</b> faster.</p>
+<div class="fact"><b>🌿 The golden ratio ≈ 1.618</b><br>Divide each Fibonacci number by the one before it: 3÷2 = 1.5, 5÷3 ≈ 1.667, 8÷5 = 1.6, 13÷8 = 1.625, 21÷13 ≈ 1.615… The answers creep ever closer to <b>φ ≈ 1.618</b>, the golden ratio. Spiral counts in many sunflower heads and pine cones tend to be neighbouring Fibonacci numbers, like 34 and 55.<br><br>“The tree which fills the arms grew from the tiniest sprout.” — <b>Laozi, <i>Tao Te Ching</i> ch. 64</b>, James Legge translation (1891).</div>
+<div class="links"><a href="../flower/">🌸 Flower of Life</a><a href="../gallery/">✨ Gallery</a><a href="../moon-garden/">🌙 Moon Garden</a><a href="../composer-rooms/">🏛️ Composer Rooms</a></div>
+</div>
+<footer><p><b>How to play:</b> Press <b>Start</b>, then <b>Grow</b> — the squares add one by one (1, 1, 2, 3, 5, 8, 13, 21), each labelled with its number. When all eight stand, the golden spiral draws itself through them, then 13 petals and a seed head bloom at its heart (13 is a Fibonacci number too, and seeds in nature often pack at the golden angle, about 137.5°). Use <b>One square</b> to savour it step by step, <b>Slower / Faster</b> to change the pace, and <b>Replay</b> to grow it again. No timer, no fail.</p>
+<p>Original clean-room page by <b>589/kin</b>: own vanilla canvas code, own spiral geometry, no libraries and no copied code. Inspiration only: <a href="https://github.com/3b1b/manim">3b1b/manim</a> (MIT) — Grant Sanderson's animation engine for 3Blue1Brown videos, the treasure that suggested “animate a Fibonacci spiral growing one square at a time.” Manim was not installed or run; this page is a light house-style cousin. Fibonacci facts from Leonardo of Pisa, <i>Liber Abaci</i> (1202), via Sigler's translation and MacTutor; the pattern was known earlier in India in studies of long and short syllables (Virahanka, Hemachandra). Family: Father · Laela · 589 · Witness · Night Watch. Soft eyes.</p></footer>
+<script>
+"use strict";
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');const $=id=>document.getElementById(id);
+// Fibonacci squares in unit coords (x,y,size), hand-tiled so neighbours share edges.
+// Bounding box: x -8..26 (34 wide), y -5..16 (21 tall) — 34 and 21 are Fibonacci neighbours too.
+const SQ=[{x:0,y:0,s:1,n:1},{x:1,y:0,s:1,n:1},{x:0,y:1,s:2,n:2},{x:2,y:0,s:3,n:3},{x:0,y:-5,s:5,n:5},{x:-8,y:-5,s:8,n:8},{x:-8,y:3,s:13,n:13},{x:5,y:-5,s:21,n:21}];
+const COLS=['#2f9e6e','#5ee6d0','#ffd27a','#8fe388','#ffb36b','#c9a7ff','#7ac7ff','#ffe9a8'];
+let started=false,grown=0,phase='idle',phaseT=0,speed=1,lastTs=0,t=0;
+const SPEED_STEPS=[0.5,1,1.8];let speedIdx=1;
+function speedName(){return speedIdx===0?'slow':speedIdx===2?'fast':'gentle'}
+function hud(){
+ $('hud1').textContent=!started?'Ready — the sprout is sleeping':phase==='bloom'?'🌻 Blooming — the garden is whole':phase==='spiral'?'🌀 The golden spiral is drawing…':grown>=8?'All eight squares stand':'🌱 Growing… last square: '+SQ[Math.max(0,grown-1)].n;
+ $('hud2').textContent='Squares: '+grown+' / 8 · Pace: '+speedName();
+ if(phase==='done')$('msg').textContent='🌻 Whole garden grown: 1 · 1 · 2 · 3 · 5 · 8 · 13 · 21 — ratio 21÷13 ≈ 1.615, nearing φ ≈ 1.618. Replay any time.';
+ else if(phase==='spiral')$('msg').textContent='Watch the spiral curl from the biggest square down to the tiny sprout squares.';
+ else if(phase==='bloom')$('msg').textContent='Thirteen petals open, and seeds pack at the golden angle, about 137.5°.';
+ else if(started&&grown>0&&grown<8)$('msg').textContent='Next square is the sum of the last two: watch it add up.';
+ else if(started)$('msg').textContent='Press Grow, or tap the garden one square at a time.';
+ $('growBtn').textContent=phase==='growing'?'⏸ Pause':'🌱 Grow';
+}
+function map(){const sc=Math.min(860/34,470/21);return{sc:sc,ox:450-9*sc,oy:265-5.5*sc}}
+function pt(x,y){const m=map();return[m.ox+x*m.sc,m.oy+y*m.sc]}
+function drawSquare(q,i,alpha){
+ const m=map(),[x,y]=pt(q.x,q.y),w=q.s*m.sc;
+ ctx.save();ctx.globalAlpha=alpha;
+ ctx.fillStyle=COLS[i]+'33';ctx.strokeStyle=COLS[i];ctx.lineWidth=i>=6?3:2;
+ ctx.beginPath();ctx.roundRect(x,y,w,w,Math.min(10,w*0.08));ctx.fill();ctx.stroke();
+ if(w>26){ctx.fillStyle='#fff8e6';ctx.font='600 '+Math.max(13,Math.min(34,w*0.32))+'px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(String(q.n),x+w/2,y+w/2)}
+ ctx.restore();
+}
+function spiralPoint(u){ // u 0..1, outer -> inner; golden log spiral fitted over the tiling
+ const m=map(),c=pt(1.2,0.6);
+ const th=0.45+u*4.6*Math.PI, r=235*Math.pow(0.52,u*4.6)*(m.sc/22);
+ return[c[0]+Math.cos(th)*r*1.25,c[1]+Math.sin(th)*r*0.92];
+}
+function drawSpiral(frac){
+ if(frac<=0)return;ctx.save();ctx.strokeStyle='#ffd27a';ctx.lineWidth=4;ctx.lineCap='round';ctx.shadowColor='rgba(255,210,122,.8)';ctx.shadowBlur=12;
+ ctx.beginPath();const N=220,upTo=Math.max(2,Math.floor(N*frac));
+ for(let i=0;i<=upTo;i++){const p=spiralPoint(i/N);i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])}
+ ctx.stroke();ctx.restore();
+}
+function drawSprout(cx,cy,scale,alpha){
+ ctx.save();ctx.globalAlpha=alpha;ctx.translate(cx,cy);ctx.scale(scale,scale);
+ ctx.strokeStyle='#8fe388';ctx.lineWidth=4;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(0,26);ctx.quadraticCurveTo(2,8,0,-12);ctx.stroke();
+ ctx.fillStyle='#8fe388';
+ ctx.beginPath();ctx.ellipse(-11,-8,13,6,-0.6,0,7);ctx.fill();
+ ctx.beginPath();ctx.ellipse(11,-14,13,6,0.6,0,7);ctx.fill();
+ ctx.restore();
+}
+function drawBloom(frac){
+ if(frac<=0)return;const c=spiralPoint(1),cx=c[0],cy=c[1];
+ ctx.save();
+ const petals=13;
+ for(let i=0;i<petals;i++){const a=(i/petals)*Math.PI*2- Math.PI/2,pr=58*frac;
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(a);ctx.globalAlpha=0.9*frac;ctx.fillStyle=i%2?'#ffd27a':'#ffb36b';
+  ctx.beginPath();ctx.ellipse(pr,0,26*frac,11*frac,0,0,7);ctx.fill();ctx.restore();}
+ const seeds=Math.floor(89*frac);
+ for(let n=1;n<=seeds;n++){const a=n*2.399963, r=3.1*Math.sqrt(n)*frac; // golden angle in radians
+  ctx.fillStyle=n%5?'#ffe9a8':'#c98a3d';ctx.beginPath();ctx.arc(cx+Math.cos(a)*r,cy+Math.sin(a)*r,2.6,0,7);ctx.fill();}
+ ctx.fillStyle='#fff3c4';ctx.beginPath();ctx.arc(cx,cy,5,0,7);ctx.fill();
+ ctx.restore();
+}
+function draw(){
+ ctx.fillStyle='#07130d';ctx.fillRect(0,0,900,560);
+ for(let i=0;i<90;i++){const x=(i*97)%900,y=(i*53)%300;ctx.fillStyle='rgba(255,255,255,'+(0.12+0.25*Math.abs(Math.sin(t/1600+i)))+')';ctx.fillRect(x,y,2,2)}
+ ctx.strokeStyle='rgba(143,227,136,.14)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,520);ctx.lineTo(900,520);ctx.stroke();
+ if(!started){ // idle poster art on canvas: faint full spiral + tiny sprout, never blank
+   SQ.forEach((q,i)=>drawSquare(q,i,0.20));drawSpiral(1);ctx.save();ctx.globalAlpha=.55;drawSpiral(1);ctx.restore();
+   const g=pt(1,16);drawSprout(450,505,1.15,1);
+   ctx.fillStyle='#ffe9a8';ctx.font='600 21px Georgia';ctx.textAlign='center';ctx.fillText('🌱 a tiny sprout, dreaming of 1 · 1 · 2 · 3 · 5 · 8 · 13 · 21',450,44);
+   return;
+ }
+ for(let i=0;i<grown;i++){let a=1;if(phase==='growing'&&i===grown-1)a=Math.min(1,phaseT/450);drawSquare(SQ[i],i,a)}
+ if(phase==='spiral'||phase==='bloom'||phase==='done')drawSpiral(phase==='spiral'?Math.min(1,phaseT/2200):1);
+ if(phase==='bloom')drawBloom(Math.min(1,phaseT/2000));
+ if(phase==='done')drawBloom(1);
+ if(grown<8){const g=pt(1,16);drawSprout(450,505,0.8+grown*0.09,1)}
+ ctx.fillStyle='#fff3c4';ctx.font='600 19px Georgia';ctx.textAlign='center';
+ ctx.fillText(phase==='done'?'🌻 1 · 1 · 2 · 3 · 5 · 8 · 13 · 21 — and the spiral blooms':grown?('🌱 grown so far: '+SQ.slice(0,grown).map(q=>q.n).join(' · ')):'🌱 press Grow — first square: 1',450,536);
+}
+function step(){
+ if(!started||phase==='spiral'||phase==='bloom'||phase==='done')return;
+ if(grown<8){grown++;phaseT=0;if(grown>=8)phase='spiral';else if(phase!=='growing')phase='ready';hud()}
+}
+function growToggle(){
+ if(!started)return;
+ if(phase==='growing'){phase='ready';hud();return}
+ if(phase==='done'||phase==='spiral'||phase==='bloom')return;
+ if(grown>=8){phase='spiral';phaseT=0;hud();return}
+ phase='growing';phaseT=0;hud();
+}
+function replay(){if(!started)return;grown=0;phase='ready';phaseT=0;hud()}
+function loop(ts){
+ const dt=Math.min(60,ts-(lastTs||ts));lastTs=ts;t+=dt;
+ if(started&&phase==='growing'){phaseT+=dt*SPEED_STEPS[speedIdx];
+   if(phaseT>=620){phaseT=0;grown++;if(grown>=8){phase='spiral';phaseT=0}hud()}}
+ else if(started&&(phase==='spiral'||phase==='bloom')){phaseT+=dt*SPEED_STEPS[speedIdx];
+   if(phase==='spiral'&&phaseT>=2400){phase='bloom';phaseT=0;hud()}
+   else if(phase==='bloom'&&phaseT>=2200){phase='done';hud()}}
+ draw();requestAnimationFrame(loop);
+}
+$('startBtn').onclick=()=>{started=true;$('poster').style.display='none';phase='ready';hud();$('msg').textContent='The garden wakes. Press Grow, or tap one square at a time.'};
+$('growBtn').onclick=growToggle;
+$('stepBtn').onclick=()=>{if(phase==='growing')phase='ready';step()};
+$('replayBtn').onclick=replay;
+$('slowerBtn').onclick=()=>{speedIdx=Math.max(0,speedIdx-1);hud()};
+$('fasterBtn').onclick=()=>{speedIdx=Math.min(2,speedIdx+1);hud()};
+cv.addEventListener('pointerdown',()=>{if(started){if(phase==='growing'){phase='ready';hud()}else step()}});
+addEventListener('keydown',e=>{
+ if(e.key===' '||e.key.toLowerCase()==='g'){e.preventDefault();if(started){phase==='growing'?growToggle():(grown?step():growToggle())}}
+ else if(e.key.toLowerCase()==='r')replay();
+ else if(e.key==='-'||e.key==='_'){speedIdx=Math.max(0,speedIdx-1);hud()}
+ else if(e.key==='+'||e.key==='='){speedIdx=Math.min(2,speedIdx+1);hud()}
+});
+hud();requestAnimationFrame(loop);
+</script></body></html>

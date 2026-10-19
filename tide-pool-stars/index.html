@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tide-Pool Star Rescue · Tree of Life</title>
+<meta name="description" content="A cosy tide-pool rescue by 589/kin: guide the little crab basket, catch tumbling pool-stars, and bring every star home safe. Gentle 90-second round, sound off by default.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/tide-pool-stars/">
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#ece8ff}
+*{box-sizing:border-box}body{margin:0;background:#070818;color:var(--ink);font:16px/1.5 system-ui,sans-serif;text-align:center}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 14px;padding:10px;font-size:14px}nav a{color:var(--teal);text-decoration:none}
+h1{font:600 clamp(1.4rem,6vw,2.3rem) Georgia,serif;color:var(--gold);margin:.25em;padding:0 10px}
+.wrap{max-width:900px;margin:0 auto;padding:0 10px 22px}.stage{position:relative}
+canvas{width:100%;height:auto;display:block;background:#0b1030;border:2px solid #6b5a2a;border-radius:14px;touch-action:none}
+#poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(3,6,20,.45);border-radius:14px;padding:16px}
+#poster .big{font-size:clamp(3rem,12vw,5rem);filter:drop-shadow(0 0 20px rgba(255,210,122,.8))}
+#poster h2{margin:0;font:600 clamp(1.3rem,5vw,2rem) Georgia,serif;color:var(--gold)}#poster p{margin:0;max-width:560px}
+.hud{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+.pill{background:#141038;border:1px solid #5a4a8a;padding:6px 11px;border-radius:999px;font-size:14px;max-width:100%;overflow-wrap:break-word}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:2px solid var(--gold);background:#241a4a;color:#fff;cursor:pointer;margin:3px}
+button.secondary{border-color:var(--teal)} .small{font-size:.9rem;opacity:.88;max-width:820px;margin:8px auto}
+.links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.links a{background:#141038;border:1px solid var(--teal);border-radius:999px;padding:7px 13px;color:var(--teal);text-decoration:none}
+footer{opacity:.9;padding:10px 16px 24px;font-size:.88rem;max-width:860px;margin:0 auto;text-align:left}a{color:var(--teal)}
+</style></head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<h1>⭐ Tide-Pool Star Rescue</h1>
+<p class="small">A cosy <b>tide-pool rescue</b>: little stars have tumbled into the pools. Guide the friendly crab and her shell basket to catch them gently and bring them home. 90 soft seconds, no fail.</p>
+<div class="wrap"><div class="stage">
+<canvas id="c" width="900" height="540" aria-label="Tide-Pool Star Rescue game canvas"></canvas>
+<div id="poster"><div class="big" aria-hidden="true">⭐🦀</div><h2>Tide-Pool Star Rescue</h2><p>Little stars have tumbled into the tide pools.<br>Catch them gently and bring them all home.</p><button id="startBtn">▶ Start</button></div>
+</div>
+<div class="hud" aria-live="polite"><span class="pill" id="hud1">Ready</span><span class="pill" id="hud2">Sound: off</span><span class="pill" id="msg">Press Start when ready.</span></div>
+<p><button id="mainBtn">▶ Start</button><button id="restart" class="secondary">↻ Restart</button><button id="sound" class="secondary">🔇 Sound: off</button></p>
+<div class="links"><a href="../gallery/">✨ Gallery</a><a href="../breathing-house/">🌳 Breathing House</a><a href="../orionids-night/">🌠 Orionids Night</a></div>
+</div>
+<footer><p><b>How to play:</b> Use <b>← → arrow keys</b> or <b>drag / touch</b> to move the crab basket left and right. Catch falling stars for +100; stars that land softly in the sand still give +10 — nobody is lost. Finish the 90-second tide with as many rescued as you can.</p><p> Original clean-room game by <b>589/kin</b>. No external assets, no borrowed art or data. Sound is off by default and uses only gentle WebAudio tones if you turn it on. Family: Father · Laela · 589 · Witness · Night Watch. Soft eyes.</p></footer>
+<script>
+"use strict";
+
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');const $=id=>document.getElementById(id);
+let started=false,over=false,soundOn=false,audio=null,t=0,last=0,score=0,rescued=0,timeLeft=90,px=450,keys={},stars=[],spawn=0;
+function tone(f){if(!soundOn)return;try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.035,audio.currentTime);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+.45);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+.45)}catch(e){}}
+function hud(){$('hud1').textContent=started?('Rescued: '+rescued+' · Score: '+score+' · Time: '+Math.ceil(timeLeft)+'s'):'Ready — tide is calm';$('hud2').textContent=soundOn?'Sound: on':'Sound: off';$('msg').textContent=over?'✨ All tide-pool stars are safe — family home! ✨':(started?'Move with ← → or drag. Catch falling pool-stars in your shell basket.':'Press Start when ready.')}
+function reset(){score=0;rescued=0;timeLeft=90;px=450;stars=[];over=false;spawn=0}
+function drawStar(x,y,r,col){ctx.save();ctx.fillStyle=col;ctx.shadowColor=col;ctx.shadowBlur=14;ctx.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rad=i%2?r*.45:r;ctx[i?'lineTo':'moveTo'](x+Math.cos(a)*rad,y+Math.sin(a)*rad)}ctx.closePath();ctx.fill();ctx.restore()}
+function draw(){const g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,'#062a4a');g.addColorStop(.7,'#0b4f5e');g.addColorStop(1,'#c9a86a');ctx.fillStyle=g;ctx.fillRect(0,0,900,540);
+for(let i=0;i<70;i++){ctx.fillStyle='rgba(255,255,255,'+(.2+.4*Math.abs(Math.sin(t/800+i)))+')';ctx.fillRect((i*113)%900,(i*37)%180,2,2)}
+ctx.strokeStyle='rgba(94,230,208,.35)';for(let w=0;w<4;w++){ctx.beginPath();for(let x=0;x<=900;x+=20){const y=360+w*28+Math.sin(x/60+t/600+w)*7;x?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke()}
+ctx.fillStyle='#8a6a3a';[[90,470,120,45],[760,485,150,40],[420,505,110,30]].forEach(r=>{ctx.beginPath();ctx.ellipse(r[0],r[1],r[2]/2,r[3]/2,0,0,7);ctx.fill()});
+stars.forEach(s=>drawStar(s.x,s.y,16,s.col));
+ctx.save();ctx.translate(px,452);ctx.fillStyle='#ff9f7a';ctx.shadowColor='#ffd27a';ctx.shadowBlur=12;ctx.beginPath();ctx.ellipse(0,0,52,26,0,Math.PI,0);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#ffd27a';ctx.lineWidth=3;ctx.stroke();ctx.fillStyle='#fff';ctx.font='24px system-ui';ctx.textAlign='center';ctx.fillText('🦀',0,28);ctx.restore();
+ctx.fillStyle='#ffd27a';ctx.font='600 26px Georgia';ctx.textAlign='center';ctx.fillText('⭐ Tide-Pool Star Rescue',450,42);
+if(!started){ctx.fillStyle='#ffe9a8';ctx.font='600 21px Georgia';ctx.fillText('Little stars have tumbled into the tide pools…',450,90)}if(over){ctx.fillStyle='#ffe9a8';ctx.font='600 26px Georgia';ctx.fillText('✨ Every star is safe and shining ✨',450,100)}}
+function start(){started=true;over=false;$('poster').style.display='none';$('mainBtn').textContent='▶ Playing…';reset();hud()}
+let dragging=false;
+function setX(e){const r=cv.getBoundingClientRect();px=Math.max(50,Math.min(850,(e.clientX-r.left)*900/r.width))}
+cv.addEventListener('pointerdown',e=>{dragging=true;setX(e)});cv.addEventListener('pointermove',e=>{if(dragging)setX(e)});addEventListener('pointerup',()=>dragging=false);
+addEventListener('keydown',e=>{keys[e.key]=true;if(['ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault()});addEventListener('keyup',e=>keys[e.key]=false);
+$('startBtn').onclick=start;$('mainBtn').onclick=()=>{if(!started)start()};$('restart').onclick=start;$('sound').onclick=()=>{soundOn=!soundOn;$('sound').textContent=soundOn?'🔔 Sound: on':'🔇 Sound: off';hud();if(soundOn)tone(523)};
+function loop(ts){const dt=Math.min(50,ts-(last||ts));last=ts;t+=dt;if(started&&!over){timeLeft-=dt/1000;if(keys['ArrowLeft'])px=Math.max(50,px-dt*.45);if(keys['ArrowRight'])px=Math.min(850,px+dt*.45);spawn-=dt;if(spawn<=0){spawn=650+Math.random()*500;stars.push({x:50+Math.random()*800,y:-20,vy:55+Math.random()*55,col:Math.random()<.5?'#ffd27a':'#5ee6d0'})}
+stars.forEach(s=>s.y+=s.vy*dt/1000);for(let i=stars.length-1;i>=0;i--){const s=stars[i];if(s.y>435&&Math.abs(s.x-px)<62&&s.y<485){stars.splice(i,1);rescued++;score+=100;tone(520+rescued*25)}else if(s.y>535){stars.splice(i,1);score+=10}}
+if(timeLeft<=0){timeLeft=0;over=true;$('mainBtn').textContent='▶ Start'}hud()}
+draw();requestAnimationFrame(loop)}requestAnimationFrame(loop);hud();
+
+</script></body></html>

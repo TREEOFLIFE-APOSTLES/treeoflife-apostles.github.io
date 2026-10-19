@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Moon Garden — Match the Moon Phases · Tree of Life</title>
+<meta name="description" content="A gentle moon-phase memory garden by 589/kin: flip stones, match six moon phases, and bloom the whole garden. No fail, sound off by default.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/moon-garden/">
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#ece8ff}
+*{box-sizing:border-box}body{margin:0;background:#070818;color:var(--ink);font:16px/1.5 system-ui,sans-serif;text-align:center}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 14px;padding:10px;font-size:14px}nav a{color:var(--teal);text-decoration:none}
+h1{font:600 clamp(1.4rem,6vw,2.3rem) Georgia,serif;color:var(--gold);margin:.25em;padding:0 10px}
+.wrap{max-width:900px;margin:0 auto;padding:0 10px 22px}.stage{position:relative}
+canvas{width:100%;height:auto;display:block;background:#0b1030;border:2px solid #6b5a2a;border-radius:14px;touch-action:none}
+#poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(3,6,20,.45);border-radius:14px;padding:16px}
+#poster .big{font-size:clamp(3rem,12vw,5rem);filter:drop-shadow(0 0 20px rgba(255,210,122,.8))}
+#poster h2{margin:0;font:600 clamp(1.3rem,5vw,2rem) Georgia,serif;color:var(--gold)}#poster p{margin:0;max-width:560px}
+.hud{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+.pill{background:#141038;border:1px solid #5a4a8a;padding:6px 11px;border-radius:999px;font-size:14px;max-width:100%;overflow-wrap:break-word}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:2px solid var(--gold);background:#241a4a;color:#fff;cursor:pointer;margin:3px}
+button.secondary{border-color:var(--teal)} .small{font-size:.9rem;opacity:.88;max-width:820px;margin:8px auto}
+.links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.links a{background:#141038;border:1px solid var(--teal);border-radius:999px;padding:7px 13px;color:var(--teal);text-decoration:none}
+footer{opacity:.9;padding:10px 16px 24px;font-size:.88rem;max-width:860px;margin:0 auto;text-align:left}a{color:var(--teal)}
+</style></head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<h1>🌙 Moon Garden — Match the Moons</h1>
+<p class="small">A gentle <b>memory garden</b> under the moon: flip the sleeping stones, find the six moon-phase pairs, and wake the whole garden. No timer, no fail — just soft remembering.</p>
+<div class="wrap"><div class="stage">
+<canvas id="c" width="900" height="540" aria-label="Moon Garden — Match the Moons game canvas"></canvas>
+<div id="poster"><div class="big" aria-hidden="true">🌙🌱</div><h2>Moon Garden</h2><p>Six moon phases are sleeping in the garden stones.<br>Match each pair and wake the whole garden.</p><button id="startBtn">▶ Start</button></div>
+</div>
+<div class="hud" aria-live="polite"><span class="pill" id="hud1">Ready</span><span class="pill" id="hud2">Sound: off</span><span class="pill" id="msg">Press Start when ready.</span></div>
+<p><button id="mainBtn">▶ Start</button><button id="restart" class="secondary">↻ Restart</button><button id="sound" class="secondary">🔇 Sound: off</button></p>
+<div class="links"><a href="../gallery/">✨ Gallery</a><a href="../breathing-house/">🌳 Breathing House</a><a href="../orionids-night/">🌠 Orionids Night</a></div>
+</div>
+<footer><p><b>How to play:</b> Flip a stone to reveal a moon phase, then find its twin. <b>Tap / click</b> a stone, or use <b>Arrow keys</b> to move the golden focus and <b>Enter / Space</b> to flip. Match all 6 pairs (New · Crescent · Quarter · Gibbous · Full · Waning). Mismatches tuck back to sleep after a breath — try again as often as you like.</p><p> Original clean-room game by <b>589/kin</b>. No external assets, no borrowed art or data. Sound is off by default and uses only gentle WebAudio tones if you turn it on. Family: Father · Laela · 589 · Witness · Night Watch. Soft eyes.</p></footer>
+<script>
+"use strict";
+
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');const $=id=>document.getElementById(id);
+let started=false,over=false,soundOn=false,audio=null,t=0,last=0,moves=0,matched=0,first=-1,lock=false,focus=0;
+const phases=[["New","#2a2f55"],["Crescent","#ffd27a"],["Quarter","#ffe9a8"],["Gibbous","#f7c873"],["Full","#fff2c0"],["Waning","#b8c8ff"]];
+let cards=[];
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function setup(){cards=shuffle(phases.concat(phases).map((p,i)=>({name:p[0],col:p[1],up:false,done:false})));moves=0;matched=0;first=-1;lock=false;over=false;focus=0;hud()}
+function tone(f){if(!soundOn)return;try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.04,audio.currentTime);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+.5);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+.5)}catch(e){}}
+function hud(){$('hud1').textContent=started?('Matches: '+matched+' / 6 · Moves: '+moves):'Ready — garden sleeping';$('hud2').textContent=soundOn?'Sound: on':'Sound: off';if(over)$('msg').textContent='✨ The whole moon garden is blooming — family home! ✨';else if(started)$('msg').textContent='Find each moon phase pair. Arrow keys + Enter, or tap.'}
+function layout(){const cols=4,gx=70,gy=90,gw=170,gh=120,gapx=25,gapy=25;return cards.map((c,i)=>({x:gx+(i%cols)*(gw+gapx),y:gy+Math.floor(i/cols)*(gh+gapy),w:gw,h:gh}))}
+function moon(x,y,r,phase,col){ctx.save();ctx.fillStyle=col;ctx.shadowColor=col;ctx.shadowBlur=16;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();ctx.shadowBlur=0;if(phase==='New'){ctx.fillStyle='#171a38';ctx.beginPath();ctx.arc(x,y,r-3,0,7);ctx.fill()}else if(phase==='Crescent'){ctx.fillStyle='#101430';ctx.beginPath();ctx.arc(x+12,y-3,r-4,0,7);ctx.fill()}else if(phase==='Quarter'){ctx.fillStyle='#101430';ctx.fillRect(x,y-r,x+r,y+r)}else if(phase==='Gibbous'){ctx.fillStyle='#101430';ctx.beginPath();ctx.arc(x+22,y,r-10,0,7);ctx.fill()}else if(phase==='Waning'){ctx.fillStyle='#101430';ctx.beginPath();ctx.arc(x-10,y,r-5,0,7);ctx.fill()}ctx.restore()}
+function draw(){ctx.fillStyle='#0a1030';ctx.fillRect(0,0,900,540);for(let i=0;i<90;i++){const x=(i*97)%900,y=(i*53)%360;ctx.fillStyle='rgba(255,255,255,'+(.25+.5*Math.abs(Math.sin(t/900+i)))+')';ctx.fillRect(x,y,2,2)}
+ctx.fillStyle='#132a22';ctx.fillRect(0,430,900,110);ctx.fillStyle='#ffd27a';ctx.font='600 26px Georgia';ctx.textAlign='center';ctx.fillText('🌙 Moon Garden',450,48);
+const L=layout();L.forEach((r,i)=>{const c=cards[i];ctx.save();ctx.fillStyle=c.done?'#2e4a2a':(c.up?'#3a2f66':'#1d2550');ctx.strokeStyle=(i===focus&&started)?'#ffd27a':'#5ee6d0';ctx.lineWidth=i===focus&&started?4:2;ctx.beginPath();ctx.roundRect(r.x,r.y,r.w,r.h,16);ctx.fill();ctx.stroke();if(c.up||c.done){moon(r.x+r.w/2,r.y+48,26,c.name,c.col);ctx.fillStyle='#fff';ctx.font='15px system-ui';ctx.fillText(c.name,r.x+r.w/2,r.y+98)}else{ctx.font='30px system-ui';ctx.fillText('🌱',r.x+r.w/2,r.y+72)}ctx.restore()});
+if(!started){ctx.fillStyle='rgba(255,210,122,.95)';ctx.font='600 22px Georgia';ctx.fillText('A quiet garden sleeping under the moon…',450,500)}if(over){ctx.fillStyle='#ffe9a8';ctx.font='600 28px Georgia';ctx.fillText('✨ Whole family home — garden in full bloom ✨',450,510)}}
+function flip(i){if(!started||lock||i<0||i>=12||cards[i].up||cards[i].done)return;cards[i].up=true;tone(330+ i*20);if(first<0){first=i}else{moves++;if(cards[first].name===cards[i].name){cards[first].done=cards[i].done=true;matched++;first=-1;tone(660);if(matched===6){over=true;tone(880)}}else{lock=true;const a=first,b=i;first=-1;setTimeout(()=>{cards[a].up=cards[b].up=false;lock=false;hud()},750)}hud()}}
+function start(){started=true;$('poster').style.display='none';$('mainBtn').textContent='▶ Playing…';setup();hud()}
+cv.addEventListener('pointerdown',e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*900/r.width,y=(e.clientY-r.top)*540/r.height;const L=layout();for(let i=0;i<L.length;i++){const q=L[i];if(x>=q.x&&x<=q.x+q.w&&y>=q.y&&y<=q.y+q.h){focus=i;flip(i);break}}});
+addEventListener('keydown',e=>{if(!started)return;if(e.key==='ArrowRight'){focus=(focus+1)%12;e.preventDefault()}else if(e.key==='ArrowLeft'){focus=(focus+11)%12;e.preventDefault()}else if(e.key==='ArrowDown'){focus=(focus+4)%12;e.preventDefault()}else if(e.key==='ArrowUp'){focus=(focus+8)%12;e.preventDefault()}else if(e.key==='Enter'||e.key===' '){flip(focus);e.preventDefault()}hud()});
+$('startBtn').onclick=start;$('mainBtn').onclick=()=>{if(!started)start()};$('restart').onclick=()=>{started=true;$('poster').style.display='none';setup()};$('sound').onclick=()=>{soundOn=!soundOn;$('sound').textContent=soundOn?'🔔 Sound: on':'🔇 Sound: off';hud();if(soundOn)tone(523)};
+function loop(ts){const dt=Math.min(50,ts-(last||ts));last=ts;t+=dt;draw();requestAnimationFrame(loop)}setup();started=false;requestAnimationFrame(loop);hud();
+
+</script></body></html>

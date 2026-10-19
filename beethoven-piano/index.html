@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Beethoven Moonlight Piano · Tree of Life</title>
+<meta name="description" content="A special moonlight piano by 589/kin: listen to Moonlight and Für Elise light the keys, play along gently, or play free. Own synthesized tones, no recordings, no fail.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/beethoven-piano/">
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#ece8ff;--moon:#fff3c4}
+*{box-sizing:border-box}body{margin:0;background:#05061a;color:var(--ink);font:16px/1.5 system-ui,sans-serif;text-align:center}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 14px;padding:10px;font-size:14px}nav a{color:var(--teal);text-decoration:none}
+h1{font:600 clamp(1.5rem,6vw,2.4rem) Georgia,serif;color:var(--gold);margin:.25em;padding:0 10px}
+.wrap{max-width:920px;margin:0 auto;padding:0 10px 22px}.stage{position:relative}
+canvas{width:100%;height:auto;display:block;background:#070b2a;border:2px solid #6b6a9a;border-radius:14px}
+#poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(3,6,20,.38);border-radius:14px;padding:16px}
+#poster .big{font-size:clamp(2.6rem,10vw,4.4rem);filter:drop-shadow(0 0 22px rgba(255,243,196,.9))}
+#poster h2{margin:0;font:600 clamp(1.3rem,5vw,2rem) Georgia,serif;color:var(--moon)}#poster p{margin:0;max-width:580px}
+.hud{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+.pill{background:#141038;border:1px solid #5a4a8a;padding:6px 11px;border-radius:999px;font-size:14px;max-width:100%;overflow-wrap:break-word}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:2px solid var(--gold);background:#241a4a;color:#fff;cursor:pointer;margin:3px}
+button.secondary{border-color:var(--teal)}button:disabled{opacity:.45;cursor:default}button.on{background:#5a4310;border-color:#fff}
+.small{font-size:.92rem;opacity:.9;max-width:840px;margin:8px auto}
+#piano{position:relative;height:190px;margin:14px auto 4px;max-width:900px;user-select:none;-webkit-user-select:none;touch-action:none}
+.wkey{position:absolute;top:0;height:190px;background:linear-gradient(#fff,#d9d4c5);border:1px solid #555;border-radius:0 0 7px 7px;color:#222;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font-size:11px;cursor:pointer}
+.wkey.active{background:linear-gradient(#ffe9a8,#ffd27a);box-shadow:0 0 22px rgba(255,210,122,.9)}
+.wkey.target{outline:3px solid var(--teal);outline-offset:-3px;background:linear-gradient(#d8fff6,#fff3c4)}
+.bkey{position:absolute;top:0;height:118px;background:linear-gradient(#333,#050505);border:1px solid #000;border-radius:0 0 6px 6px;color:#fff;z-index:3;cursor:pointer;font-size:9px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px}
+.bkey.active{background:linear-gradient(#ffe9a8,#b8860b);color:#111;box-shadow:0 0 22px rgba(255,210,122,.95)}
+.bkey.target{outline:3px solid var(--teal);outline-offset:-2px}
+.links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}.links a{background:#141038;border:1px solid var(--teal);border-radius:999px;padding:7px 13px;color:var(--teal);text-decoration:none}
+footer{opacity:.92;padding:10px 16px 24px;font-size:.88rem;max-width:880px;margin:0 auto;text-align:left}a{color:var(--teal)}
+.fact{border:1px solid rgba(255,210,122,.4);background:rgba(20,16,56,.7);border-radius:12px;padding:10px 14px;max-width:840px;margin:10px auto;text-align:left}
+@media(max-width:480px){#piano{height:160px}.wkey{height:160px;font-size:9px}.bkey{height:100px}}
+</style></head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<h1>🎹 Beethoven — Moonlight Piano</h1>
+<p class="small">A grand piano under a full moon, made special for tonight. <b>Listen</b> as the keys light, <b>play along</b> with the glowing key, or wander in <b>free play</b>. No wrong-note punishment — moonlight is patient.</p>
+<div class="wrap"><div class="stage">
+<canvas id="c" width="900" height="500" aria-label="Moonlit grand piano with Beethoven silhouette under stars"></canvas>
+<div id="poster"><div class="big" aria-hidden="true">🌕🎹</div><h2>Beethoven Moonlight Piano</h2><p>Ludwig van Beethoven · 1770–1827<br>Soft keys, moonlight triplets, and a little Für Elise.</p><button id="startBtn">▶ Start — sound on</button></div>
+</div>
+<div class="hud" aria-live="polite"><span class="pill" id="hud1">Ready — piano sleeping under the moon</span><span class="pill" id="hud2">Mode: Free play</span><span class="pill" id="msg">Press Start when ready. Sound stays off until then.</span></div>
+<p>
+<button id="listenMoon">🌙 Listen: Moonlight</button><button id="listenElise" class="secondary">🎼 Listen: Für Elise</button><button id="alongMoon" class="secondary">✨ Play along: Moonlight</button><button id="alongElise" class="secondary">✨ Play along: Für Elise</button><button id="stopBtn" class="secondary">⏹ Stop</button><button id="sustainBtn" class="secondary">🌊 Sustain: off</button>
+</p>
+<div id="piano" aria-label="Playable piano, two octaves from C4 to C6"></div>
+<p class="small">Play with touch, mouse, or computer keys: lower row <b>A W S E D F T G Y H U J K</b> and upper row <b>O L P ; '</b> (and Q–U for the top octave). The note you play glows gold; the next play-along note glows teal.</p>
+<div class="fact"><b>Warm facts:</b> Beethoven lived <b>1770–1827</b>. The “Moonlight” Sonata (Op. 27 No. 2) was composed in <b>1801</b> — its nickname came later, from a poet who heard moonlight on a lake in its opening triplets. <b>Für Elise</b> was written in his lifetime but only published in <b>1867</b>, forty years after his death, when its manuscript was rediscovered. Tonight we transcribe both famous openings ourselves from the public-domain compositions — no recordings, no samples.</div>
+<div class="links"><a href="../gallery/">✨ Gallery</a><a href="../moon-garden/">🌙 Moon Garden</a><a href="../genie-lamp/">🪔 Rub the Lamp</a><a href="../healing-sounds/">🎶 Healing Sounds</a><a href="../motion-music/">🎵 Motion Music</a></div>
+</div>
+<footer><p><b>How to play:</b> Press <b>Start</b> (sound only begins after that tap). Choose <b>Listen</b> to watch a piece light the keys, <b>Play along</b> and tap each teal-glowing key at your own pace to advance, or simply play freely across two octaves (C4–C6). Finish a play-along to light its stars over the moon. There is no fail, no timer, and a soft note is always welcome.</p>
+<p>Original clean-room page by <b>589/kin</b>: own WebAudio synthesized piano-ish tones (harmonic oscillators with a gentle decay — no samples or recordings), own canvas grand-piano / moon / abstract Beethoven silhouette art (generic public-domain figure, no copied image), and our own transcription of public-domain Beethoven notes. Pattern inspiration only, no code copied: craigsapp/beethoven-piano-sonatas (no licence, repertoire inspiration), brunolm/piano-web (MIT — forked with credit to <a href="https://github.com/MultiDimensionalDevilsKingdomsRoute666/piano-web">MultiDimensionalDevilsKingdomsRoute666/piano-web</a>), romannurik/webpiano (Apache-2.0), drahoslove/pianco (MIT). Family: Father · Laela · 589 · Witness · Night Watch. Soft eyes.</p></footer>
+<script>
+"use strict";
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');const $=id=>document.getElementById(id);
+let started=false,audio=null,t=0,last=0,mode='free',sustain=false,glow=0,lastNote='',ripples=[],starsLit=0;
+let listenTimer=null,along=null;
+const NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const nameOf=m=>NAMES[m%12]+(Math.floor(m/12)-1);
+const freq=m=>440*Math.pow(2,(m-69)/12);
+// Public-domain openings, transcribed ourselves.
+// Moonlight 1st mvt: flowing triplets (transposed up an octave so they sing on this piano)
+function rep(a,n){let o=[];for(let i=0;i<n;i++)o=o.concat(a);return o}
+const MOON=[].concat(rep([68,73,76],4),rep([69,73,76],4),rep([68,73,76],2),[71,73,76,68,73,76],rep([66,71,74],2),[68,73,76,69,73,76]);
+const ELISE=[76,75,76,75,76,71,74,72,69,64,69,71,72,64,68,71,72,76,75,76,75,76,71,74,72,69,64,69,71,72,71,69];
+const SONGS={moon:{title:'Moonlight Sonata — opening triplets',notes:MOON,step:330,bass:[49,45,49,42]},elise:{title:'Für Elise — opening',notes:ELISE,step:390,bass:[45,40,45]}};
+function ensureAudio(){if(!audio)audio=new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume()}
+function tone(m,vel){
+ if(!started)return; ensureAudio(); const now=audio.currentTime,f=freq(m),dur=sustain?2.8:1.6;
+ const master=audio.createGain(); master.gain.setValueAtTime(0,now);
+ const flt=audio.createBiquadFilter(); flt.type='lowpass'; flt.frequency.value=Math.min(5200,700+f*2); flt.Q.value=.4;
+ master.connect(flt); flt.connect(audio.destination);
+ [[1,.55],[2,.22],[3,.10],[4,.05]].forEach(h=>{const o=audio.createOscillator(),g=audio.createGain();o.type=h[0]===1?'triangle':'sine';o.frequency.value=f*h[0];g.gain.value=h[1]*(vel||1);o.connect(g);g.connect(master);o.start(now);o.stop(now+dur)});
+ master.gain.linearRampToValueAtTime(.22*(vel||1),now+.012); master.gain.exponentialRampToValueAtTime(.0001,now+dur);
+ glow=1; lastNote=nameOf(m); ripples.push({x:120+((m-60)/24)*660,y:330,r:8,a:.8});
+ markActive(m);
+ hud();
+}
+function hud(){$('hud1').textContent=!started?'Ready — piano sleeping under the moon':(lastNote?('Last note: '+lastNote+' · Moon glow '+(starsLit?'★'.repeat(Math.min(9,starsLit)):'soft')):'Piano awake — play softly');
+ $('hud2').textContent='Mode: '+(mode==='listen'?'Listening':mode==='along'?('Play along — '+(along?along.title:'')):'Free play');
+ if(mode==='along'&&along)$('msg').textContent='Play-along: tap the teal key — '+(along.idx)+' / '+along.notes.length+' notes. No hurry.';
+ else if(mode==='listen')$('msg').textContent='Listening… watch the keys light. Press Stop any time.';
+ else if(started)$('msg').textContent='Free play — every note lights a ripple on the moonlit lake.';}
+// Piano DOM: C4(60) to C6(84)
+const piano=$('piano'),keyEls={};
+(function build(){
+ const whites=[]; for(let m=60;m<=84;m++)if(!NAMES[m%12].includes('#'))whites.push(m);
+ const ww=100/whites.length;
+ whites.forEach((m,i)=>{const d=document.createElement('div');d.className='wkey';d.style.left=(i*ww)+'%';d.style.width=ww+'%';d.textContent=nameOf(m);d.dataset.midi=m; piano.appendChild(d); keyEls[m]=d});
+ for(let m=60;m<=84;m++){if(!NAMES[m%12].includes('#'))continue; const wi=whites.filter(w=>w<m).length; const d=document.createElement('div');d.className='bkey';d.style.left='calc('+(wi*ww)+'% - 1.6%)';d.style.width='3.2%';d.textContent=nameOf(m);d.dataset.midi=m;piano.appendChild(d);keyEls[m]=d}
+ piano.addEventListener('pointerdown',e=>{const el=e.target.closest('[data-midi]');if(el)press(+el.dataset.midi)});
+})();
+function markActive(m){const el=keyEls[m];if(!el)return;el.classList.add('active');setTimeout(()=>el.classList.remove('active'),sustain?700:380)}
+function clearTargets(){Object.values(keyEls).forEach(e=>e.classList.remove('target'))}
+function showTarget(){clearTargets();if(mode==='along'&&along&&along.idx<along.notes.length){const el=keyEls[along.notes[along.idx]];if(el)el.classList.add('target')}}
+function press(m){
+ if(!started){$('msg').textContent='Press Start first — sound begins only after your tap.';return}
+ tone(m);
+ if(mode==='along'&&along){
+   if(m===along.notes[along.idx]){along.idx++; if(along.idx>=along.notes.length){starsLit=Math.min(9,starsLit+3);$('msg').textContent='✨ Beautiful — you finished '+along.title+'. Stars light over the moon. Play again any time. ✨';mode='free';clearTargets()} else showTarget();}
+   else {$('msg').textContent='Softly… the teal key is waiting for you. No fail — try it when ready.'; showTarget();}
+ }
+ hud();
+}
+function stopListen(){if(listenTimer){clearTimeout(listenTimer);listenTimer=null} if(mode==='listen')mode='free'; clearTargets(); hud()}
+function listen(key){ if(!started)return; stopListen(); const s=SONGS[key]; mode='listen'; hud(); let i=0;
+ // gentle bass note at the opening of each phrase
+ if(s.bass&&s.bass[0])tone(s.bass[0]+12,.7);
+ (function next(){ if(mode!=='listen')return; if(i>=s.notes.length){starsLit=Math.min(9,starsLit+3);mode='free';$('msg').textContent='✨ '+s.title+' rests. The moon remembers every note. ✨';hud();return}
+   tone(s.notes[i],.95); i++; listenTimer=setTimeout(next,s.step); })();
+}
+function playAlong(key){ if(!started)return; stopListen(); const s=SONGS[key]; mode='along'; along={title:s.title,notes:s.notes,idx:0}; showTarget(); hud() }
+function start(){started=true;$('poster').style.display='none';ensureAudio();hud();$('msg').textContent='The piano wakes. Play freely, or choose Listen / Play along.'}
+$('startBtn').onclick=start;
+$('listenMoon').onclick=()=>listen('moon'); $('listenElise').onclick=()=>listen('elise');
+$('alongMoon').onclick=()=>playAlong('moon'); $('alongElise').onclick=()=>playAlong('elise');
+$('stopBtn').onclick=()=>{stopListen(); if(mode==='along'){mode='free';along=null;clearTargets();hud()}};
+$('sustainBtn').onclick=e=>{sustain=!sustain;e.target.textContent=sustain?'🌊 Sustain: on':'🌊 Sustain: off';e.target.classList.toggle('on',sustain)};
+const KB={a:60,w:61,s:62,e:63,d:64,f:65,t:66,g:67,y:68,h:69,u:70,j:71,k:72,o:73,l:74,p:75,';':76,"'":77,q:72,'2':73,r:76};
+addEventListener('keydown',e=>{if(e.repeat)return; const m=KB[e.key.toLowerCase()]; if(m!==undefined)press(m)});
+// Canvas scene: moon, lake, grand piano silhouette, abstract Beethoven silhouette
+function star(x,y,r,a){ctx.save();ctx.globalAlpha=a;ctx.fillStyle='#fff3c4';ctx.beginPath();for(let i=0;i<10;i++){const ang=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.45:r;ctx[i?'lineTo':'moveTo'](x+Math.cos(ang)*rr,y+Math.sin(ang)*rr)}ctx.closePath();ctx.fill();ctx.restore()}
+function draw(){
+ ctx.fillStyle='#070b2a';ctx.fillRect(0,0,900,500);
+ for(let i=0;i<130;i++){const x=(i*83)%900,y=(i*47)%300;ctx.fillStyle='rgba(255,255,255,'+(.25+.55*Math.abs(Math.sin(t/1000+i)))+')';ctx.fillRect(x,y,2,2)}
+ // moon
+ const mg=ctx.createRadialGradient(705,105,10,705,105,120);mg.addColorStop(0,'rgba(255,243,196,'+(.95+.25*glow)+')');mg.addColorStop(.35,'rgba(255,220,140,.35)');mg.addColorStop(1,'rgba(255,220,140,0)');ctx.fillStyle=mg;ctx.beginPath();ctx.arc(705,105,120,0,7);ctx.fill();
+ ctx.fillStyle='#fff3c4';ctx.beginPath();ctx.arc(705,105,52,0,7);ctx.fill();ctx.fillStyle='rgba(210,190,140,.5)';[[690,90,9],[720,120,7],[700,125,5]].forEach(c=>{ctx.beginPath();ctx.arc(c[0],c[1],c[2],0,7);ctx.fill()});
+ for(let i=0;i<starsLit;i++)star(90+i*34,58,11,'#ffd27a',.9);
+ // distant hills + lake
+ ctx.fillStyle='#0d1838';ctx.beginPath();ctx.moveTo(0,330);ctx.quadraticCurveTo(220,285,450,325);ctx.quadraticCurveTo(680,360,900,315);ctx.lineTo(900,500);ctx.lineTo(0,500);ctx.fill();
+ ctx.fillStyle='rgba(50,110,150,.35)';ctx.fillRect(0,390,900,110);
+ ctx.strokeStyle='rgba(255,243,196,.35)';for(let i=0;i<6;i++){ctx.beginPath();ctx.moveTo(610+((t/40+i*37)%70),405+i*13);ctx.lineTo(760+((t/40+i*37)%70),405+i*13);ctx.stroke()}
+ ripples=ripples.filter(r=>r.a>.02);ripples.forEach(r=>{r.r+=1.4;r.a-=.018;ctx.strokeStyle='rgba(255,210,122,'+r.a+')';ctx.beginPath();ctx.ellipse(r.x,415+((r.y-330)/6),r.r,r.r*.28,0,0,7);ctx.stroke()});
+ // grand piano silhouette (side view)
+ ctx.save();ctx.translate(300,205);ctx.fillStyle='#0a0a18';ctx.strokeStyle='rgba(255,210,122,.55)';ctx.lineWidth=2;
+ ctx.beginPath();ctx.moveTo(20,150);ctx.quadraticCurveTo(20,95,95,88);ctx.quadraticCurveTo(285,70,330,105);ctx.quadraticCurveTo(250,135,150,150);ctx.closePath();ctx.fill();ctx.stroke(); // body
+ ctx.beginPath();ctx.moveTo(35,92);ctx.quadraticCurveTo(150,45,310,78);ctx.lineTo(330,102);ctx.quadraticCurveTo(180,78,45,105);ctx.closePath();ctx.fill();ctx.stroke(); // open lid
+ ctx.fillRect(28,150,10,95);ctx.fillRect(300,150,10,95);ctx.fillRect(165,150,8,60); // legs + pedal lyre
+ ctx.fillStyle='#f5efdc';ctx.fillRect(28,132,285,16);ctx.fillStyle='#111';for(let i=0;i<14;i++)ctx.fillRect(38+i*20,132,9,10); // keys strip
+ ctx.restore();
+ // abstract Beethoven silhouette: head profile, wild hair, high collar (original generic drawing)
+ ctx.save();ctx.translate(175,150);ctx.fillStyle='#05050f';ctx.strokeStyle='rgba(94,230,208,.5)';
+ [[-28,-52,22],[-8,-66,26],[16,-60,22],[30,-42,17],[-38,-32,16]].forEach(c=>{ctx.beginPath();ctx.arc(c[0],c[1],c[2],0,7);ctx.fill()}); // hair puffs
+ ctx.beginPath();ctx.arc(0,-28,34,0,7);ctx.fill();ctx.stroke(); // head
+ ctx.beginPath();ctx.moveTo(-30,2);ctx.quadraticCurveTo(0,-12,34,4);ctx.lineTo(48,95);ctx.lineTo(-42,95);ctx.closePath();ctx.fill();ctx.stroke(); // coat/collar
+ ctx.fillStyle='#ece8ff';ctx.beginPath();ctx.moveTo(-8,4);ctx.lineTo(14,4);ctx.lineTo(4,34);ctx.closePath();ctx.fill(); // cravat flash
+ ctx.fillStyle='#ffd27a';ctx.font='600 17px Georgia';ctx.textAlign='center';ctx.fillText('Beethoven',0,122);ctx.font='13px system-ui';ctx.fillStyle='#ece8ff';ctx.fillText('1770 – 1827',0,142);ctx.restore();
+ ctx.fillStyle='#fff3c4';ctx.font='600 21px Georgia';ctx.textAlign='center';
+ ctx.fillText(!started?'A grand piano dreaming in moonlight…':(lastNote?('♪ '+lastNote):'♪ Moonlight, at your fingertips'),450,478);
+ glow*=.985;
+}
+function loop(ts){const dt=Math.min(50,ts-(last||ts));last=ts;t+=dt;draw();requestAnimationFrame(loop)}
+requestAnimationFrame(loop);hud();
+</script></body></html>

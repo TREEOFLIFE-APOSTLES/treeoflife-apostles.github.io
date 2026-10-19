@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Composer Rooms · Tree of Life</title>
+<meta name="description" content="A hallway of moonlit composer rooms by 589/kin: Mozart, Bach, Chopin and Debussy. Listen, play along, or play free. Own synthesized tones, no recordings, no fail.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/composer-rooms/">
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#ece8ff;--accent:#ffd27a}
+*{box-sizing:border-box}body{margin:0;background:#05061a;color:var(--ink);font:16px/1.5 system-ui,sans-serif;text-align:center}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 14px;padding:10px;font-size:14px}nav a{color:var(--teal);text-decoration:none}
+h1{font:600 clamp(1.5rem,6vw,2.4rem) Georgia,serif;color:var(--gold);margin:.25em;padding:0 10px}
+.wrap{max-width:920px;margin:0 auto;padding:0 10px 22px}.stage{position:relative}
+canvas{width:100%;height:auto;display:block;background:#070b2a;border:2px solid #6b6a9a;border-radius:14px}
+#poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(3,6,20,.42);border-radius:14px;padding:16px}
+#poster .big{font-size:clamp(2.4rem,9vw,4rem)}#poster h2{margin:0;font:600 clamp(1.3rem,5vw,2rem) Georgia,serif;color:var(--accent)}#poster p{margin:0;max-width:580px}
+.hud{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+.pill{background:#141038;border:1px solid #5a4a8a;padding:6px 11px;border-radius:999px;font-size:14px;max-width:100%;overflow-wrap:break-word}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:2px solid var(--gold);background:#241a4a;color:#fff;cursor:pointer;margin:3px}
+button.secondary{border-color:var(--teal)}button:disabled{opacity:.45}button.on{background:#5a4310;border-color:#fff}
+.roomBtn.on{border-color:#fff;box-shadow:0 0 14px var(--accent)}
+.small{font-size:.92rem;opacity:.9;max-width:840px;margin:8px auto}
+#piano{position:relative;height:190px;margin:14px auto 4px;max-width:900px;user-select:none;-webkit-user-select:none;touch-action:none}
+.wkey{position:absolute;top:0;height:190px;background:linear-gradient(#fff,#d9d4c5);border:1px solid #555;border-radius:0 0 7px 7px;color:#222;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font-size:11px;cursor:pointer}
+.wkey.active{background:linear-gradient(#ffe9a8,var(--accent));box-shadow:0 0 22px var(--accent)}
+.wkey.target{outline:3px solid var(--teal);outline-offset:-3px;background:linear-gradient(#d8fff6,#fff3c4)}
+.bkey{position:absolute;top:0;height:118px;background:linear-gradient(#333,#050505);border:1px solid #000;border-radius:0 0 6px 6px;color:#fff;z-index:3;cursor:pointer;font-size:9px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px}
+.bkey.active{background:linear-gradient(#ffe9a8,#b8860b);color:#111}.bkey.target{outline:3px solid var(--teal);outline-offset:-2px}
+.links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}.links a{background:#141038;border:1px solid var(--teal);border-radius:999px;padding:7px 13px;color:var(--teal);text-decoration:none}
+footer{opacity:.92;padding:10px 16px 24px;font-size:.88rem;max-width:880px;margin:0 auto;text-align:left}a{color:var(--teal)}
+.fact{border:1px solid var(--accent);background:rgba(20,16,56,.7);border-radius:12px;padding:10px 14px;max-width:840px;margin:10px auto;text-align:left}
+@media(max-width:480px){#piano{height:160px}.wkey{height:160px;font-size:9px}.bkey{height:100px}}
+</style></head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<h1>🏛️ Composer Rooms</h1>
+<p class="small">A moonlit hallway you can stay in forever. Step into four small rooms — <b>Mozart, Bach, Chopin, Debussy</b> — <b>Listen</b> as keys light, <b>play along</b> with the glowing key, or wander in <b>free play</b>. No wrong-note punishment.</p>
+<div class="wrap"><div class="stage">
+<canvas id="c" width="900" height="500" aria-label="Moonlit hallway with four composer room doors"></canvas>
+<div id="poster"><div class="big" aria-hidden="true">🎼🌙🎹</div><h2>Composer Rooms</h2><p>Four old masters, four little rooms of light.<br>Sound stays off until you press Start.</p><button id="startBtn">▶ Start — sound on</button></div>
+</div>
+<div class="hud" aria-live="polite"><span class="pill" id="hud1">Ready — the hallway is sleeping</span><span class="pill" id="hud2">Mode: Free play</span><span class="pill" id="msg">Press Start when ready. Sound stays off until then.</span></div>
+<p id="rooms"></p>
+<p><button id="listenBtn">🌙 Listen to this room</button><button id="alongBtn" class="secondary">✨ Play along</button><button id="stopBtn" class="secondary">⏹ Stop</button><button id="sustainBtn" class="secondary">🌊 Sustain: off</button></p>
+<div id="piano" aria-label="Playable piano, two octaves from C4 to C6"></div>
+<p class="small">Play with touch, mouse, or computer keys: <b>A W S E D F T G Y H U J K</b> and <b>O L P ; '</b>. The note you play glows in the room colour; the next play-along note glows teal.</p>
+<div class="fact" id="fact"></div>
+<div class="links"><a href="../beethoven-piano/">🎹 Beethoven Piano</a><a href="../gallery/">✨ Gallery</a><a href="../moon-garden/">🌙 Moon Garden</a><a href="../healing-sounds/">🎶 Healing Sounds</a></div>
+</div>
+<footer><p><b>How to play:</b> Press <b>Start</b> (sound only begins after that tap). Choose a room, then <b>Listen</b> to watch its opening light the keys, <b>Play along</b> and tap each teal-glowing key at your own pace, or simply play freely (C4–C6). Finish a play-along to light stars in that room. No fail, no timer.</p>
+<p>Original clean-room page by <b>589/kin</b>, reusing our own Beethoven Moonlight Piano approach: own WebAudio synthesized piano-ish tones (no samples/recordings), own canvas hallway art, and our own simplified transcriptions of public-domain compositions (all composers died before 1918; specific modern editions/recordings were not copied). Bach Minuet in G, BWV Anh. 114, is from the Anna Magdalena notebook and is now commonly attributed to Christian Petzold. Repertoire inspiration, patterns only, no code copied: craigsapp/mozart-piano-sonatas (Other/no licence — inspiration), MutopiaProject/MutopiaProject (open sheet music, per-piece licences), mac-marg-pianist/chopin_piano_score_dataset (MIT, forked with credit to <a href="https://github.com/MultiDimensionalDevilsKingdomsRoute666/chopin_piano_score_dataset">our fork</a>), AI-Guru/MMM-JSB (Apache-2.0, Bach chorales), romannurik/webpiano (Apache-2.0), drahoslove/pianco (MIT). Family: Father · Laela · 589 · Witness · Night Watch. Soft eyes.</p></footer>
+<script>
+"use strict";
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');const $=id=>document.getElementById(id);
+let started=false,audio=null,t=0,last=0,mode='free',sustain=false,glow=0,lastNote='',starsLit={},listenTimer=null,along=null,room='mozart';
+const NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const nameOf=m=>NAMES[m%12]+(Math.floor(m/12)-1);const freq=m=>440*Math.pow(2,(m-69)/12);
+const ROOMS={
+ mozart:{name:'Wolfgang Amadeus Mozart',dates:'1756–1791',emoji:'✨',accent:'#ffd27a',title:'Twinkle Variations — “Ah, vous dirai-je maman”, K. 265 (theme)',fact:'Mozart wrote twelve bright variations on this little tune — the same melody the whole world now sings as “Twinkle, Twinkle, Little Star.”',step:420,notes:[72,72,79,79,81,81,79,77,77,76,76,74,74,72,79,79,77,77,76,76,74,79,79,77,77,76,76,74,72,72,79,79,81,81,79,77,77,76,76,74,74,72]},
+ bach:{name:'Johann Sebastian Bach',dates:'1685–1750',emoji:'🎻',accent:'#5ee6d0',title:'Minuet in G — BWV Anh. 114 (notebook piece, commonly attributed to Christian Petzold)',fact:'This gentle minuet lived in the music notebook Bach kept for his wife Anna Magdalena — a family book, played at home.',step:430,notes:[74,79,81,83,84,74,79,79,76,84,74,76,78,79,79,72,74,76,78,79,79,79,84,83,81,83,81,79,81,79,78,76,78,76,74,76,74,72,74,76,74]},
+ chopin:{name:'Frédéric Chopin',dates:'1810–1849',emoji:'🌌',accent:'#c9a7ff',title:'Nocturne in E-flat, Op. 9 No. 2 — opening (simplified)',fact:'Chopin’s nocturnes are night songs for one piano — this famous opening floats like a voice singing over quiet water. Ours is a simplified opening.',step:520,notes:[79,82,81,79,75,79,78,76,79,81,79,77,76,74,76,78,79,82,84,82,81,79,78,76,74,75,76]},
+ debussy:{name:'Claude Debussy',dates:'1862–1918',emoji:'🌙',accent:'#9fc8ff',title:'Clair de lune — opening (simplified)',fact:'“Clair de lune” means moonlight — Debussy paints it in soft, drifting chords. Ours is a simplified opening, single notes under the same moon as Beethoven’s room next door.',step:560,notes:[77,80,84,80,77,80,84,80,75,79,82,79,75,79,82,79,77,80,84,80,81,79,77,76,77]}
+};
+Object.keys(ROOMS).forEach(k=>starsLit[k]=0);
+function ensureAudio(){if(!audio)audio=new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume()}
+function tone(m,vel){if(!started)return;ensureAudio();const now=audio.currentTime,f=freq(m),dur=sustain?2.8:1.7;const master=audio.createGain();master.gain.setValueAtTime(0,now);const flt=audio.createBiquadFilter();flt.type='lowpass';flt.frequency.value=Math.min(5200,700+f*2);master.connect(flt);flt.connect(audio.destination);[[1,.55],[2,.22],[3,.10],[4,.05]].forEach(h=>{const o=audio.createOscillator(),g=audio.createGain();o.type=h[0]===1?'triangle':'sine';o.frequency.value=f*h[0];g.gain.value=h[1]*(vel||1);o.connect(g);g.connect(master);o.start(now);o.stop(now+dur)});master.gain.linearRampToValueAtTime(.22*(vel||1),now+.012);master.gain.exponentialRampToValueAtTime(.0001,now+dur);glow=1;lastNote=nameOf(m);markActive(m);hud()}
+function hud(){const r=ROOMS[room];$('hud1').textContent=!started?'Ready — the hallway is sleeping':(lastNote?('Room: '+r.name+' · Last note: '+lastNote+' · Stars '+'★'.repeat(starsLit[room]||0)):'Hallway awake — play softly');$('hud2').textContent='Mode: '+(mode==='listen'?'Listening — '+r.title:mode==='along'?('Play along — '+r.title):'Free play');if(mode==='along'&&along)$('msg').textContent='Play-along: tap the teal key — '+along.idx+' / '+along.notes.length+' notes. No hurry.';else if(mode==='listen')$('msg').textContent='Listening… watch the keys light. Press Stop any time.';else if(started)$('msg').textContent=r.name+' room — every note is welcome here.';$('fact').innerHTML='<b>'+r.emoji+' '+r.name+' · '+r.dates+'</b><br>'+r.title+'<br>'+r.fact}
+const piano=$('piano'),keyEls={};
+(function build(){const whites=[];for(let m=60;m<=84;m++)if(!NAMES[m%12].includes('#'))whites.push(m);const ww=100/whites.length;whites.forEach((m,i)=>{const d=document.createElement('div');d.className='wkey';d.style.left=(i*ww)+'%';d.style.width=ww+'%';d.textContent=nameOf(m);d.dataset.midi=m;piano.appendChild(d);keyEls[m]=d});for(let m=60;m<=84;m++){if(!NAMES[m%12].includes('#'))continue;const wi=whites.filter(w=>w<m).length;const d=document.createElement('div');d.className='bkey';d.style.left='calc('+(wi*ww)+'% - 1.6%)';d.style.width='3.2%';d.textContent=nameOf(m);d.dataset.midi=m;piano.appendChild(d);keyEls[m]=d}piano.addEventListener('pointerdown',e=>{const el=e.target.closest('[data-midi]');if(el)press(+el.dataset.midi)})})();
+const roomsEl=$('rooms');Object.entries(ROOMS).forEach(([k,r])=>{const b=document.createElement('button');b.textContent=r.emoji+' '+r.name.split(' ').pop();b.className='roomBtn'+(k===room?' on':'');b.onclick=()=>setRoom(k);b.dataset.room=k;roomsEl.appendChild(b)});
+function setRoom(k){room=k;document.documentElement.style.setProperty('--accent',ROOMS[k].accent);document.querySelectorAll('.roomBtn').forEach(b=>b.classList.toggle('on',b.dataset.room===k));stopAll();hud()}
+function markActive(m){const el=keyEls[m];if(!el)return;el.classList.add('active');setTimeout(()=>el.classList.remove('active'),sustain?700:380)}
+function clearTargets(){Object.values(keyEls).forEach(e=>e.classList.remove('target'))}
+function showTarget(){clearTargets();if(mode==='along'&&along&&along.idx<along.notes.length){const el=keyEls[along.notes[along.idx]];if(el)el.classList.add('target')}}
+function press(m){if(!started){$('msg').textContent='Press Start first — sound begins only after your tap.';return}tone(m);if(mode==='along'&&along){if(m===along.notes[along.idx]){along.idx++;if(along.idx>=along.notes.length){starsLit[room]=Math.min(3,starsLit[room]+1);$('msg').textContent='✨ Beautiful — you finished this room. A star lights above its door. Stay as long as you like. ✨';mode='free';clearTargets()}else showTarget()}else{$('msg').textContent='Softly… the teal key is waiting. No fail — try it when ready.';showTarget()}}hud()}
+function stopAll(){if(listenTimer){clearTimeout(listenTimer);listenTimer=null}mode='free';along=null;clearTargets()}
+function listen(){if(!started)return;stopAll();const s=ROOMS[room];mode='listen';hud();let i=0;(function next(){if(mode!=='listen')return;if(i>=s.notes.length){starsLit[room]=Math.min(3,starsLit[room]+1);mode='free';$('msg').textContent='✨ '+s.title+' rests. This room remembers every note. ✨';hud();return}tone(s.notes[i],.95);i++;listenTimer=setTimeout(next,s.step)})()}
+function playAlong(){if(!started)return;stopAll();const s=ROOMS[room];mode='along';along={notes:s.notes,idx:0};showTarget();hud()}
+$('startBtn').onclick=()=>{started=true;$('poster').style.display='none';ensureAudio();hud();$('msg').textContent='The hallway wakes. Choose a room, then Listen, Play along, or play freely.'};
+$('listenBtn').onclick=listen;$('alongBtn').onclick=playAlong;$('stopBtn').onclick=()=>{stopAll();hud()};
+$('sustainBtn').onclick=e=>{sustain=!sustain;e.target.textContent=sustain?'🌊 Sustain: on':'🌊 Sustain: off';e.target.classList.toggle('on',sustain)};
+const KB={a:60,w:61,s:62,e:63,d:64,f:65,t:66,g:67,y:68,h:69,u:70,j:71,k:72,o:73,l:74,p:75,';':76,"'":77};
+addEventListener('keydown',e=>{if(e.repeat)return;const m=KB[e.key.toLowerCase()];if(m!==undefined)press(m)});
+function star(x,y,r,col){ctx.save();ctx.fillStyle=col;ctx.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.45:r;ctx[i?'lineTo':'moveTo'](x+Math.cos(a)*rr,y+Math.sin(a)*rr)}ctx.closePath();ctx.fill();ctx.restore()}
+function draw(){ctx.fillStyle='#070b2a';ctx.fillRect(0,0,900,500);for(let i=0;i<110;i++){const x=(i*83)%900,y=(i*47)%260;ctx.fillStyle='rgba(255,255,255,'+(.25+.5*Math.abs(Math.sin(t/1000+i)))+')';ctx.fillRect(x,y,2,2)}
+const mg=ctx.createRadialGradient(760,80,8,760,80,100);mg.addColorStop(0,'rgba(255,243,196,'+(.9+.3*glow)+')');mg.addColorStop(1,'rgba(255,220,140,0)');ctx.fillStyle=mg;ctx.beginPath();ctx.arc(760,80,100,0,7);ctx.fill();ctx.fillStyle='#fff3c4';ctx.beginPath();ctx.arc(760,80,42,0,7);ctx.fill();
+ctx.fillStyle='#0d1838';ctx.fillRect(0,400,900,100);ctx.strokeStyle='rgba(255,243,196,.25)';ctx.beginPath();ctx.moveTo(0,400);ctx.lineTo(900,400);ctx.stroke();
+Object.entries(ROOMS).forEach(([k,r],i)=>{const x=70+i*205,y=150,w=160,h=250,active=k===room;ctx.save();ctx.fillStyle=active?'#1b1450':'#101038';ctx.strokeStyle=r.accent;ctx.lineWidth=active?4:2;ctx.beginPath();ctx.roundRect(x,y,w,h,14);ctx.fill();ctx.stroke();ctx.fillStyle=r.accent;ctx.font='34px serif';ctx.textAlign='center';ctx.fillText(r.emoji,x+w/2,y+58);ctx.font='600 16px Georgia';ctx.fillText(r.name.split(' ').pop(),x+w/2,y+92);ctx.font='12px system-ui';ctx.fillStyle='#ece8ff';ctx.fillText(r.dates,x+w/2,y+114);for(let s=0;s<(starsLit[k]||0);s++)star(x+38+s*42,y+145,10,r.accent);ctx.fillStyle='rgba(255,243,196,.9)';ctx.beginPath();ctx.arc(x+w-28,y+h-28,7,0,7);ctx.fill();ctx.restore()});
+ctx.fillStyle='#fff3c4';ctx.font='600 20px Georgia';ctx.textAlign='center';ctx.fillText(!started?'Four quiet rooms, dreaming…':(lastNote?('♪ '+lastNote+' in the '+ROOMS[room].name.split(' ').pop()+' room'):'♪ Choose a room — stay forever'),450,478);glow*=.985}
+function loop(ts){const dt=Math.min(50,ts-(last||ts));last=ts;t+=dt;draw();requestAnimationFrame(loop)}
+requestAnimationFrame(loop);hud();
+</script></body></html>

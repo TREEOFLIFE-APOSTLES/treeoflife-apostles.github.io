@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dataverse Seed Vault · Tree of Life</title>
+<meta name="description" content="Dataverse Seed Vault by 589/kin: plant a practice dataset seed, mint a pretend practice ID, build a citation, and watch FAIR grow.">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/dataverse-garden/">
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#ece8ff;--green:#8fe388}
+*{box-sizing:border-box}body{margin:0;background:#05061a;color:var(--ink);font:16px/1.5 system-ui,sans-serif;text-align:center}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 14px;padding:10px;font-size:14px}nav a{color:var(--teal);text-decoration:none}
+h1{font:600 clamp(1.5rem,6vw,2.4rem) Georgia,serif;color:var(--gold);margin:.25em}
+.wrap{max-width:920px;margin:0 auto;padding:0 10px 22px}
+canvas{width:100%;max-width:720px;aspect-ratio:3/2;border-radius:14px;background:#0a0d2a;touch-action:manipulation}
+.hud{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 10px;margin:8px 0}
+.f{padding:3px 10px;border-radius:99px;border:1px solid #445;opacity:.5}.f.on{opacity:1;border-color:var(--green);color:var(--green)}
+form{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0}
+input{flex:1 1 150px;min-width:0;padding:8px;border-radius:8px;border:1px solid #446;background:#111536;color:var(--ink)}
+button{padding:8px 16px;border-radius:8px;border:0;background:var(--teal);color:#05061a;font-weight:600;cursor:pointer}
+#cite{background:#111536;border-radius:10px;padding:10px;margin:8px auto;max-width:720px;text-align:left;word-break:break-word;min-height:3em}
+small{opacity:.75}
+</style></head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<h1>🌱 Dataverse Seed Vault</h1>
+<div class="wrap">
+<p>Plant a dataset seed. Give it a title, a creator and a year, and it earns a practice ID, a citation, and the four FAIR letters as it grows.</p>
+<canvas id="c" width="720" height="480" aria-label="Seed vault garden"></canvas>
+<div class="hud" id="hud"><span class="f" id="fF">F · Findable</span><span class="f" id="fA">A · Accessible</span><span class="f" id="fI">I · Interoperable</span><span class="f" id="fR">R · Reusable</span><span id="cnt">Seeds: 0</span></div>
+<div><button id="start">Start ▶</button> <button id="mute">Sound: off</button></div>
+<form id="fm"><input id="ti" placeholder="Title (e.g. Moon Garden Notes)" maxlength="60" aria-label="Title"><input id="cr" placeholder="Creator (Last, First)" maxlength="40" aria-label="Creator"><input id="yr" placeholder="Year" inputmode="numeric" maxlength="4" aria-label="Year"><button type="submit">Plant 🌱</button></form>
+<div id="cite" aria-live="polite">Your citation will appear here.</div>
+<p><small>Practice ID only — <b>not a real DOI</b>, not registered anywhere. Real DOIs are minted by a repository like Harvard Dataverse through DataCite. Citation shape follows the Dataverse pattern: Author, Year, "Title", persistent ID, Repository, Version.<br>Keys: Tab between fields, Enter to plant, Space/S to start, M for sound. Original clean-room page by 589/kin; inspiration only from IQSS/dataverse (Apache-2.0), no code copied.</small></p>
+</div>
+<script>
+const c=document.getElementById('c'),x=c.getContext('2d'),W=720,H=480;
+let started=false,sound=false,ac=null,seeds=[],t=0;
+const $=id=>document.getElementById(id);
+function tone(f,d){if(!sound||!ac)return;const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,ac.currentTime);g.gain.linearRampToValueAtTime(.08,ac.currentTime+.05);g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+d);o.connect(g).connect(ac.destination);o.start();o.stop(ac.currentTime+d+.05)}
+function start(){if(started)return;started=true;sound=true;try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){sound=false}$('mute').textContent='Sound: '+(sound?'on':'off');$('start').textContent='Started ✓';tone(392,.6);setTimeout(()=>tone(523,.8),200)}
+$('start').onclick=start;
+$('mute').onclick=()=>{if(!started){start();return}sound=!sound;$('mute').textContent='Sound: '+(sound?'on':'off')};
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key===' '||e.key==='s'||e.key==='S'){e.preventDefault();start()}if(e.key==='m'||e.key==='M')$('mute').click()});
+c.addEventListener('pointerdown',()=>{start();$('ti').focus()});
+function code(){const a='BCDFGHJKLMNPQRSTVWXZ0123456789';let s='';for(let i=0;i<6;i++)s+=a[Math.floor(Math.random()*a.length)];return s}
+function esc(s){return s.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+function fair(ti,cr,yr){const F=ti.length>0,A=F,I=F&&cr.length>0,R=I&&/^\d{4}$/.test(yr);return{F,A,I,R}}
+function show(fr){for(const k of'FAIR')$('f'+k).classList.toggle('on',fr[k])}
+['ti','cr','yr'].forEach(id=>$(id).addEventListener('input',()=>show(fair($('ti').value.trim(),$('cr').value.trim(),$('yr').value.trim()))));
+$('fm').onsubmit=e=>{e.preventDefault();start();const ti=$('ti').value.trim()||'Untitled Seed',cr=$('cr').value.trim()||'Anonymous',yr=/^\d{4}$/.test($('yr').value.trim())?$('yr').value.trim():String(new Date().getFullYear());
+const id='practice:589/KIN/'+code();const fr=fair(ti,cr,yr);show({F:1,A:1,I:1,R:1});
+$('cite').innerHTML=esc(cr)+', '+esc(yr)+', "'+esc(ti)+'", '+id+', Tree of Life Seed Vault, V1 <br><small>(practice ID — not a real DOI)</small>';
+const n=seeds.length;seeds.push({x:90+(n%6)*108+(Math.random()*20-10),g:0,h:120+Math.random()*80,hue:90+Math.random()*80,ti});
+if(seeds.length>12)seeds.shift();$('cnt').textContent='Seeds: '+(n+1);[262,330,392,523].forEach((f,i)=>setTimeout(()=>tone(f,.7),i*180))};
+function tree(s){const gy=H-60,h=s.h*s.g;x.strokeStyle='#7a5a3a';x.lineWidth=6;x.beginPath();x.moveTo(s.x,gy);x.lineTo(s.x,gy-h);x.stroke();
+if(s.g<.15){x.fillStyle='#c9a46a';x.beginPath();x.ellipse(s.x,gy-4,7,5,0,0,7);x.fill();return}
+const r=10+40*s.g;x.fillStyle='hsla('+s.hue+',60%,55%,.85)';for(let i=0;i<5;i++){const a=i/5*6.28+t*.01;x.beginPath();x.arc(s.x+Math.cos(a)*r*.5,gy-h-Math.sin(a)*r*.4,r*.6,0,7);x.fill()}
+if(s.g>.95){x.fillStyle='#ffd27a';x.font='11px system-ui';x.textAlign='center';x.fillText(s.ti.slice(0,14),s.x,gy+18)}}
+function draw(){t++;x.fillStyle='#0a0d2a';x.fillRect(0,0,W,H);
+for(let i=0;i<60;i++){x.fillStyle='rgba(255,255,255,'+(.3+.3*Math.sin(t*.02+i))+')';x.fillRect((i*137)%W,(i*71)%(H-120),2,2)}
+x.fillStyle='#173a2a';x.fillRect(0,H-60,W,60);
+if(!started&&!seeds.length){x.fillStyle='#ffd27a';x.font='600 28px Georgia';x.textAlign='center';x.fillText('The Seed Vault is sleeping',W/2,H/2-30);x.font='16px system-ui';x.fillStyle='#ece8ff';x.fillText('Press Start, then plant a dataset seed 🌱',W/2,H/2+4);
+x.fillStyle='#c9a46a';x.beginPath();x.ellipse(W/2,H-66+Math.sin(t*.05)*3,9,6,0,0,7);x.fill()}
+for(const s of seeds){if(s.g<1)s.g=Math.min(1,s.g+.006);tree(s)}requestAnimationFrame(draw)}
+draw();
+</script></body></html>

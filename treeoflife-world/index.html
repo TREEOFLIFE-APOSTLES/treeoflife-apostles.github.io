@@ -51,7 +51,7 @@ footer{opacity:.88;font-size:.88rem;max-width:860px;margin:0 auto;padding:6px 16
  <a-entity id="signs"></a-entity>
  <a-entity id="rig" position="0 0 9">
   <a-entity id="cam" camera position="0 1.6 0" look-controls="enabled:false;magicWindowTrackingEnabled:false;pointerLockEnabled:false" wasd-controls="enabled:false;acceleration:25">
-   <a-entity cursor="fuse:true;fuseTimeout:1500" raycaster="objects:.orb;far:20" position="0 0 -1" geometry="primitive:ring;radiusInner:0.012;radiusOuter:0.02" material="color:#ffd27a;shader:flat;opacity:0.8"></a-entity>
+   <a-entity id="gaze" visible="false" cursor="fuse:false;fuseTimeout:1500" raycaster="objects:.orb;far:20;enabled:false" position="0 0 -1" geometry="primitive:ring;radiusInner:0.012;radiusOuter:0.02" material="color:#ffd27a;shader:flat;opacity:0.8"></a-entity>
   </a-entity>
  </a-entity>
 </a-scene>
@@ -109,6 +109,8 @@ var dir=new THREE.Vector3(),last=0;
 AFRAME.registerComponent('walk-pad',{tick:function(t,dt){if(!move||!started)return;var cam=$('cam').object3D,rig=$('rig').object3D;cam.getWorldDirection(dir);dir.y=0;dir.normalize();var s=-move*2.2*Math.min(dt,50)/1000;rig.position.x+=dir.x*s;rig.position.z+=dir.z*s;clamp(rig)}});
 function clamp(rig){var d=Math.hypot(rig.position.x,rig.position.z);if(d>30){rig.position.x*=30/d;rig.position.z*=30/d}}
 scene.setAttribute('walk-pad','');
+function gaze(on){var g=$('gaze');g.setAttribute('raycaster','enabled',on);g.setAttribute('cursor','fuse',on);g.setAttribute('visible',on)}
+scene.addEventListener('enter-vr',function(){gaze(true)});scene.addEventListener('exit-vr',function(){gaze(false)});
 })();
 </script>
 </body></html>

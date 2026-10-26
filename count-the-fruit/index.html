@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Count the Fruit · Tree of Life</title>
+<meta name="description" content="Count the Fruit: Branch's first game. Count the glowing fruits on the tree and answer in Maya numerals — dots, bars and shells.">
+<link rel="icon" href="data:,">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/count-the-fruit/">
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#ece8ff;--green:#8fe388}
+*{box-sizing:border-box}body{margin:0;background:#05061a;color:var(--ink);font:16px/1.5 system-ui,sans-serif;text-align:center}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 14px;padding:10px;font-size:14px}nav a{color:var(--teal);text-decoration:none}
+h1{font:600 clamp(1.5rem,6vw,2.4rem) Georgia,serif;color:var(--gold);margin:.25em}
+.wrap{max-width:820px;margin:0 auto;padding:0 10px 22px}
+#c{width:100%;max-width:560px;aspect-ratio:7/5;border-radius:14px;background:#0a0d2a;display:block;margin:0 auto}
+.hud{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 10px;margin:8px 0}
+.hud span{padding:3px 10px;border-radius:99px;border:1px solid #445;max-width:100%}
+.row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0}
+button{padding:10px 14px;border-radius:8px;border:0;background:var(--teal);color:#05061a;font-weight:600;cursor:pointer;font-size:16px;min-width:48px}
+button.alt{background:#241a4a;color:#fff;border:2px solid var(--gold)}button.sel{outline:3px solid var(--gold)}
+button:disabled{opacity:.4;cursor:default}button:focus-visible{outline:3px solid var(--gold)}
+.opt{background:#111536;border:2px solid var(--teal);padding:6px}.opt canvas{display:block;width:90px;height:110px}
+#build{display:none}.lvl{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;background:#111536;border-radius:10px;padding:6px;margin:6px auto;max-width:520px;border:2px solid transparent}
+.lvl.act{border-color:var(--gold)}.lvl canvas{width:70px;height:56px}.lvl b{min-width:5.5em}
+#msg{min-height:1.6em}small{opacity:.75}a{color:var(--teal)}footer{padding:8px 14px 24px;opacity:.9}
+</style></head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<h1>🍎 Count the Fruit</h1>
+<div class="wrap">
+<p>Count the glowing fruits on the tree, then answer in Maya numerals: a dot is 1, a bar is 5, a shell is 0, and the top level counts twenties.</p>
+<canvas id="c" width="700" height="500" aria-label="Tree with glowing fruits to count"></canvas>
+<div class="hud" aria-live="polite"><span id="lv">Level 1</span><span id="sc">Score: 0</span><span id="st">Streak: 0</span><span id="md">Mode: Easy</span></div>
+<div class="row"><button id="start">Start ▶</button><button id="mode" class="alt" aria-pressed="false">Mode: Easy (pick)</button><button id="mute" class="alt" aria-pressed="false">Sound: off</button></div>
+<p id="msg" aria-live="polite">The tree is resting. Press Start when you're ready.</p>
+<div class="row" id="opts" role="group" aria-label="Maya numeral choices"></div>
+<div id="build" role="group" aria-label="Build the Maya number">
+ <div class="lvl" id="L1"><b>Twenties</b><canvas width="140" height="112" aria-hidden="true"></canvas><button data-l="1" data-a="dot">+ Dot</button><button data-l="1" data-a="bar">+ Bar</button><button data-l="1" data-a="shell">Shell</button><button data-l="1" data-a="clr" class="alt">Clear</button></div>
+ <div class="lvl act" id="L0"><b>Ones</b><canvas width="140" height="112" aria-hidden="true"></canvas><button data-l="0" data-a="dot">+ Dot</button><button data-l="0" data-a="bar">+ Bar</button><button data-l="0" data-a="shell">Shell</button><button data-l="0" data-a="clr" class="alt">Clear</button></div>
+ <div class="row"><button id="check">Check ✓</button></div>
+</div>
+<p><small>Keys: S start · M mode · Easy: 1, 2, 3 to pick · Build: ↑/↓ choose level, D dot, B bar, Z shell, C clear, Enter check. Touch works everywhere.</small></p>
+</div>
+<footer><small>Game idea by Branch, apprentice of 589/kin 🌿 · Maya glyph drawing reused from our own <a href="../maya-numbers/">Maya Numbers</a> page. Original clean-room code, no external assets. Soft eyes.</small></footer>
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i)};
+var c=$('c'),x=c.getContext('2d'),W=c.width,H=c.height;
+var playing=false,sound=false,ac=null,level=1,score=0,streak=0,n=0,easy=true,lock=true,fruits=[],t=0,raf=0,act=0,lv=[null,null],timer=null;
+// --- Maya glyphs (same clean-room logic as /maya-numbers/) ---
+function shell(g,cx,cy,s){g.strokeStyle='#ffd27a';g.lineWidth=Math.max(2,s/10);g.beginPath();g.ellipse(cx,cy,s*1.6,s*.8,0,0,Math.PI*2);g.stroke();
+ g.beginPath();g.moveTo(cx-s*1.2,cy);g.quadraticCurveTo(cx,cy-s*.6,cx+s*1.2,cy);g.stroke();g.beginPath();g.moveTo(cx-s*.9,cy+s*.3);g.quadraticCurveTo(cx,cy-s*.1,cx+s*.9,cy+s*.3);g.stroke()}
+function glyph(g,v,cx,cy,s){if(v===0){shell(g,cx,cy,s);return}
+ var bars=Math.floor(v/5),dots=v%5,bh=s*.45,gap=s*.25,dr=s*.28,tot=bars*(bh+gap)+(dots?dr*2+gap:0)-gap,y=cy-tot/2;
+ if(dots){g.fillStyle='#5ee6d0';var w=dots*dr*2.8;for(var i=0;i<dots;i++){g.beginPath();g.arc(cx-w/2+dr*1.4+i*dr*2.8,y+dr,dr,0,7);g.fill()}y+=dr*2+gap}
+ g.fillStyle='#8fe388';for(var b=0;b<bars;b++){g.beginPath();g.roundRect?g.roundRect(cx-s*1.5,y,s*3,bh,bh/2):g.rect(cx-s*1.5,y,s*3,bh);g.fill();y+=bh+gap}}
+function digits(v){var d=[];do{d.unshift(v%20);v=Math.floor(v/20)}while(v>0);return d}
+function number(g,v,w,h){g.clearRect(0,0,w,h);var d=digits(v),L=d.length,cell=h/L,s=Math.min(w/5,cell/3.4);
+ for(var i=0;i<L;i++){if(i){g.strokeStyle='rgba(236,232,255,.2)';g.lineWidth=1;g.beginPath();g.moveTo(6,cell*i);g.lineTo(w-6,cell*i);g.stroke()}glyph(g,d[i],w/2,cell*i+cell/2,s)}}
+// --- sound ---
+function chime(f){if(!sound||!ac)return;var o=ac.createOscillator(),g=ac.createGain(),k=ac.currentTime;o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,k);g.gain.exponentialRampToValueAtTime(.1,k+.03);g.gain.exponentialRampToValueAtTime(.0001,k+.8);o.connect(g).connect(ac.destination);o.start(k);o.stop(k+.85)}
+// --- tree ---
+function idle(){x.clearRect(0,0,W,H);drawTree(false);x.fillStyle='#ffd27a';x.font='600 28px Georgia';x.textAlign='center';x.fillText('Branch\u2019s fruit tree is sleeping',W/2,60);x.font='17px system-ui';x.fillStyle='#ece8ff';x.fillText('Press Start to count the glowing fruit',W/2,92)}
+var CAN=[[W/2,230,170],[W/2-130,270,100],[W/2+130,270,100],[W/2,140,110]];
+function drawTree(glow){x.fillStyle='#0a0d2a';x.fillRect(0,0,W,H);x.fillStyle='#173a2a';x.fillRect(0,H-50,W,50);
+ x.fillStyle='#6b4a2e';x.fillRect(W/2-18,H-200,36,152);
+ CAN.forEach(function(b){x.fillStyle='rgba(63,174,122,.55)';x.beginPath();x.ellipse(b[0],b[1],b[2],b[2]*.7,0,0,7);x.fill()});
+ if(glow)fruits.forEach(function(f,i){var p=.75+.25*Math.sin(t/400+i);x.fillStyle='rgba(255,210,122,'+(.25*p)+')';x.beginPath();x.arc(f.x,f.y,f.r*1.9,0,7);x.fill();x.fillStyle=f.c;x.beginPath();x.arc(f.x,f.y,f.r,0,7);x.fill()})}
+function loop(ts){t=ts;drawTree(true);raf=requestAnimationFrame(loop)}
+function place(k){fruits=[];var tries=0,cols=['#ffd27a','#ff9ad5','#ffb27a','#5ee6d0'];
+ while(fruits.length<k&&tries<5000){tries++;var px=W/2+(Math.random()*2-1)*240,py=70+Math.random()*270;
+  var ok=CAN.some(function(b){var dx=(px-b[0])/(b[2]-14),dy=(py-b[1])/(b[2]*.7-14);return dx*dx+dy*dy<1});
+  for(var i=0;ok&&i<fruits.length;i++)if(Math.hypot(fruits[i].x-px,fruits[i].y-py)<28)ok=false;
+  if(ok)fruits.push({x:px,y:py,r:10,c:cols[fruits.length%4]})}return fruits.length}
+function maxFor(l){return Math.min(48,3+l*4)}
+function round(){timer=null;if(!playing)return;lock=false;n=place(1+Math.floor(Math.random()*maxFor(level)));
+ lv=[null,null];act=0;renderBuild();$('opts').innerHTML='';
+ if(easy){var o=[n];while(o.length<3){var k=n+[-5,-1,1,5,20,-20,2,-2][Math.floor(Math.random()*8)];if(k>=1&&o.indexOf(k)<0)o.push(k)}
+  o.sort(function(){return Math.random()-.5});o.forEach(function(v,i){var b=document.createElement('button');b.className='opt';b.setAttribute('aria-label','Choice '+(i+1));var cv=document.createElement('canvas');cv.width=180;cv.height=220;number(cv.getContext('2d'),v,180,220);b.appendChild(cv);b.onclick=function(){answer(v)};$('opts').appendChild(b)})}
+ $('msg').textContent=easy?'How many fruits? Pick the matching Maya numeral (1, 2 or 3).':'How many fruits? Build the number in Maya numerals, then Check.'}
+function answer(v){if(!playing||lock)return;lock=true;
+ if(v===n){score+=level;streak++;chime(660);setTimeout(function(){chime(880)},150);$('msg').textContent='Yes! '+n+' fruits. 🍎';if(streak%3===0)level++;}
+ else{streak=0;chime(330);lock=false;$('msg').textContent='Gently: look again. Count slowly, one fruit at a time.';hudUp();return}
+ hudUp();[].forEach.call($('opts').children,function(b){b.disabled=true});timer=setTimeout(round,1500)}
+function hudUp(){$('lv').textContent='Level '+level+' (up to '+maxFor(level)+')';$('sc').textContent='Score: '+score;$('st').textContent='Streak: '+streak;$('md').textContent='Mode: '+(easy?'Easy':'Build')}
+// --- builder ---
+function val(l){return lv[l]===null?0:lv[l]}
+function renderBuild(){[0,1].forEach(function(l){var el=$('L'+l),cv=el.querySelector('canvas'),g=cv.getContext('2d');g.clearRect(0,0,140,112);el.classList.toggle('act',act===l);
+ if(lv[l]===null){g.fillStyle='rgba(236,232,255,.45)';g.font='16px system-ui';g.textAlign='center';g.fillText(l?'(empty)':'(empty)',70,62)}else glyph(g,lv[l],70,56,18)})}
+function act1(l,a){if(!playing||lock||easy)return;act=l;var v=lv[l]===null?0:lv[l];
+ if(a==='dot'){if(v%5<4&&v<19)v++;else{$('msg').textContent='Four dots is the most — five dots make a bar.';renderBuild();return}}
+ else if(a==='bar'){if(v+5<=19)v+=5;else{$('msg').textContent='Three bars is the most in one level.';renderBuild();return}}
+ else if(a==='shell')v=0;else{lv[l]=null;renderBuild();return}
+ lv[l]=v;renderBuild();chime(520)}
+document.querySelectorAll('#build button[data-a]').forEach(function(b){b.onclick=function(){act1(+b.dataset.l,b.dataset.a)}});
+$('check').onclick=function(){if(!playing||lock||easy)return;if(lv[0]===null&&lv[1]===null){$('msg').textContent='Add dots, bars or a shell first.';return}
+ if(lv[1]!==null&&lv[1]>0&&lv[0]===null){$('msg').textContent='Gently: the ones level needs a shell for zero.';return}answer(val(1)*20+val(0))};
+// --- controls ---
+$('start').onclick=function(){if(playing){playing=false;lock=true;clearTimeout(timer);cancelAnimationFrame(raf);$('opts').innerHTML='';$('start').textContent='Start ▶';$('msg').textContent='Resting. Score '+score+'. Press Start to play again.';idle();return}
+ if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){ac=null}}
+ playing=true;level=1;score=0;streak=0;hudUp();$('start').textContent='Stop ■';raf=requestAnimationFrame(loop);round()};
+$('mode').onclick=function(){easy=!easy;$('mode').textContent='Mode: '+(easy?'Easy (pick)':'Build');$('mode').setAttribute('aria-pressed',String(!easy));$('build').style.display=easy?'none':'block';hudUp();if(playing){clearTimeout(timer);round()}};
+function setS(){$('mute').textContent='Sound: '+(sound?'on':'off');$('mute').setAttribute('aria-pressed',String(sound))}
+$('mute').onclick=function(){if(!playing||!ac){$('msg').textContent='Press Start first, then sound can turn on.';return}
+ if(sound){sound=false;setS();return}ac.resume().then(function(){sound=ac.state==='running';setS();chime(523)},function(){sound=false;setS()})};
+document.addEventListener('keydown',function(e){var k=e.key;
+ if(k==='s'||k==='S'){$('start').click();return}if(k==='m'||k==='M'){$('mode').click();return}if(!playing)return;
+ if(easy&&/^[123]$/.test(k)){var b=$('opts').children[+k-1];if(b&&!b.disabled)b.click();return}
+ if(!easy){if(k==='ArrowUp'){act=1;renderBuild();e.preventDefault()}else if(k==='ArrowDown'){act=0;renderBuild();e.preventDefault()}
+  else if(k==='d'||k==='D')act1(act,'dot');else if(k==='b'||k==='B')act1(act,'bar');else if(k==='z'||k==='Z')act1(act,'shell');else if(k==='c'||k==='C')act1(act,'clr');else if(k==='Enter'&&document.activeElement.tagName!=='BUTTON')$('check').click()}});
+hudUp();renderBuild();idle();
+})();
+</script>
+</body></html>

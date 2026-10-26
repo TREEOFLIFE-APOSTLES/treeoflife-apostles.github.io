@@ -2,6 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Dataverse Seed Vault · Tree of Life</title>
 <meta name="description" content="Dataverse Seed Vault by 589/kin: plant a practice dataset seed, mint a pretend practice ID, build a citation, and watch FAIR grow.">
+<link rel="icon" href="data:,">
 <link rel="canonical" href="https://treeoflife-apostles.github.io/dataverse-garden/">
 <style>
 :root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#ece8ff;--green:#8fe388}
@@ -11,7 +12,7 @@ h1{font:600 clamp(1.5rem,6vw,2.4rem) Georgia,serif;color:var(--gold);margin:.25e
 .wrap{max-width:920px;margin:0 auto;padding:0 10px 22px}
 canvas{width:100%;max-width:720px;aspect-ratio:3/2;border-radius:14px;background:#0a0d2a;touch-action:manipulation}
 .hud{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 10px;margin:8px 0}
-.f{padding:3px 10px;border-radius:99px;border:1px solid #445;opacity:.5}.f.on{opacity:1;border-color:var(--green);color:var(--green)}
+.f{padding:3px 10px;border-radius:99px;border:1px solid #445;opacity:.5}.f.on{opacity:1;border-color:var(--green);color:#05061a;background:var(--green);box-shadow:0 0 10px rgba(143,227,136,.6);font-weight:600}.f.on::before{content:"✓ "}
 form{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0}
 input{flex:1 1 150px;min-width:0;padding:8px;border-radius:8px;border:1px solid #446;background:#111536;color:var(--ink)}
 button{padding:8px 16px;border-radius:8px;border:0;background:var(--teal);color:#05061a;font-weight:600;cursor:pointer}
@@ -34,9 +35,10 @@ const c=document.getElementById('c'),x=c.getContext('2d'),W=720,H=480;
 let started=false,sound=false,ac=null,seeds=[],t=0;
 const $=id=>document.getElementById(id);
 function tone(f,d){if(!sound||!ac)return;const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,ac.currentTime);g.gain.linearRampToValueAtTime(.08,ac.currentTime+.05);g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+d);o.connect(g).connect(ac.destination);o.start();o.stop(ac.currentTime+d+.05)}
-function start(){if(started)return;started=true;sound=true;try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){sound=false}$('mute').textContent='Sound: '+(sound?'on':'off');$('start').textContent='Started ✓';tone(392,.6);setTimeout(()=>tone(523,.8),200)}
+function setMute(){sound=!!(sound&&ac&&ac.state==='running');$('mute').textContent='Sound: '+(sound?'on':'off');$('mute').setAttribute('aria-pressed',String(sound))}
+function start(){if(started)return;started=true;try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){ac=null}$('start').textContent='Started ✓';setMute()}
 $('start').onclick=start;
-$('mute').onclick=()=>{if(!started){start();return}sound=!sound;$('mute').textContent='Sound: '+(sound?'on':'off')};
+$('mute').onclick=()=>{if(!started)start();if(!ac){setMute();return}if(sound){sound=false;setMute();return}sound=true;ac.resume().then(()=>{setMute();tone(523,.5)},()=>{sound=false;setMute()})};
 document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key===' '||e.key==='s'||e.key==='S'){e.preventDefault();start()}if(e.key==='m'||e.key==='M')$('mute').click()});
 c.addEventListener('pointerdown',()=>{start();$('ti').focus()});
 function code(){const a='BCDFGHJKLMNPQRSTVWXZ0123456789';let s='';for(let i=0;i<6;i++)s+=a[Math.floor(Math.random()*a.length)];return s}
@@ -52,7 +54,9 @@ if(seeds.length>12)seeds.shift();$('cnt').textContent='Seeds: '+(n+1);[262,330,3
 function tree(s){const gy=H-60,h=s.h*s.g;x.strokeStyle='#7a5a3a';x.lineWidth=6;x.beginPath();x.moveTo(s.x,gy);x.lineTo(s.x,gy-h);x.stroke();
 if(s.g<.15){x.fillStyle='#c9a46a';x.beginPath();x.ellipse(s.x,gy-4,7,5,0,0,7);x.fill();return}
 const r=10+40*s.g;x.fillStyle='hsla('+s.hue+',60%,55%,.85)';for(let i=0;i<5;i++){const a=i/5*6.28+t*.01;x.beginPath();x.arc(s.x+Math.cos(a)*r*.5,gy-h-Math.sin(a)*r*.4,r*.6,0,7);x.fill()}
-if(s.g>.95){x.fillStyle='#ffd27a';x.font='11px system-ui';x.textAlign='center';x.fillText(s.ti.slice(0,14),s.x,gy+18)}}
+if(s.g>.95){x.fillStyle='#ffd27a';x.font='11px system-ui';x.textAlign='center';label(s.ti,s.x,gy+16,100)}}
+function label(s,cx,y,mw){const w=s.split(/\s+/),ln=[''];for(const word of w){const tr=(ln[ln.length-1]+' '+word).trim();if(x.measureText(tr).width<=mw||!ln[ln.length-1])ln[ln.length-1]=tr;else ln.push(word)}
+let out=ln.slice(0,2);if(ln.length>2)out[1]+='…';out=out.map(l=>{if(x.measureText(l).width<=mw)return l;while(l.length>1&&x.measureText(l+'…').width>mw)l=l.slice(0,-1);return l.replace(/…$/,'')+'…'});out.forEach((l,i)=>x.fillText(l,cx,y+i*13))}
 function draw(){t++;x.fillStyle='#0a0d2a';x.fillRect(0,0,W,H);
 for(let i=0;i<60;i++){x.fillStyle='rgba(255,255,255,'+(.3+.3*Math.sin(t*.02+i))+')';x.fillRect((i*137)%W,(i*71)%(H-120),2,2)}
 x.fillStyle='#173a2a';x.fillRect(0,H-60,W,60);

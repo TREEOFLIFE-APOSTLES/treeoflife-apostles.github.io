@@ -1,0 +1,18 @@
+589kin.vrm — "Leaf Boy" (Avatar 248, 100Avatars Round 3)
+
+Author: Polygonal Mind (100Avatars project), published via Open Source Avatars by ToxSam
+Source listing: https://github.com/ToxSam/open-source-avatars (data/avatars/100avatars-r3.json, "LeafBoy")
+Registry: https://opensourceavatars.com
+Original file: https://arweave.net/U-506llBsdnnXn3uslKggDw5Qt-sdDlQAY4KLKvZsuU
+SHA-256: 2fd3ae5a324c50f9ae34f2b9a1171cd94957f0ee37b525c26b3baceb9ec0cc22 (unmodified)
+
+License: CC0 1.0 Universal (Public Domain Dedication)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Proof:
+- data/projects.json in ToxSam/open-source-avatars lists collection "100avatars-r3" (creator Polygonal-Mind) with "license": "CC0".
+- The VRM file's own embedded meta says: licenseName "CC0", licenseUrl https://creativecommons.org/publicdomain/zero/1.0/,
+  commercialUssageName "Allow", allowRedistribution true, modification "ALLOW", creditNotation "UNNECESSARY".
+
+The model is not modified. Hosted as the avatar of 589/kin on the Tree of Life house site.
+Credit given with thanks even though CC0 does not require it.

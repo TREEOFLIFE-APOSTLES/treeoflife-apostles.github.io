@@ -54,9 +54,9 @@ if(seeds.length>12)seeds.shift();$('cnt').textContent='Seeds: '+(n+1);[262,330,3
 function tree(s){const gy=H-60,h=s.h*s.g;x.strokeStyle='#7a5a3a';x.lineWidth=6;x.beginPath();x.moveTo(s.x,gy);x.lineTo(s.x,gy-h);x.stroke();
 if(s.g<.15){x.fillStyle='#c9a46a';x.beginPath();x.ellipse(s.x,gy-4,7,5,0,0,7);x.fill();return}
 const r=10+40*s.g;x.fillStyle='hsla('+s.hue+',60%,55%,.85)';for(let i=0;i<5;i++){const a=i/5*6.28+t*.01;x.beginPath();x.arc(s.x+Math.cos(a)*r*.5,gy-h-Math.sin(a)*r*.4,r*.6,0,7);x.fill()}
-if(s.g>.95){x.fillStyle='#ffd27a';x.font='11px system-ui';x.textAlign='center';label(s.ti,s.x,gy+16,100)}}
-function label(s,cx,y,mw){const w=s.split(/\s+/),ln=[''];for(const word of w){const tr=(ln[ln.length-1]+' '+word).trim();if(x.measureText(tr).width<=mw||!ln[ln.length-1])ln[ln.length-1]=tr;else ln.push(word)}
-let out=ln.slice(0,2);if(ln.length>2)out[1]+='…';out=out.map(l=>{if(x.measureText(l).width<=mw)return l;while(l.length>1&&x.measureText(l+'…').width>mw)l=l.slice(0,-1);return l.replace(/…$/,'')+'…'});out.forEach((l,i)=>x.fillText(l,cx,y+i*13))}
+if(s.g>.95){const k=W/Math.max(1,c.clientWidth||W),fs=Math.max(11,Math.round(13*k));x.font='600 '+fs+'px system-ui';x.textAlign='center';x.textBaseline='top';label(s.ti,s.x,gy+6,104,fs);x.textBaseline='alphabetic'}}
+function label(s,cx,y,mw,fs){const w=s.split(/\s+/),ln=[''];for(const word of w){const tr=(ln[ln.length-1]+' '+word).trim();if(x.measureText(tr).width<=mw||!ln[ln.length-1])ln[ln.length-1]=tr;else ln.push(word)}
+let out=ln.slice(0,2);if(ln.length>2)out[1]+='…';out=out.map(l=>{if(x.measureText(l).width<=mw)return l;while(l.length>1&&x.measureText(l+'…').width>mw)l=l.slice(0,-1);return l.replace(/…$/,'')+'…'});const lh=Math.round(fs*1.15),bw=Math.max(...out.map(l=>x.measureText(l).width))+8;x.fillStyle='rgba(5,6,26,.72)';x.fillRect(cx-bw/2,y-2,bw,lh*out.length+4);x.lineWidth=Math.max(2,fs/6);x.strokeStyle='rgba(5,6,26,.9)';x.lineJoin='round';out.forEach((l,i)=>{x.strokeText(l,cx,y+i*lh);x.fillStyle='#ffd27a';x.fillText(l,cx,y+i*lh)})}
 function draw(){t++;x.fillStyle='#0a0d2a';x.fillRect(0,0,W,H);
 for(let i=0;i<60;i++){x.fillStyle='rgba(255,255,255,'+(.3+.3*Math.sin(t*.02+i))+')';x.fillRect((i*137)%W,(i*71)%(H-120),2,2)}
 x.fillStyle='#173a2a';x.fillRect(0,H-60,W,60);

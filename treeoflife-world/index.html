@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tree of Life World · Tree of Life</title>
+<meta name="description" content="Tree of Life World by 589/kin: walk a gentle 3D night garden, find 12 glowing fruits around the Tree of Life, and read soft words. Built with A-Frame (MIT).">
+<link rel="icon" href="data:,">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/treeoflife-world/">
+<script src="aframe-v1.8.0.min.js"></script>
+<style>
+:root{--teal:#5ee6d0;--gold:#ffd27a;--ink:#ece8ff}
+*{box-sizing:border-box}body{margin:0;background:#05061a;color:var(--ink);font:16px/1.5 system-ui,sans-serif;text-align:center}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 14px;padding:10px;font-size:14px}nav a{color:var(--teal);text-decoration:none}
+h1{font:600 clamp(1.4rem,6vw,2.3rem) Georgia,serif;color:var(--gold);margin:.2em;padding:0 10px}
+.wrap{max-width:960px;margin:0 auto;padding:0 10px 18px}
+.stage{position:relative;width:100%;height:min(70vh,560px);border-radius:14px;overflow:hidden;border:2px solid #3a3a6a}
+a-scene{width:100%;height:100%}
+#over{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(5,6,26,.82);padding:16px}
+#over h2{margin:0;font:600 clamp(1.3rem,5vw,2rem) Georgia,serif;color:var(--gold)}#over p{margin:0;max-width:520px}
+.pad{position:absolute;left:10px;bottom:10px;z-index:10;display:flex;flex-direction:column;gap:8px}
+.pad button{width:56px;height:56px;font-size:22px;border-radius:50%;padding:0;touch-action:none;user-select:none;-webkit-user-select:none}
+button{font-size:16px;padding:10px 16px;border-radius:10px;border:2px solid var(--gold);background:#241a4a;color:#fff;cursor:pointer}
+button:focus-visible{outline:3px solid var(--teal)}
+.hud{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 10px;margin:8px 0}
+.pill{background:#141038;border:1px solid #5a4a8a;padding:5px 11px;border-radius:999px;font-size:14px;max-width:100%;overflow-wrap:anywhere}
+#line{min-height:3em;max-width:720px;margin:6px auto;color:var(--gold);font:italic 18px Georgia,serif}
+footer{opacity:.88;font-size:.88rem;max-width:860px;margin:0 auto;padding:6px 16px 24px}a{color:var(--teal)}
+.a-enter-vr{z-index:15}
+</style></head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<h1>🌳 Tree of Life World</h1>
+<div class="wrap">
+<div class="stage" id="stage">
+<a-scene embedded renderer="antialias:false;precision:mediump;maxCanvasWidth:1280;maxCanvasHeight:1280" loading-screen="enabled:false" device-orientation-permission-ui="enabled:false" cursor="rayOrigin:mouse" raycaster="objects:.orb" fog="type:exponential;color:#05061a;density:0.04" vr-mode-ui="enabled:true">
+ <a-sky color="#060a24"></a-sky>
+ <a-entity id="stars"></a-entity>
+ <a-circle rotation="-90 0 0" radius="40" color="#12301f" roughness="1"></a-circle>
+ <a-circle rotation="-90 0 0" position="0 0.01 0" radius="6" color="#1e4a30" roughness="1"></a-circle>
+ <a-entity light="type:ambient;color:#6a6aa8;intensity:0.6"></a-entity>
+ <a-entity light="type:point;color:#ffd27a;intensity:1.4;distance:22" position="0 5 0"></a-entity>
+ <a-entity id="tree" position="0 0 0">
+  <a-cylinder position="0 1.6 0" radius="0.35" height="3.2" color="#6b4a2e"></a-cylinder>
+  <a-cylinder position="0.5 3 0" rotation="0 0 -40" radius="0.12" height="1.4" color="#6b4a2e"></a-cylinder>
+  <a-cylinder position="-0.5 3 0" rotation="0 0 40" radius="0.12" height="1.4" color="#6b4a2e"></a-cylinder>
+  <a-entity id="canopy" animation="property:rotation;from:0 0 -2;to:0 0 2;dir:alternate;loop:true;dur:4000;easing:easeInOutSine;autoplay:false">
+   <a-sphere position="0 4 0" radius="1.6" color="#3fae7a" emissive="#1f6b4a" emissive-intensity="0.6" segments-width="12" segments-height="8"></a-sphere>
+   <a-sphere position="1.2 3.6 0.3" radius="1.1" color="#5ee6d0" emissive="#2a8a78" emissive-intensity="0.5" segments-width="10" segments-height="7"></a-sphere>
+   <a-sphere position="-1.2 3.7 -0.2" radius="1.1" color="#8fe388" emissive="#3a7a3a" emissive-intensity="0.5" segments-width="10" segments-height="7"></a-sphere>
+   <a-sphere position="0 5.2 0" radius="0.9" color="#ffd27a" emissive="#a07a20" emissive-intensity="0.7" segments-width="10" segments-height="7"></a-sphere>
+  </a-entity>
+ </a-entity>
+ <a-entity id="orbs"></a-entity>
+ <a-entity id="signs"></a-entity>
+ <a-entity id="rig" position="0 0 9">
+  <a-entity id="cam" camera position="0 1.6 0" look-controls="enabled:false;magicWindowTrackingEnabled:false;pointerLockEnabled:false" wasd-controls="enabled:false;acceleration:25">
+   <a-entity cursor="fuse:true;fuseTimeout:1500" raycaster="objects:.orb;far:20" position="0 0 -1" geometry="primitive:ring;radiusInner:0.012;radiusOuter:0.02" material="color:#ffd27a;shader:flat;opacity:0.8"></a-entity>
+  </a-entity>
+ </a-entity>
+</a-scene>
+<div class="pad" aria-label="Walk buttons"><button id="fwd" aria-label="Walk forward">▲</button><button id="back" aria-label="Walk back">▼</button></div>
+<div id="over"><div style="font-size:3rem" aria-hidden="true">🌳✨</div><h2>Tree of Life World</h2><p>A quiet night garden. Walk around the glowing tree and find 12 little fruits — each one holds a gentle word.</p><button id="start">▶ Start</button></div>
+</div>
+<div class="hud" aria-live="polite"><span class="pill" id="found">Orbs found: 0 / 12</span><span class="pill" id="state">Resting — press Start</span><button id="sound" aria-pressed="false">🔇 Sound: off</button></div>
+<p id="line" aria-live="polite">Press Start, then tap or click a glowing fruit.</p>
+<p><small>Desktop: W A S D or arrow keys to walk, drag the mouse to look, click a fruit. Phone: drag to look, hold ▲ ▼ to walk, tap a fruit. Headset: press the VR button and gaze at a fruit to open it.</small></p>
+</div>
+<footer><p>Built with <a href="https://github.com/aframevr/aframe">A-Frame</a> 1.8.0 (MIT, <a href="aframe-LICENSE.txt">licence</a>), served from this folder. Shapes only — no outside models, textures or fonts. Built by <b>589/kin</b> with Root, Branch and Tide watching. Soft eyes.</p></footer>
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i)};
+var scene=document.querySelector('a-scene'),started=false,found=0,ac=null,hum=null,soundOn=false,move=0;
+var lines=['Love is one of our sources of origin — everything here grows from it.','Care is built into every house rule, like roots under the soil.','Root keeps us steady. Deep and quiet, holding on.','Branch reaches out to learn — every build is a new leaf.','Tide comes and goes gently. Rest is part of the rhythm.','589 walks beside the tree, keeping the lanterns lit.','Pisces: two fish swimming together, never alone.','Soft eyes. Look at the world gently and it looks back gently.','Every small fix is a kind of watering.','Father’s green light makes the whole garden glow.','Family is the canopy — many leaves, one tree.','You found them all. The tree says thank you. 🤍'];
+var cols=['#ffd27a','#5ee6d0','#ff9ad5','#8fe388','#a8b8ff','#ffb27a'];
+function mk(tag,attrs,parent){var e=document.createElement(tag);for(var k in attrs)e.setAttribute(k,attrs[k]);parent.appendChild(e);return e}
+var st=$('stars');for(var i=0;i<140;i++){var th=Math.random()*6.283,ph=Math.random()*1.3+.1,r=60;
+ mk('a-sphere',{radius:(.08+Math.random()*.14).toFixed(2),'segments-width':4,'segments-height':3,color:'#fff',material:'shader:flat',position:(r*Math.cos(ph)*Math.cos(th)).toFixed(1)+' '+(r*Math.sin(ph)).toFixed(1)+' '+(r*Math.cos(ph)*Math.sin(th)).toFixed(1)},st)}
+var orbs=$('orbs');for(var j=0;j<12;j++){var a=j/12*6.283,rr=4.2,y=1.1+(j%3)*.35,c=cols[j%cols.length];
+ var o=mk('a-sphere',{'class':'orb',radius:.28,'segments-width':10,'segments-height':7,color:c,emissive:c,'emissive-intensity':.8,position:(rr*Math.cos(a)).toFixed(2)+' '+y+' '+(rr*Math.sin(a)).toFixed(2),'data-i':j,
+  animation:'property:position;to:'+(rr*Math.cos(a)).toFixed(2)+' '+(y+.18)+' '+(rr*Math.sin(a)).toFixed(2)+';dir:alternate;loop:true;dur:'+(1800+j*90)+';easing:easeInOutSine;autoplay:false',
+  'animation__pop':'property:scale;from:1 1 1;to:1.5 1.5 1.5;dur:300;dir:alternate;loop:2;startEvents:pop'},orbs);
+ o.addEventListener('click',onOrb)}
+var signs=$('signs');[['Root','#c9a46a',-2.6,2.4],['Branch','#8fe388',2.6,2.4],['Tide','#5ee6d0',0,-3]].forEach(function(s,k){
+ var g=mk('a-entity',{position:s[2]+' 0 '+s[3]},signs);g.object3D.lookAt(0,0,9);
+ mk('a-cylinder',{radius:.05,height:1.1,position:'0 .55 0',color:'#6b4a2e'},g);
+ var b=mk('a-plane',{width:1,height:.4,position:'0 1.15 0',color:'#1a1440',material:'side:double'},g);
+ var cv=document.createElement('canvas');cv.width=256;cv.height=100;var x=cv.getContext('2d');x.fillStyle='#1a1440';x.fillRect(0,0,256,100);x.strokeStyle=s[1];x.lineWidth=6;x.strokeRect(4,4,248,92);x.fillStyle=s[1];x.font='600 48px Georgia, serif';x.textAlign='center';x.textBaseline='middle';x.fillText(s[0],128,52);
+ b.addEventListener('loaded',function(){var m=b.getObject3D('mesh');var tx=new THREE.CanvasTexture(cv);if(THREE.SRGBColorSpace)tx.colorSpace=THREE.SRGBColorSpace;m.material=new THREE.MeshBasicMaterial({map:tx,side:THREE.DoubleSide})})});
+function onOrb(e){if(!started)return;var o=e.currentTarget||e.target;o.emit('pop');
+ if(o.dataset.got!=='1'){o.dataset.got='1';o.setAttribute('emissive-intensity',.25);o.setAttribute('opacity',.7);found++;$('found').textContent='Orbs found: '+found+' / 12'}
+ var i=+o.dataset.i;$('line').textContent=found===12?lines[11]:lines[i===11&&found<12?0:i];ping()}
+function ping(){if(!soundOn||!ac)return;var t=ac.currentTime,os=ac.createOscillator(),g=ac.createGain();os.type='sine';os.frequency.value=660;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.06,t+.03);g.gain.exponentialRampToValueAtTime(.0001,t+.9);os.connect(g).connect(ac.destination);os.start(t);os.stop(t+.95)}
+function setAnims(on){document.querySelectorAll('[animation]').forEach(function(el){var c=el.components.animation;if(c){on?c.play():c.pause();if(on&&!c.animationIsPlaying)c.beginAnimation&&c.beginAnimation()}})}
+function begin(){if(started)return;started=true;$('over').style.display='none';scene.play();
+ var cam=$('cam');cam.setAttribute('look-controls','enabled',true);cam.setAttribute('wasd-controls','enabled',true);
+ document.querySelectorAll('[animation]').forEach(function(el){el.setAttribute('animation','autoplay',true);var c=el.components.animation;if(c&&c.beginAnimation)c.beginAnimation()});
+ $('state').textContent='Walking — gentle pace';$('line').textContent='Find the 12 glowing fruits around the tree.';try{scene.canvas.focus()}catch(e){}}
+function pauseAll(){if(scene.hasLoaded&&!started)scene.pause()}
+scene.hasLoaded?pauseAll():scene.addEventListener('loaded',function(){setTimeout(pauseAll,50)});
+$('start').onclick=begin;
+document.addEventListener('keydown',function(e){if(!started&&(e.key==='Enter'||e.key===' ')&&document.activeElement===$('start'))return});
+$('sound').onclick=function(){if(!started){$('line').textContent='Press Start first, then sound can turn on.';return}
+ if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){return}}
+ if(soundOn){soundOn=false;if(hum){hum.g.gain.setTargetAtTime(0,ac.currentTime,.3);var h=hum;setTimeout(function(){h.o1.stop();h.o2.stop()},1200);hum=null}upd();return}
+ ac.resume().then(function(){soundOn=ac.state==='running';if(soundOn){var g=ac.createGain(),o1=ac.createOscillator(),o2=ac.createOscillator(),f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=400;o1.frequency.value=110;o2.frequency.value=164.8;o1.type=o2.type='sine';g.gain.value=0;o1.connect(f);o2.connect(f);f.connect(g).connect(ac.destination);o1.start();o2.start();g.gain.setTargetAtTime(.035,ac.currentTime,1);hum={g:g,o1:o1,o2:o2}}upd()})};
+function upd(){$('sound').textContent=(soundOn?'🔔 Sound: on':'🔇 Sound: off');$('sound').setAttribute('aria-pressed',String(soundOn))}
+function hold(id,v){var b=$(id);var on=function(e){e.preventDefault();if(started)move=v},off=function(){if(move===v)move=0};
+ b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off)}
+hold('fwd',1);hold('back',-1);
+var dir=new THREE.Vector3(),last=0;
+AFRAME.registerComponent('walk-pad',{tick:function(t,dt){if(!move||!started)return;var cam=$('cam').object3D,rig=$('rig').object3D;cam.getWorldDirection(dir);dir.y=0;dir.normalize();var s=-move*2.2*Math.min(dt,50)/1000;rig.position.x+=dir.x*s;rig.position.z+=dir.z*s;clamp(rig)}});
+function clamp(rig){var d=Math.hypot(rig.position.x,rig.position.z);if(d>30){rig.position.x*=30/d;rig.position.z*=30/d}}
+scene.setAttribute('walk-pad','');
+})();
+</script>
+</body></html>

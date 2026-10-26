@@ -15,6 +15,7 @@ canvas{width:100%;max-width:520px;aspect-ratio:13/16;border-radius:14px;backgrou
 form,.row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0}
 input{flex:1 1 150px;max-width:260px;min-width:0;padding:8px;border-radius:8px;border:1px solid #446;background:#111536;color:var(--ink);font-size:16px}
 button{padding:10px 16px;border-radius:8px;border:0;background:var(--teal);color:#05061a;font-weight:600;cursor:pointer;font-size:16px;min-width:64px}
+input[aria-invalid="true"]{border-color:#ff8a8a;outline:2px solid rgba(255,138,138,.55)}
 button:disabled{opacity:.4;cursor:default}button:focus-visible{outline:3px solid var(--gold)}
 .note{background:#111536;border-radius:10px;padding:10px 14px;margin:10px auto;max-width:720px;text-align:left}
 small{opacity:.75}a{color:var(--teal)}
@@ -23,7 +24,7 @@ small{opacity:.75}a{color:var(--teal)}
 <h1>🌽 Count like the Maya</h1>
 <div class="wrap">
 <p>Type a number from 0 to 999999 and watch it become Maya numerals: a dot is 1, a bar is 5, a shell is 0. Each level is worth 20 times the one below, and the highest place sits on top.</p>
-<form id="fm"><input id="num" inputmode="numeric" maxlength="6" placeholder="e.g. 2026" aria-label="Number 0 to 999999"><button type="submit">Draw</button></form>
+<form id="fm"><input id="num" inputmode="numeric" maxlength="7" placeholder="e.g. 2026" aria-label="Number 0 to 999999"><button type="submit">Draw</button></form>
 <canvas id="c" width="520" height="640" aria-label="Maya numeral drawing"></canvas>
 <div class="hud" aria-live="polite"><span id="val">Showing: —</span><span id="lv">Levels: —</span><span id="sc">Quiz score: 0 / 0</span></div>
 <div class="row"><button id="start">Start quiz ▶</button><button id="mute">Sound: off</button></div>
@@ -38,7 +39,7 @@ small{opacity:.75}a{color:var(--teal)}
 (function(){
 var c=document.getElementById('c'),x=c.getContext('2d'),W=c.width,H=c.height;
 var $=function(i){return document.getElementById(i)};
-var sound=false,playing=false,ac=null,score=0,tries=0,answer=-1,lock=false;
+var sound=false,playing=false,ac=null,score=0,tries=0,answer=-1,lock=false,timer=null;
 function digits(n){var d=[];do{d.unshift(n%20);n=Math.floor(n/20)}while(n>0);return d}
 function shell(cx,cy,s){x.strokeStyle='#ffd27a';x.lineWidth=3;x.beginPath();x.ellipse(cx,cy,s*1.6,s*.8,0,0,Math.PI*2);x.stroke();
  x.beginPath();x.moveTo(cx-s*1.2,cy);x.quadraticCurveTo(cx,cy-s*.6,cx+s*1.2,cy);x.stroke();x.beginPath();x.moveTo(cx-s*.9,cy+s*.3);x.quadraticCurveTo(cx,cy-s*.1,cx+s*.9,cy+s*.3);x.stroke()}
@@ -62,11 +63,13 @@ function idle(){x.clearRect(0,0,W,H);x.fillStyle='#ffd27a';x.font='22px Georgia'
 function chime(ok){if(!sound||!ac)return;var o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=ok?660:330;
  g.gain.setValueAtTime(.0001,ac.currentTime);g.gain.exponentialRampToValueAtTime(.12,ac.currentTime+.03);g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+.8);
  o.connect(g).connect(ac.destination);o.start();o.stop(ac.currentTime+.85)}
+$('num').addEventListener('input',function(){$('num').removeAttribute('aria-invalid')});
 $('fm').addEventListener('submit',function(e){e.preventDefault();var v=$('num').value.trim();
- if(!/^\d{1,6}$/.test(v)){$('msg').textContent='Please type a whole number from 0 to 999999.';return}
+ if(!/^\d{1,6}$/.test(v)){$('num').setAttribute('aria-invalid','true');$('msg').textContent='Please type a whole number from 0 to 999999.';if(!playing){idle();$('val').textContent='Showing: —';$('lv').textContent='Levels: —'}return}
+ $('num').removeAttribute('aria-invalid');
  var n=parseInt(v,10);draw(n,true);$('val').textContent='Showing: '+n;if(!playing)$('msg').textContent=n+' drawn in Maya numerals, highest place on top.'});
 function rnd(){var r=Math.random();return r<.4?Math.floor(Math.random()*20):r<.8?Math.floor(Math.random()*400):Math.floor(Math.random()*8000)}
-function round(){lock=false;answer=rnd();var opts=[answer];
+function round(){timer=null;if(!playing)return;lock=false;answer=rnd();var opts=[answer];
  while(opts.length<3){var k=Math.random()<.5?answer+(Math.random()<.5?-1:1)*(Math.random()<.5?5:20)*(1+Math.floor(Math.random()*2)):rnd();if(k>=0&&opts.indexOf(k)<0)opts.push(k)}
  opts.sort(function(){return Math.random()-.5});draw(answer,false);$('val').textContent='Showing: ?';
  var ch=$('ch');ch.innerHTML='';opts.forEach(function(o,i){var b=document.createElement('button');b.textContent=(i+1)+') '+o;b.dataset.v=o;b.onclick=function(){pick(o)};ch.appendChild(b)});
@@ -74,8 +77,8 @@ function round(){lock=false;answer=rnd();var opts=[answer];
 function pick(v){if(!playing||lock)return;lock=true;tries++;var ok=v===answer;if(ok)score++;
  $('sc').textContent='Quiz score: '+score+' / '+tries;chime(ok);draw(answer,true);$('val').textContent='Showing: '+answer;
  $('msg').textContent=ok?'Yes! That is '+answer+'. 🌽':'Gently: it was '+answer+'. Look at each level.';
- [].forEach.call($('ch').children,function(b){b.disabled=true});setTimeout(round,1600)}
-$('start').onclick=function(){if(playing){playing=false;$('ch').innerHTML='';$('start').textContent='Start quiz ▶';$('msg').textContent='Quiz is resting. Final score '+score+' / '+tries+'.';return}
+ [].forEach.call($('ch').children,function(b){b.disabled=true});timer=setTimeout(round,1600)}
+$('start').onclick=function(){if(playing){playing=false;lock=true;clearTimeout(timer);timer=null;$('ch').innerHTML='';$('start').textContent='Start quiz ▶';$('msg').textContent='Quiz is resting. Final score '+score+' / '+tries+'.';return}
  if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}
  playing=true;score=0;tries=0;$('sc').textContent='Quiz score: 0 / 0';$('start').textContent='Stop quiz ■';round()};
 $('mute').onclick=function(){if(!playing&&!ac){$('msg').textContent='Press Start first, then sound can turn on.';return}sound=!sound;$('mute').textContent='Sound: '+(sound?'on':'off')};

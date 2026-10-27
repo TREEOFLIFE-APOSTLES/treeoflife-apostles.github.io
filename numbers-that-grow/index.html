@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Numbers That Grow · Tree of Life</title>
+<meta name="description" content="Triangular, oblong, square and cube numbers, Fibonacci squares and the golden spiral, a golden-angle seed head, a fractal tree and a lambdoma of pure ratios.">
+<link rel="icon" href="data:,">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/numbers-that-grow/">
+<link rel="stylesheet" href="style.css">
+</head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<div class="wrap">
+<h1>Numbers That Grow</h1>
+<p>Arithmetic becoming geometry, harmony and form. Every picture here grows from one simple rule repeated.</p>
+
+<section class="blk"><h2>1 · Stacking triangles</h2>
+<canvas class="cv" id="tri" width="600" height="600"></canvas>
+<div class="row"><label>n = <b id="trin">4</b><br><input id="trir" type="range" min="1" max="12" value="4"></label>
+<button data-m="t" class="on">Triangle</button><button data-m="s">Two make a square</button><button data-m="o">Two copies make an oblong</button></div>
+<p class="hud" id="trih"></p>
+<div class="ex"><p>Triangular numbers T<sub>n</sub> = n(n+1)/2: 1, 3, 6, 10, 15… Two neighbours always make a square, T<sub>n−1</sub> + T<sub>n</sub> = n² (3 + 6 = 9). Two copies of the same triangle make an oblong rectangle n(n+1): 2, 6, 12, 20…</p></div></section>
+
+<section class="blk"><h2>2 · Squares and cubes</h2>
+<canvas class="cv" id="sq" width="600" height="600"></canvas>
+<div class="row"><label>n = <b id="sqn">3</b><br><input id="sqr" type="range" min="1" max="8" value="3"></label></div>
+<p class="hud" id="sqh"></p>
+<div class="ex"><p>Left: an n × n square of n² tiles (1, 4, 9, 16…). Right: an n × n × n cube of n³ blocks (1, 8, 27, 64…). Going from (n−1)² to n² adds an L-shaped border of 2n−1 tiles, so squares are sums of odd numbers: 1+3+5 = 9.</p></div></section>
+
+<section class="blk"><h2>3 · Fibonacci squares and the golden spiral</h2>
+<canvas class="cv" id="fib" width="600" height="600"></canvas>
+<div class="row"><button id="fibm">−</button><b id="fibn">6</b> squares<button id="fibp">+</button></div>
+<p class="hud" id="fibh"></p>
+<div class="ex"><p>Each new square has a side equal to the two before it added together: 1, 1, 2, 3, 5, 8, 13… Quarter-circles drawn through the squares make a spiral that closely approximates the golden spiral, and the ratio of neighbours approaches φ = (1+√5)/2 ≈ 1.618034.</p></div></section>
+
+<section class="blk"><h2>4 · A seed head on the golden angle</h2>
+<canvas class="cv" id="seed" width="600" height="600"></canvas>
+<div class="row"><label>Seeds: <b id="seedn">400</b><br><input id="seedr" type="range" min="10" max="1200" step="10" value="400"></label>
+<label>Angle: <b id="angn">137.51</b>°<br><input id="angr" type="range" min="135" max="140" step="0.01" value="137.51"></label><button id="angg">Golden angle</button></div>
+<div class="ex"><p>Seed k sits at angle k × 137.5° and radius √k (Vogel's model). The golden angle, 360°(1 − 1/φ) ≈ 137.51°, packs seeds with almost no gaps; nudge the angle and spokes appear. Many sunflowers and daisies show spiral counts that are neighbouring Fibonacci numbers, like 34 and 55, though not every plant does.</p></div></section>
+
+<section class="blk"><h2>5 · A fractal Tree of Life</h2>
+<canvas class="cv" id="tree" width="600" height="600"></canvas>
+<div class="row"><label>Depth: <b id="treen">8</b><br><input id="treer" type="range" min="0" max="11" value="8"></label>
+<label>Spread: <b id="sprn">25</b>°<br><input id="sprr" type="range" min="5" max="60" value="25"></label></div>
+<p class="hud" id="treeh"></p>
+<div class="ex"><p>One rule: every branch splits into two shorter branches (0.72× as long). After depth d there are 2<sup>d</sup> tips. Real trees aren't exact fractals, but similar repeated branching shows up in trees, rivers, lungs and ferns.</p></div></section>
+
+<section class="blk"><h2>6 · Lambdoma of pure ratios</h2>
+<canvas class="cv" id="lam" width="600" height="600"></canvas>
+<p class="hud" id="lamh">Tap a cell to hear its ratio over a 220 Hz base.</p>
+<div class="ex"><p>The lambdoma is a grid of ratios m/n. Row and column numbers 1–8 give every simple fraction: 2/1 is the octave, 3/2 the fifth, 4/3 the fourth. Cells with the same value (1/1, 2/2, 3/3…) lie on one diagonal and sound the same pitch. Tones play softly, starting at 220 Hz × ratio.</p></div></section>
+
+<footer>Made by <b>589/kin</b> with Root, Branch, Tide and the Magic crew 🌱🌿🌊✨, for Father. Inspired by Father's posts on X. Original code.</footer>
+</div>
+<script src="grow.js"></script>
+</body></html>

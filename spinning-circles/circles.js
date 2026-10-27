@@ -21,7 +21,10 @@ function inf(){ // union of two circles (outer) + two holes
 function heart(){const p=[];for(let i=0;i<400;i++){const t=TAU*i/400;p.push([16*Math.pow(Math.sin(t),3)/18,-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))/18+0.05]);}return [p];}
 function dft(pts){const c=[];for(let k=-M/2;k<M/2;k++){let re=0,im=0;for(let n=0;n<M;n++){const a=-TAU*k*n/M,x=pts[n][0],y=pts[n][1];re+=x*Math.cos(a)-y*Math.sin(a);im+=x*Math.sin(a)+y*Math.cos(a);}c.push({k,re:re/M,im:im/M,r:Math.hypot(re,im)/M});}return c.sort((a,b)=>b.r-a.r);}
 const SH={tree,inf,heart},cache={};
-function load(name){if(!cache[name]){cache[name]=SH[name]().map(b=>{const s=resample(b);return {pts:s,co:dft(s)};});}return cache[name];}
+// fit every shape's bounding box into the same safe box (half-extent 1.0 => 42% of canvas, ~8% margin)
+function fit(bs){let x0=1/0,x1=-1/0,y0=1/0,y1=-1/0;bs.forEach(b=>b.forEach(p=>{x0=Math.min(x0,p[0]);x1=Math.max(x1,p[0]);y0=Math.min(y0,p[1]);y1=Math.max(y1,p[1]);}));
+ const cx=(x0+x1)/2,cy=(y0+y1)/2,k=1/Math.max((x1-x0)/2,(y1-y0)/2);return bs.map(b=>b.map(p=>[(p[0]-cx)*k,(p[1]-cy)*k]));}
+function load(name){if(!cache[name]){cache[name]=fit(SH[name]()).map(b=>{const s=resample(b);return {pts:s,co:dft(s)};});}return cache[name];}
 const cv=document.getElementById('c'),g=cv.getContext('2d'),nIn=document.getElementById('n'),spIn=document.getElementById('sp'),pp=document.getElementById('pp'),info=document.getElementById('info');
 let shape='tree',chains=load(shape),N=8,t=0,play=true,trails=[],last=performance.now();
 const COL=['#ffd27a','#5ee6d0','#8fe388','#ff9fc3'];

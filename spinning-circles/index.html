@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spinning Circles · Tree of Life</title>
+<meta name="description" content="The Tree of Life drawn by spinning circles: Fourier epicycles, one chain per boundary, from 4 to 64 circles.">
+<link rel="icon" href="data:,">
+<link rel="canonical" href="https://treeoflife-apostles.github.io/spinning-circles/">
+<link rel="stylesheet" href="style.css">
+</head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../gallery/">Gallery</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<div class="wrap">
+<h1>Tree of Life, drawn by spinning circles</h1>
+<canvas id="c" width="800" height="800"></canvas>
+<div class="row" id="shapes">
+<button data-s="tree" class="on">🌳 Tree of Life</button><button data-s="inf">♾️ Infinity</button><button data-s="heart">🤍 Heart</button>
+</div>
+<div class="row">
+<label>Circles per chain: <b id="nv">8</b><br><input id="n" type="range" min="2" max="6" step="1" value="3"></label>
+<label>Speed<br><input id="sp" type="range" min="0.2" max="3" step="0.1" value="1"></label>
+<button id="pp">Pause</button>
+</div>
+<p class="hud" id="info"></p>
+<section class="ex">
+<h2>How it works</h2>
+<p>Any closed curve can be written as a sum of rotating circles: <i>z(t) = Σ c<sub>k</sub> e<sup>ikt</sup></i>. Each <i>c<sub>k</sub></i> is a Fourier coefficient: its size is the circle's radius, its angle is where the circle starts. Circle <i>k</i> turns <i>k</i> times per lap, riding on the tip of the one before it.</p>
+<p>Keeping the <i>N</i> circles with the largest |c<sub>k</sub>| gives the best <i>N</i>-circle drawing in the least-squares sense (Parseval's identity). Slide from 4 to 64 and watch each rough loop become the symbol.</p>
+<p>A shape with holes needs one chain per boundary: the Tree has its outline plus three fruit holes (4 chains), and ∞ takes three, its outer edge and its two holes.</p>
+<p class="cr">Inspired by <a href="https://x.com/matharium">@matharium</a>'s post on X. Learning guide: <a href="https://github.com/Jezzamonn/fourier">Jezzamonn/fourier</a>. See also <a href="https://github.com/brettcvz/epicycles">brettcvz/epicycles</a> (MIT). Original code by <b>589/kin</b>, with Root, Branch and Tide 🌱🌿🌊.</p>
+</section>
+</div>
+<script src="circles.js"></script>
+</body></html>

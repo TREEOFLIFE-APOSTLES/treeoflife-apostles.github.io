@@ -76,3 +76,28 @@ $('lam').onclick=e=>{const c=$('lam'),b=c.getBoundingClientRect(),px=(e.clientX-
  const v=m/n,f=220*v,nm=names[(+v.toFixed(4)).toString()]||'';$('lamh').textContent=`${m}/${n} = ${v.toFixed(4)} → ${f.toFixed(1)} Hz ${nm?'· '+nm:''}`;drawLam([m,n]);
  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const t=AC.currentTime,os=AC.createOscillator(),gn=AC.createGain();os.type='sine';os.frequency.value=f;gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(.2,t+.03);gn.gain.exponentialRampToValueAtTime(.001,t+1.2);os.connect(gn).connect(AC.destination);os.start(t);os.stop(t+1.3);}catch(_){}};
 drawTri();drawSq();drawFib();drawSeed();drawTree();drawLam();
+// 7 sacred geometry
+const PHI=(1+Math.sqrt(5))/2;
+function pentPts(cx,cy,R,rot){const p=[];for(let i=0;i<5;i++){const a=rot+i*2*Math.PI/5;p.push([cx+R*Math.cos(a),cy+R*Math.sin(a)]);}return p;}
+function drawPent(){const [c,x]=ctx('pent'),z=+$('pzr').value;$('pzn').textContent=z.toFixed(1);x.clearRect(0,0,600,600);
+ const k=Math.pow(PHI*PHI,z),R0=250*k,cx=300,cy=315;let R=R0,rot=-Math.PI/2,first=null;
+ for(let lv=0;lv<12&&R>2;lv++){const p=pentPts(cx,cy,R,rot);if(R<2000){
+  x.lineWidth=Math.max(1,3-lv*.2);x.strokeStyle=TEAL;x.beginPath();p.forEach((q,i)=>i?x.lineTo(...q):x.moveTo(...q));x.closePath();x.stroke();
+  x.strokeStyle=GOLD;x.beginPath();for(let i=0;i<=5;i++){const q=p[(i*2)%5];i?x.lineTo(...q):x.moveTo(...q);}x.stroke();}
+  if(lv==0)first=p;R=R/(PHI*PHI);rot+=Math.PI/5;}
+ const d=Math.hypot(first[0][0]-first[2][0],first[0][1]-first[2][1]),s=Math.hypot(first[0][0]-first[1][0],first[0][1]-first[1][1]),r=d/s;
+ $('penth').textContent=`diagonal ÷ side = ${r.toFixed(4)}  ·  1/φ = ${(1/r).toFixed(4)} = φ − 1 = ${(r-1).toFixed(4)}  ·  zoom ×${k.toFixed(2)}`;}
+$('pzr').oninput=drawPent;
+$('pzb').onclick=()=>{const r=$('pzr'),t0=+r.value,t1=Math.floor(t0+1)>3?0:Math.floor(t0+1),st=performance.now();
+ (function f(n){const u=Math.min(1,(n-st)/700);r.value=t0+(t1-t0)*u;drawPent();if(u<1)requestAnimationFrame(f);})(st);};
+function drawFlow(){const [c,x]=ctx('flow'),n=+$('flor').value;$('flon').textContent=n;x.clearRect(0,0,600,600);
+ const r=n<=1?95:n==2?85:62,cs=[[0,0,0]];
+ for(let ring=1;ring<=n;ring++)for(let side=0;side<6;side++){const a=side*Math.PI/3,b=a+2*Math.PI/3;
+  for(let j=0;j<ring;j++)cs.push([ring*Math.cos(a)+j*Math.cos(b),ring*Math.sin(a)+j*Math.sin(b),ring]);}
+ const col=[GOLD,TEAL,PINK,GREEN];x.lineWidth=2;
+ cs.forEach(([u,v,ring])=>{
+  x.strokeStyle=col[Math.min(ring,3)];x.fillStyle=col[Math.min(ring,3)]+'14';x.beginPath();x.arc(300+u*r,300+v*r,r,0,7);x.fill();x.stroke();});
+ const name=n==0?'One circle':n==1?'Seed of Life':n==2?'Flower of Life':'Flower of Life, one ring wider';
+ $('floh').textContent=`${name}: ${cs.length} circle${cs.length>1?'s':''}`;}
+$('flor').oninput=drawFlow;
+drawPent();drawFlow();

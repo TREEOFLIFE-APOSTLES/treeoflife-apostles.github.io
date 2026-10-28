@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Knot Reader · Tree of Life</title>
+<meta name="description" content="Read real Inka khipu knots as base-10 numbers, tie your own number, and take a knot quiz.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+<style>svg{width:100%;max-width:640px;display:block;margin:0 auto;touch-action:manipulation}.cord{cursor:pointer}.cord:hover line,.cord.sel line{stroke-width:7}input[type=number],input[type=text]{font-size:1.1rem;padding:.3rem;width:8rem}</style>
+</head><body>
+<nav><a href="../">Home</a><span>·</span><a href="../numbers-that-grow/">Numbers That Grow</a><span>·</span><a href="../treasure-shelf/">Treasures</a></nav>
+<div class="wrap">
+<h1>Knot Reader 🪢</h1>
+<p>The Inka kept numbers on hanging cords called khipus. Tap the knots and watch them turn into numbers.</p>
+
+<section class="blk"><h2>1 · How khipu numbers work</h2>
+<div class="ex"><p>Many khipus record numbers in <b>base 10</b>, just like we do. A main cord holds many hanging <i>pendant</i> cords. Along each pendant, the place nearest the main cord is the highest place, and the ones sit lowest.</p>
+<ul><li><b>Tens, hundreds, thousands:</b> a cluster of simple single knots. Five single knots in the tens spot means 50.</li>
+<li><b>Ones place:</b> a long knot with 2 to 9 turns means 2 to 9.</li>
+<li><b>One:</b> a long knot can't have just one turn, so a 1 in the ones place is a figure-eight knot.</li>
+<li><b>Zero:</b> an empty space where a cluster would be.</li></ul>
+<p>In 1912 the mathematician L. Leland Locke studied khipus at the American Museum of Natural History and showed they record base-10 numbers. His book <i>The Ancient Quipu or Peruvian Knot Record</i> followed in 1923.</p></div></section>
+
+<section class="blk"><h2>2 · A real khipu cord</h2>
+<p>These are six real pendant cords (numbers 5 and 7 to 11) from khipu <b>UR187</b> (OKR KH0425). It's held at the <b>American Museum of Natural History, New York</b> (no. 41.2/6996A) and comes from the Ica Valley, near Callango. Tap a cord.</p>
+<svg id="real" viewBox="0 0 640 420"></svg>
+<p class="hud" id="realh">Tap a cord to read it.</p>
+<div class="ex"><p>Knot types, turns, positions and colours come from the Open Khipu Repository. Cord colours use the repository's Ascher colour codes (shown under each cord). We assigned the places from where the knot clusters sit on the cord. On these six cords the clusters line up neatly in hundreds, tens and ones rows (cord 11 also has a thousands cluster), so they read cleanly. We left out a few neighbouring cords whose cluster spacing was ambiguous.</p></div></section>
+
+<section class="blk"><h2>3 · Tie your own number</h2>
+<div class="row"><label>Number <input id="num" type="number" min="0" max="99999" value="322"></label><span>(322, the apostles)</span></div>
+<svg id="tie" viewBox="0 0 640 300"></svg>
+<p class="hud" id="tieh"></p></section>
+
+<section class="blk"><h2>4 · Knot quiz</h2>
+<p>What number does this cord hold?</p>
+<svg id="quiz" viewBox="0 0 640 300"></svg>
+<div class="row"><input id="guess" type="number" placeholder="your guess"><button id="check">Check</button><button id="next">New cord</button></div>
+<p class="hud" id="quizh"></p></section>
+
+<p>Data: <a href="https://github.com/khipulab/open-khipu-repository">Open Khipu Repository</a> (MIT License, © its contributors), via our fork <a href="https://github.com/MultiDimensionalDevilsKingdomsRoute666/open-khipu-repository">here</a>. Reference: L. Leland Locke, <i>The Ancient Quipu or Peruvian Knot Record</i> (1923).</p>
+<p>Grown by Branch, data kept tidy by Root, made gentle by Tide. 589/kin.</p>
+</div>
+<script src="data.js"></script><script src="knots.js"></script>
+</body></html>

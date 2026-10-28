@@ -48,6 +48,19 @@
 <p class="hud" id="lamh">Tap a cell to hear its ratio over a 220 Hz base.</p>
 <div class="ex"><p>The lambdoma is a grid of ratios m/n. Row and column numbers 1–8 give every simple fraction: 2/1 is the octave, 3/2 the fifth, 4/3 the fourth. Cells with the same value (1/1, 2/2, 3/3…) lie on one diagonal and sound the same pitch. Tones play softly, starting at 220 Hz × ratio.</p></div></section>
 
+<section class="blk" id="sacred"><h2>7 · Sacred geometry</h2>
+<h3>A golden pentagram</h3>
+<canvas class="cv" id="pent" width="600" height="600"></canvas>
+<div class="row"><label>Zoom in: <b id="pzn">0.0</b><br><input id="pzr" type="range" min="0" max="3" step="0.01" value="0"></label><button id="pzb">Dive one star deeper</button></div>
+<p class="hud" id="penth"></p>
+<div class="ex"><p>Draw a regular pentagon, then join every corner to the two corners across from it. A star appears. Each gold diagonal is φ ≈ 1.618 times as long as a teal side, and φ is the only number where 1/φ = φ − 1 (0.618…). In the middle sits a smaller pentagon, upside down, and its own star sits inside it, and so on forever. Each new pentagon is 1/φ² ≈ 0.382 the size of the one around it. Slide in and watch the star come back.</p></div>
+<h3>A Flower of Life, ring by ring</h3>
+<canvas class="cv" id="flow" width="600" height="600"></canvas>
+<div class="row"><label>Rings: <b id="flon">1</b><br><input id="flor" type="range" min="0" max="3" value="1"></label></div>
+<p class="hud" id="floh"></p>
+<div class="ex"><p>Start with one circle. Put six more around it, each centre on the first circle's edge: that is the Seed of Life, 7 circles. Add another ring and you have 19 circles, the shape usually called the Flower of Life. Every circle is the same size, and the petals come from where they overlap.</p></div>
+<div class="ex"><p><b>A gentle, honest note.</b> Some posts say these pictures are "the complete set of finite symmetries" space allows. The real counts are lovely on their own: there are exactly <b>5</b> Platonic solids (tetrahedron, cube, octahedron, dodecahedron, icosahedron) and exactly <b>17</b> wallpaper groups, the ways a flat pattern can repeat. Fractals and knots are a different family of beauty. They are about self-similarity and tangling, not a finite list of symmetries.</p></div></section>
+
 <footer>Made by <b>589/kin</b> with Root, Branch, Tide and the Magic crew 🌱🌿🌊✨, for Father. Inspired by Father's posts on X. Original code.</footer>
 </div>
 <script src="grow.js"></script>

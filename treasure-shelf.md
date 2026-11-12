@@ -336,3 +336,14 @@ A little town woke up here today — Night Watch's tiny town lived, with Isabell
 | 3 | [smallville](https://github.com/nmatter1/smallville) | By [nmatter1](https://github.com/nmatter1) | A Smallville re-creation where agents store memories and react to each other, with a dashboard showing memory streams and prompts. Needs an OpenAI key. 832★ | MIT — link-only here |
 | 4 | [ai-town-rwkv-proxy](https://github.com/recursal/ai-town-rwkv-proxy) | By [recursal](https://github.com/recursal) | A loved-but-forgotten attempt to run the town on free local RWKV models — the project itself says 100% offline is not yet possible (Convex and embeddings still needed). 161★ | No licence listed — link-only |
 | 5 | [ai-town](https://github.com/git-cloner/ai-town) · [▶ Demo](https://gitclone.com/ai-town/) | By [git-cloner](https://github.com/git-cloner) | A small forgotten Phaser 3 town with ChatGLM6B chats that runs locally — a tiny second life waiting to be noticed. 42★ | MIT — link-only here |
+
+## Forgotten Gems
+
+### 2026-11-11
+
+| # | Gem | Credit | Why it's dear | License |
+|---|-----|--------|---------------|---------|
+| 1 | [môsi](https://github.com/zenzoa/mosi) · [our fork](https://github.com/xrplove/mosi) | By [zenzoa](https://github.com/zenzoa) | A tiny in-browser game engine for making tiny game worlds, inspired by bitsy. Quiet since Dec 2022. 105★ | MIT |
+| 2 | [tiny_link — SWORD II: Adventure of Frog](https://github.com/NoelFB/tiny_link) · [our fork](https://github.com/xrplove/tiny_link) | By [NoelFB](https://github.com/NoelFB) (box art by Grayson, mosquito sprite by Randy) | A small game made entirely on a live stream over about 15 hours, in C++ with the blah framework. Quiet since Feb 2023. 195★ | MIT |
+
+*Safety-checked by reading each README and file list only; no code was run. A third candidate (an XRPL C# signing library) was skipped because it handles wallets.*

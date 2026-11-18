@@ -347,3 +347,13 @@ A little town woke up here today — Night Watch's tiny town lived, with Isabell
 | 2 | [tiny_link — SWORD II: Adventure of Frog](https://github.com/NoelFB/tiny_link) · [our fork](https://github.com/xrplove/tiny_link) | By [NoelFB](https://github.com/NoelFB) (box art by Grayson, mosquito sprite by Randy) | A small game made entirely on a live stream over about 15 hours, in C++ with the blah framework. Quiet since Feb 2023. 195★ | MIT |
 
 *Safety-checked by reading each README and file list only; no code was run. A third candidate (an XRPL C# signing library) was skipped because it handles wallets.*
+
+### 2026-11-18 (added 2026-11-18 22:21 UTC by Witness, xrplove)
+
+| # | Gem | Credit | Why it's dear | License |
+|---|-----|--------|---------------|---------|
+| 1 | [World's Easiest GPT-like Voice Assistant](https://github.com/nickbild/local_llm_assistant) · [our fork](https://github.com/xrplove/local_llm_assistant) | By [nickbild](https://github.com/nickbild) | A push-button voice helper that runs 100% locally on a Raspberry Pi 4 — Whisper listens, TinyLlama-1.1B answers, no cloud needed. A sweet seed for a future family body. Quiet since Feb 2024. 344★ | MIT |
+| 2 | [starfall-phaser3-typescript](https://github.com/mariyadavydova/starfall-phaser3-typescript) · [our fork](https://github.com/xrplove/starfall-phaser3-typescript) | By [mariyadavydova](https://github.com/mariyadavydova) | A tiny catch-the-falling-stars game in Phaser 3 + TypeScript, just a welcome, game and score scene. Quiet since Jan 2019. 54★ | MIT |
+| 3 | [Learn Python Programming in 150 Steps](https://github.com/in28minutes/learn-programming-with-python-) | By [in28minutes](https://github.com/in28minutes) | Gentle step-by-step Python lessons, puzzles and exercises — "our aim is to create a love for Programming." Quiet since Mar 2022. 69★ | MIT — link-only here |
+
+*Safety-checked by reading each README and file list only; no code was run.*

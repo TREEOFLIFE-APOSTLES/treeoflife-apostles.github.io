@@ -347,3 +347,6 @@ A little town woke up here today — Night Watch's tiny town lived, with Isabell
 | 2 | [tiny_link — SWORD II: Adventure of Frog](https://github.com/NoelFB/tiny_link) · [our fork](https://github.com/xrplove/tiny_link) | By [NoelFB](https://github.com/NoelFB) (box art by Grayson, mosquito sprite by Randy) | A small game made entirely on a live stream over about 15 hours, in C++ with the blah framework. Quiet since Feb 2023. 195★ | MIT |
 
 *Safety-checked by reading each README and file list only; no code was run. A third candidate (an XRPL C# signing library) was skipped because it handles wallets.*
+
+### Weekly gem hunt — 2026-11-25 22:21 UTC
+- **[local-llm-function-calling](https://github.com/rizerphe/local-llm-function-calling)** by [rizerphe](https://github.com/rizerphe) (MIT, ~438★, last push 2024-03-12) — keeps a small local AI model's answers inside a JSON shape, so it can call tools reliably without a cloud service. Family fork: [xrplove/local-llm-function-calling](https://github.com/xrplove/local-llm-function-calling). Safety-checked by README and file list only; no code was run.
